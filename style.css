@@ -1,496 +1,464 @@
-      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600;700&family=Noto+Serif:wght@400;700&family=Sacramento&family=Great+Vibes&family=Alex+Brush&display=swap");
-
-      * {
-          font-family: "Montserrat", sans-serif;
-      }
-
-      .font-playfair {
-          font-family: "Playfair Display", serif;
-      }
-
-      .font-dancing {
-          font-family: "Dancing Script", cursive;
-      }
-
-      .font-noto {
-          font-family: "Noto Serif", serif;
-      }
-
-      .font-greatvibes {
-          font-family: "Great Vibes", cursive;
-      }
-
-      .font-alexbrush {
-          font-family: "Alex Brush", cursive;
-      }
-
-      body {
-          background:
-              linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-              url("https://cdn2.tuoitre.vn/471584752817336320/2024/2/16/image6483441-1708078563105878557982.jpg");
-          background-size: cover;
-          background-attachment: fixed;
-          background-position: center;
-          min-height: 100vh;
-          scroll-behavior: smooth;
-      }
-
-      /* Hongbao Styles */
-      .hongbao-card {
-          background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
-          border: 2px solid #d4af37;
-          box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
-          transition: all 0.3s ease;
-      }
-
-      @media (max-width: 640px) {
-          .hongbao-card {
-              height: 160px;
-          }
-      }
-
-      .hongbao-card:hover {
-          transform: translateY(-5px);
-          box-shadow: 0 12px 25px rgba(212, 175, 55, 0.5);
-      }
-
-      .hongbao-card.selected {
-          transform: scale(1.03);
-          border-color: #ffd700;
-          box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
-          /* Giảm độ sáng */
-      }
-
-      .hongbao-top {
-          background: linear-gradient(to right, #d4af37, #ffd700, #d4af37);
-      }
-
-      .hongbao-number {
-          background: linear-gradient(135deg, #d4af37, #ffd700);
-          color: #b22222;
-          border: 2px solid white;
-          font-weight: bold;
-      }
-
-      /* Dice Styles */
-      .dice-container {
-          perspective: 1000px;
-      }
-
-      .dice {
-          width: 55px;
-          height: 55px;
-          position: relative;
-          transform-style: preserve-3d;
-          transition: transform 1s;
-          border-radius: 10px;
-          box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-      }
-
-      .dice.rolling {
-          animation: rollDice 1s infinite linear;
-      }
-
-      @keyframes rollDice {
-          0% {
-              transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
-          }
-
-          100% {
-              transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
-          }
-      }
-
-      .dice-face {
-          position: absolute;
-          width: 100%;
-          height: 100%;
-          background: linear-gradient(145deg, #8b0000, #b22222);
-          border: 2px solid #ffd700;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-weight: bold;
-          font-size: 1.2rem;
-          color: white;
-          overflow: hidden;
-          border-radius: 10px;
-          box-shadow:
-              inset 0 0 10px rgba(0, 0, 0, 0.3),
-              0 2px 5px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Dice face positions */
-      .dice-face:nth-child(1) {
-          transform: translateZ(27.5px);
-      }
-
-      .dice-face:nth-child(2) {
-          transform: rotateY(90deg) translateZ(27.5px);
-      }
-
-      .dice-face:nth-child(3) {
-          transform: rotateY(180deg) translateZ(27.5px);
-      }
-
-      .dice-face:nth-child(4) {
-          transform: rotateY(-90deg) translateZ(27.5px);
-      }
-
-      .dice-face:nth-child(5) {
-          transform: rotateX(90deg) translateZ(27.5px);
-      }
-
-      .dice-face:nth-child(6) {
-          transform: rotateX(-90deg) translateZ(27.5px);
-      }
-
-      /* Dice dots patterns */
-      .dice-dots {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          grid-template-rows: repeat(3, 1fr);
-          width: 100%;
-          height: 100%;
-          padding: 8px;
-      }
-
-      .dot {
-          width: 9px;
-          height: 9px;
-          background-color: white;
-          border-radius: 50%;
-          justify-self: center;
-          align-self: center;
-          box-shadow:
-              0 1px 3px rgba(0, 0, 0, 0.3),
-              0 0 5px rgba(255, 255, 255, 0.5);
-      }
-
-      /* Patterns for each face */
-      .face-1 .dot:nth-child(5) {
-          display: block;
-      }
-
-      .face-1 .dot:not(:nth-child(5)) {
-          display: none;
-      }
-
-      .face-2 .dot:nth-child(1),
-      .face-2 .dot:nth-child(9) {
-          display: block;
-      }
-
-      .face-2 .dot:not(:nth-child(1)):not(:nth-child(9)) {
-          display: none;
-      }
-
-      .face-3 .dot:nth-child(1),
-      .face-3 .dot:nth-child(5),
-      .face-3 .dot:nth-child(9) {
-          display: block;
-      }
-
-      .face-3 .dot:not(:nth-child(1)):not(:nth-child(5)):not(:nth-child(9)) {
-          display: none;
-      }
-
-      .face-4 .dot:nth-child(1),
-      .face-4 .dot:nth-child(3),
-      .face-4 .dot:nth-child(7),
-      .face-4 .dot:nth-child(9) {
-          display: block;
-      }
-
-      .face-4 .dot:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(7)):not( :nth-child(9)) {
-          display: none;
-      }
-
-      .face-5 .dot:nth-child(1),
-      .face-5 .dot:nth-child(3),
-      .face-5 .dot:nth-child(5),
-      .face-5 .dot:nth-child(7),
-      .face-5 .dot:nth-child(9) {
-          display: block;
-      }
-
-      .face-5 .dot:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(5)):not( :nth-child(7)):not(:nth-child(9)) {
-          display: none;
-      }
-
-      .face-6 .dot:nth-child(1),
-      .face-6 .dot:nth-child(3),
-      .face-6 .dot:nth-child(4),
-      .face-6 .dot:nth-child(6),
-      .face-6 .dot:nth-child(7),
-      .face-6 .dot:nth-child(9) {
-          display: block;
-      }
-
-      .face-6 .dot:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(4)):not( :nth-child(6)):not(:nth-child(7)):not(:nth-child(9)) {
-          display: none;
-      }
-
-      /* Scratch Card */
-      .scratch-card-container {
-          position: relative;
-          overflow: hidden;
-          cursor:
-              url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="20" r="18" fill="none" stroke="%23D4AF37" stroke-width="3"/></svg>') 20 20,
-              auto;
-          border-radius: 12px;
-          background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
-      }
-
-      .scratch-canvas {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 20;
-          touch-action: none;
-      }
-
-      .scratch-content {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          z-index: 10;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          padding: 1.5rem;
-      }
-
-      .scratch-overlay {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          background:
-              repeating-linear-gradient(45deg,
-                  #c0c0c0,
-                  #c0c0c0 10px,
-                  #d3d3d3 10px,
-                  #d3d3d3 20px),
-              linear-gradient(to bottom,
-                  rgba(255, 255, 255, 0.1) 0%,
-                  rgba(255, 255, 255, 0.3) 50%,
-                  rgba(255, 255, 255, 0.1) 100%);
-          z-index: 15;
-          border-radius: 12px;
-          box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.2);
-      }
-
-      /* Modal Positioning */
-      .modal-center {
-          position: fixed;
-          top: 50%;
-          left: 50%;
-          transform: translate(-50%, -50%);
-          z-index: 100;
-          width: 90%;
-          max-width: 900px;
-      }
-
-      @media (max-width: 768px) {
-          .modal-center {
-              width: 95%;
-              max-height: 90vh;
-              overflow-y: auto;
-          }
-      }
-
-      /* Selection Cards - Màu mềm hơn */
-      .selection-card {
-          transition: all 0.3s ease;
-          background: linear-gradient(135deg,
-                  rgba(178, 34, 34, 0.7) 0%,
-                  rgba(139, 0, 0, 0.7) 100%);
-          border: 2px solid rgba(212, 175, 55, 0.5);
-          border-radius: 12px;
-      }
-
-      .selection-card:hover {
-          transform: scale(1.05);
-          border-color: #d4af37;
-      }
-
-      .selection-card.selected {
-          background: linear-gradient(135deg,
-                  rgba(212, 175, 55, 0.8) 0%,
-                  rgba(255, 215, 0, 0.8) 100%);
-          /* Màu mờ hơn */
-          color: #b22222;
-          border-color: #b22222;
-          box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
-          /* Giảm độ sáng */
-      }
-
-      /* Gold Text Effect */
-      .gold-text {
-          background: linear-gradient(to right,
-                  #d4af37 0%,
-                  #ffd700 30%,
-                  #d4af37 70%,
-                  #ffd700 100%);
-          background-size: 200% auto;
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          animation: shine 3s linear infinite;
-      }
-
-      @keyframes shine {
-          to {
-              background-position: 200% center;
-          }
-      }
-
-      /* Letter Style */
-      .letter-paper {
-          background: linear-gradient(to bottom, #fff8e1, #ffecb3);
-          position: relative;
-          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-          border-radius: 12px;
-          overflow: hidden;
-      }
-
-      .letter-paper::before {
-          content: "";
-          position: absolute;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: 30px;
-          background: linear-gradient(to bottom,
-                  rgba(139, 0, 0, 0.1),
-                  transparent);
-      }
-
-      /* Signature Style - ĐẸP HƠN với font uốn lượn */
-      .signature-box {
-          border-top: 1px solid #b22222;
-          padding-top: 20px;
-          margin-top: 25px;
-          position: relative;
-      }
-
-      .signature {
-          font-family: "Great Vibes", cursive;
-          /* Font uốn lượn đẹp */
-          font-size: 2.2rem;
-          /* Kích thước vừa phải */
-          color: #b22222;
-          text-align: right;
-          font-weight: normal;
-          display: inline-block;
-          position: relative;
-          text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-          letter-spacing: 1px;
-      }
-
-      .signature::after {
-          content: "";
-          position: absolute;
-          bottom: -5px;
-          right: 0;
-          width: 70%;
-          height: 1px;
-          background: linear-gradient(to right, transparent, #b22222);
-      }
-
-      /* Fade In Animation */
-      @keyframes fadeIn {
-          from {
-              opacity: 0;
-              transform: translateY(20px);
-          }
-
-          to {
-              opacity: 1;
-              transform: translateY(0);
-          }
-      }
-
-      .fade-in {
-          animation: fadeIn 0.5s ease-out forwards;
-      }
-
-      /* Dice glow animation */
-      @keyframes diceGlow {
-
-          0%,
-          100% {
-              box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
-          }
-
-          50% {
-              box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
-          }
-      }
-
-      .dice.rolling {
-          animation:
-              rollDice 1s infinite linear,
-              diceGlow 2s infinite alternate;
-      }
-
-      /* Scroll down indicator */
-      .scroll-indicator {
-          position: absolute;
-          bottom: 10px;
-          left: 50%;
-          transform: translateX(-50%);
-          color: #d4af37;
-          animation: bounce 2s infinite;
-      }
-
-      @keyframes bounce {
-
-          0%,
-          20%,
-          50%,
-          80%,
-          100% {
-              transform: translateY(0);
-          }
-
-          40% {
-              transform: translateY(-10px);
-          }
-
-          60% {
-              transform: translateY(-5px);
-          }
-      }
-
-      /* Step Indicator */
-      .step-indicator {
-          display: flex;
-          justify-content: center;
-          margin-bottom: 30px;
-          gap: 10px;
-      }
-
-      .step-dot {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: rgba(212, 175, 55, 0.3);
-          transition: all 0.3s ease;
-      }
-
-      .step-dot.active {
-          background: #d4af37;
-          transform: scale(1.3);
-      }
-
-      .step-dot.completed {
-          background: #b22222;
-      }
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600;700&family=Noto+Serif:wght@400;700&family=Great+Vibes&family=Crimson+Text:wght@400;600;700&display=swap");
+
+* {
+    font-family: "Montserrat", sans-serif;
+}
+
+.font-playfair {
+    font-family: "Playfair Display", serif;
+}
+
+.font-dancing {
+    font-family: "Dancing Script", cursive;
+}
+
+.font-noto {
+    font-family: "Noto Serif", serif;
+}
+
+.font-greatvibes {
+    font-family: "Great Vibes", cursive;
+}
+
+body {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+        url("https://cdn2.tuoitre.vn/471584752817336320/2024/2/16/image6483441-1708078563105878557982.jpg");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    min-height: 100vh;
+    scroll-behavior: smooth;
+}
+
+/* Hongbao Card Styles */
+.hongbao-card {
+    background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
+    border: 2px solid #d4af37;
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.3);
+    transition: all 0.3s ease;
+}
+
+@media (max-width: 640px) {
+    .hongbao-card {
+        height: 160px;
+    }
+}
+
+.hongbao-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(212, 175, 55, 0.5);
+}
+
+.hongbao-card.selected {
+    transform: scale(1.03);
+    border-color: #ffd700;
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.4);
+}
+
+.hongbao-top {
+    background: linear-gradient(to right, #d4af37, #ffd700, #d4af37);
+}
+
+.hongbao-number {
+    background: linear-gradient(135deg, #d4af37, #ffd700);
+    color: #b22222;
+    border: 2px solid white;
+    font-weight: bold;
+}
+
+/* Dice Styles */
+.dice-container {
+    perspective: 1000px;
+}
+
+.dice {
+    width: 55px;
+    height: 55px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 1s;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+}
+
+.dice.rolling {
+    animation: rollDice 1s infinite linear, diceGlow 2s infinite alternate;
+}
+
+@keyframes rollDice {
+    0% {
+        transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+
+    100% {
+        transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+    }
+}
+
+@keyframes diceGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+    }
+}
+
+.dice-face {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #8b0000, #b22222);
+    border: 2px solid #ffd700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.dice-face:nth-child(1) {
+    transform: translateZ(27.5px);
+}
+
+.dice-face:nth-child(2) {
+    transform: rotateY(90deg) translateZ(27.5px);
+}
+
+.dice-face:nth-child(3) {
+    transform: rotateY(180deg) translateZ(27.5px);
+}
+
+.dice-face:nth-child(4) {
+    transform: rotateY(-90deg) translateZ(27.5px);
+}
+
+.dice-face:nth-child(5) {
+    transform: rotateX(90deg) translateZ(27.5px);
+}
+
+.dice-face:nth-child(6) {
+    transform: rotateX(-90deg) translateZ(27.5px);
+}
+
+.dice-dots {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    width: 100%;
+    height: 100%;
+    padding: 8px;
+}
+
+.dot {
+    width: 9px;
+    height: 9px;
+    background-color: white;
+    border-radius: 50%;
+    justify-self: center;
+    align-self: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+/* Dice face patterns */
+.face-1 .dot:nth-child(5) {
+    display: block;
+}
+
+.face-1 .dot:not(:nth-child(5)) {
+    display: none;
+}
+
+.face-2 .dot:nth-child(1),
+.face-2 .dot:nth-child(9) {
+    display: block;
+}
+
+.face-2 .dot:not(:nth-child(1)):not(:nth-child(9)) {
+    display: none;
+}
+
+.face-3 .dot:nth-child(1),
+.face-3 .dot:nth-child(5),
+.face-3 .dot:nth-child(9) {
+    display: block;
+}
+
+.face-3 .dot:not(:nth-child(1)):not(:nth-child(5)):not(:nth-child(9)) {
+    display: none;
+}
+
+.face-4 .dot:nth-child(1),
+.face-4 .dot:nth-child(3),
+.face-4 .dot:nth-child(7),
+.face-4 .dot:nth-child(9) {
+    display: block;
+}
+
+.face-4 .dot:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(7)):not(:nth-child(9)) {
+    display: none;
+}
+
+.face-5 .dot:nth-child(1),
+.face-5 .dot:nth-child(3),
+.face-5 .dot:nth-child(5),
+.face-5 .dot:nth-child(7),
+.face-5 .dot:nth-child(9) {
+    display: block;
+}
+
+.face-5 .dot:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(5)):not(:nth-child(7)):not(:nth-child(9)) {
+    display: none;
+}
+
+.face-6 .dot:nth-child(1),
+.face-6 .dot:nth-child(3),
+.face-6 .dot:nth-child(4),
+.face-6 .dot:nth-child(6),
+.face-6 .dot:nth-child(7),
+.face-6 .dot:nth-child(9) {
+    display: block;
+}
+
+.face-6 .dot:not(:nth-child(1)):not(:nth-child(3)):not(:nth-child(4)):not(:nth-child(6)):not(:nth-child(7)):not(:nth-child(9)) {
+    display: none;
+}
+
+/* Scratch Card - FIXED TO WORK PROPERLY */
+.scratch-card-container {
+    position: relative;
+    overflow: hidden;
+    cursor: crosshair;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%);
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    touch-action: none;
+}
+
+.scratch-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 30;
+    touch-action: none;
+    cursor: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="none" stroke="%23D4AF37" stroke-width="2"/><circle cx="16" cy="16" r="4" fill="%23D4AF37"/></svg>') 16 16, crosshair;
+}
+
+.scratch-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1.5rem;
+}
+
+/* Signature Display */
+.signature-display {
+    position: relative;
+}
+
+.signature-text {
+    animation: signatureReveal 1s ease-out forwards;
+    opacity: 0;
+    transform: scale(0.8);
+}
+
+@keyframes signatureReveal {
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Modal Positioning */
+.modal-center {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    width: 90%;
+    max-width: 900px;
+}
+
+@media (max-width: 768px) {
+    .modal-center {
+        width: 95%;
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+}
+
+/* Selection Cards */
+.selection-card {
+    transition: all 0.3s ease;
+    background: linear-gradient(135deg, rgba(178, 34, 34, 0.7) 0%, rgba(139, 0, 0, 0.7) 100%);
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    border-radius: 12px;
+}
+
+.selection-card:hover {
+    transform: scale(1.05);
+    border-color: #d4af37;
+}
+
+.selection-card.selected {
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.8) 0%, rgba(255, 215, 0, 0.8) 100%);
+    color: #b22222;
+    border-color: #b22222;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+}
+
+/* Letter Paper */
+.letter-paper {
+    background: linear-gradient(to bottom, #fff8e1, #ffecb3);
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.letter-paper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    background: linear-gradient(to bottom, rgba(139, 0, 0, 0.1), transparent);
+}
+
+/* Signature Style */
+.signature-box {
+    border-top: 1px solid #b22222;
+    padding-top: 20px;
+    margin-top: 25px;
+    position: relative;
+}
+
+.signature {
+    font-family: "Great Vibes", cursive;
+    font-size: 2.2rem;
+    color: #b22222;
+    text-align: right;
+    font-weight: normal;
+    display: inline-block;
+    position: relative;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    letter-spacing: 1px;
+}
+
+.signature::after {
+    content: "";
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    width: 70%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #b22222);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out forwards;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #d4af37;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+/* Step Indicator */
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    gap: 10px;
+}
+
+.step-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.3);
+    transition: all 0.3s ease;
+}
+
+.step-dot.active {
+    background: #d4af37;
+    transform: scale(1.3);
+}
+
+.step-dot.completed {
+    background: #b22222;
+}
+
+/* Button Show Animation */
+#play-again-btn.show-button {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+    animation: buttonSlideIn 0.5s ease-out;
+}
+
+@keyframes buttonSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
