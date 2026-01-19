@@ -7,7 +7,7 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link
-      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600;700&family=Noto+Serif:wght@400;700&family=Sacramento&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600;700&family=Noto+Serif:wght@400;700&family=Sacramento&family=Great+Vibes&family=Alex+Brush&display=swap"
       rel="stylesheet"
     />
     <link
@@ -15,7 +15,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600;700&family=Noto+Serif:wght@400;700&family=Sacramento&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Dancing+Script:wght@600;700&family=Montserrat:wght@400;600;700&family=Noto+Serif:wght@400;700&family=Sacramento&family=Great+Vibes&family=Alex+Brush&display=swap");
 
       * {
         font-family: "Montserrat", sans-serif;
@@ -33,14 +33,18 @@
         font-family: "Noto Serif", serif;
       }
 
-      .font-signature {
-        font-family: "Sacramento", cursive;
+      .font-greatvibes {
+        font-family: "Great Vibes", cursive;
+      }
+
+      .font-alexbrush {
+        font-family: "Alex Brush", cursive;
       }
 
       body {
         background:
-          linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
-          url("https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80");
+          linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+          url("https://images.unsplash.com/photo-1544027993-37dbfe43562a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80");
         background-size: cover;
         background-attachment: fixed;
         background-position: center;
@@ -70,7 +74,7 @@
       .hongbao-card.selected {
         transform: scale(1.03);
         border-color: #ffd700;
-        box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+        box-shadow: 0 0 25px rgba(255, 215, 0, 0.4); /* Giảm độ sáng */
       }
 
       .hongbao-top {
@@ -84,7 +88,7 @@
         font-weight: bold;
       }
 
-      /* Dice Styles - IMPROVED with better connection */
+      /* Dice Styles */
       .dice-container {
         perspective: 1000px;
       }
@@ -96,7 +100,6 @@
         transform-style: preserve-3d;
         transition: transform 1s;
         border-radius: 10px;
-        /* Add glow to connect dice */
         box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
       }
 
@@ -117,11 +120,7 @@
         position: absolute;
         width: 100%;
         height: 100%;
-        background: linear-gradient(
-          145deg,
-          #8b0000,
-          #b22222
-        ); /* Gradient for depth */
+        background: linear-gradient(145deg, #8b0000, #b22222);
         border: 2px solid #ffd700;
         display: flex;
         justify-content: center;
@@ -133,7 +132,7 @@
         border-radius: 10px;
         box-shadow:
           inset 0 0 10px rgba(0, 0, 0, 0.3),
-          0 2px 5px rgba(0, 0, 0, 0.2); /* Outer shadow for connection */
+          0 2px 5px rgba(0, 0, 0, 0.2);
       }
 
       /* Dice face positions */
@@ -175,7 +174,7 @@
         align-self: center;
         box-shadow:
           0 1px 3px rgba(0, 0, 0, 0.3),
-          0 0 5px rgba(255, 255, 255, 0.5); /* Glow effect for dots */
+          0 0 5px rgba(255, 255, 255, 0.5);
       }
 
       /* Patterns for each face */
@@ -325,7 +324,7 @@
         }
       }
 
-      /* Selection Cards - REMOVED left border */
+      /* Selection Cards - Màu mềm hơn */
       .selection-card {
         transition: all 0.3s ease;
         background: linear-gradient(
@@ -343,10 +342,14 @@
       }
 
       .selection-card.selected {
-        background: linear-gradient(135deg, #d4af37 0%, #ffd700 100%);
+        background: linear-gradient(
+          135deg,
+          rgba(212, 175, 55, 0.8) 0%,
+          rgba(255, 215, 0, 0.8) 100%
+        ); /* Màu mờ hơn */
         color: #b22222;
         border-color: #b22222;
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.3); /* Giảm độ sáng */
       }
 
       /* Gold Text Effect */
@@ -394,55 +397,34 @@
         );
       }
 
-      /* Signature Style - IMPROVED (smaller and normal) */
+      /* Signature Style - ĐẸP HƠN với font uốn lượn */
       .signature-box {
         border-top: 1px solid #b22222;
-        padding-top: 15px;
-        margin-top: 20px;
+        padding-top: 20px;
+        margin-top: 25px;
         position: relative;
       }
 
       .signature {
-        font-family:
-          "Montserrat", sans-serif; /* Changed from cursive to normal font */
-        font-size: 1.2rem; /* Smaller size */
+        font-family: "Great Vibes", cursive; /* Font uốn lượn đẹp */
+        font-size: 2.2rem; /* Kích thước vừa phải */
         color: #b22222;
         text-align: right;
-        font-weight: 600;
-        letter-spacing: 1px;
+        font-weight: normal;
         display: inline-block;
         position: relative;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+        letter-spacing: 1px;
       }
 
       .signature::after {
         content: "";
         position: absolute;
-        bottom: -3px;
+        bottom: -5px;
         right: 0;
-        width: 60%;
+        width: 70%;
         height: 1px;
         background: linear-gradient(to right, transparent, #b22222);
-      }
-
-      /* Active Section Indicator - REMOVED left border */
-      .active-section {
-        /* Removed border-left property */
-        padding-left: 0; /* Reset padding */
-      }
-
-      /* Blinking Animation */
-      @keyframes blink {
-        0%,
-        100% {
-          opacity: 1;
-        }
-        50% {
-          opacity: 0.5;
-        }
-      }
-
-      .blinking {
-        animation: blink 1.5s infinite;
       }
 
       /* Fade In Animation */
@@ -461,7 +443,7 @@
         animation: fadeIn 0.5s ease-out forwards;
       }
 
-      /* Dice glow animation for better connection */
+      /* Dice glow animation */
       @keyframes diceGlow {
         0%,
         100% {
@@ -908,10 +890,7 @@
                 </div>
               </div>
             </div>
-            <div class="text-lg md:text-xl font-bold text-amber-400 blinking">
-              <i class="fas fa-spinner animate-spin mr-2"></i> ĐANG TẠO TÂM
-              THƯ...
-            </div>
+            <!-- Đã bỏ chữ "Đang tạo tâm thư..." -->
           </div>
 
           <!-- Letter & Scratch Section -->
@@ -966,17 +945,7 @@
               <!-- Right: Scratch Card Section -->
               <div class="lg:w-1/2">
                 <div class="h-full flex flex-col">
-                  <div class="mb-4 text-center">
-                    <div
-                      class="text-lg md:text-xl font-bold text-amber-300 blinking"
-                    >
-                      <i class="fas fa-hand-point-down mr-2"></i> CÀO NHẬN LỘC
-                      XUÂN
-                    </div>
-                    <div class="text-amber-200/80 text-sm mt-1">
-                      Cào nhẹ lớp bạc để khám phá may mắn
-                    </div>
-                  </div>
+                  <!-- Đã bỏ phần tiêu đề "Cào nhận lộc xuân" -->
 
                   <div class="flex-grow">
                     <div
@@ -1016,12 +985,7 @@
                       </div>
                     </div>
 
-                    <div
-                      class="text-center text-amber-300 text-xs md:text-sm italic mt-3"
-                    >
-                      <i class="fas fa-info-circle mr-1"></i> Dùng chuột hoặc
-                      ngón tay cào nhẹ lên thẻ
-                    </div>
+                    <!-- Đã bỏ dòng hướng dẫn -->
                   </div>
 
                   <!-- Action Button -->
@@ -1068,7 +1032,7 @@
         const letterGreeting = document.getElementById("letter-greeting");
         const letterContent = document.getElementById("letter-content");
         const letterClosing = document.getElementById("letter-closing");
-        const scratchCanvas = document.getElementById("scratch-canvas");
+        let scratchCanvas = document.getElementById("scratch-canvas"); // Không dùng const để có thể gán lại
         const moneyAmount = document.getElementById("money-amount");
         const moneyMessage = document.getElementById("money-message");
         const closeModalBtn = document.getElementById("close-modal");
@@ -1569,29 +1533,47 @@
           return amount.toLocaleString("vi-VN") + " ₫";
         }
 
-        // Initialize Scratch Card
+        // Initialize Scratch Card - ĐÃ SỬA LỖI
         function initScratchCard() {
-          const canvas = scratchCanvas;
-          const container = canvas.parentElement;
+          // Lấy canvas element từ DOM
+          scratchCanvas = document.getElementById("scratch-canvas");
+          if (!scratchCanvas) {
+            console.error("Không tìm thấy canvas element");
+            return;
+          }
 
-          canvas.width = 0;
-          canvas.height = 0;
+          const container = scratchCanvas.parentElement;
+          if (!container) {
+            console.error("Không tìm thấy container của canvas");
+            return;
+          }
 
-          const newCanvas = canvas.cloneNode(true);
-          canvas.parentNode.replaceChild(newCanvas, canvas);
+          // Lưu tham chiếu canvas gốc
+          const originalCanvas = scratchCanvas;
+
+          // Tạo canvas mới
+          const newCanvas = document.createElement("canvas");
+          newCanvas.className = originalCanvas.className;
+          newCanvas.id = originalCanvas.id;
+
+          // Thay thế canvas cũ bằng canvas mới
+          container.replaceChild(newCanvas, originalCanvas);
           scratchCanvas = newCanvas;
 
-          canvas.width = container.offsetWidth;
-          canvas.height = container.offsetHeight;
+          // Đặt kích thước canvas
+          scratchCanvas.width = container.offsetWidth;
+          scratchCanvas.height = container.offsetHeight;
 
-          ctx = canvas.getContext("2d");
+          // Lấy context
+          ctx = scratchCanvas.getContext("2d");
 
+          // Vẽ lớp phủ
           ctx.fillStyle = "#C0C0C0";
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
           ctx.fillStyle = "#D3D3D3";
-          for (let x = 0; x < canvas.width; x += 20) {
-            for (let y = 0; y < canvas.height; y += 20) {
+          for (let x = 0; x < scratchCanvas.width; x += 20) {
+            for (let y = 0; y < scratchCanvas.height; y += 20) {
               if ((x + y) % 40 === 0) {
                 ctx.fillRect(x, y, 10, 10);
               }
@@ -1601,36 +1583,42 @@
           const gradient = ctx.createLinearGradient(
             0,
             0,
-            canvas.width,
-            canvas.height,
+            scratchCanvas.width,
+            scratchCanvas.height,
           );
           gradient.addColorStop(0, "rgba(255, 255, 255, 0.3)");
           gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.1)");
           gradient.addColorStop(1, "rgba(255, 255, 255, 0.3)");
           ctx.fillStyle = gradient;
-          ctx.fillRect(0, 0, canvas.width, canvas.height);
+          ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
+          // Thêm text hướng dẫn
           ctx.fillStyle = "#8B4513";
           ctx.font = "bold 14px Arial";
           ctx.textAlign = "center";
           ctx.textBaseline = "middle";
-          ctx.fillText("Vui lòng cào tại đây", canvas.width / 2, 30);
+          ctx.fillText("Vui lòng cào tại đây", scratchCanvas.width / 2, 30);
 
-          canvas.addEventListener("mousedown", handleMouseDown);
-          canvas.addEventListener("mousemove", handleMouseMove);
-          canvas.addEventListener("mouseup", handleMouseUp);
-          canvas.addEventListener("mouseleave", handleMouseUp);
+          // Thêm event listeners
+          scratchCanvas.addEventListener("mousedown", handleMouseDown);
+          scratchCanvas.addEventListener("mousemove", handleMouseMove);
+          scratchCanvas.addEventListener("mouseup", handleMouseUp);
+          scratchCanvas.addEventListener("mouseleave", handleMouseUp);
 
-          canvas.addEventListener("touchstart", handleTouchStart);
-          canvas.addEventListener("touchmove", handleTouchMove);
-          canvas.addEventListener("touchend", handleTouchEnd);
+          scratchCanvas.addEventListener("touchstart", handleTouchStart);
+          scratchCanvas.addEventListener("touchmove", handleTouchMove);
+          scratchCanvas.addEventListener("touchend", handleTouchEnd);
 
-          canvas.addEventListener("touchstart", (e) => e.preventDefault(), {
-            passive: false,
-          });
-          canvas.addEventListener("touchmove", (e) => e.preventDefault(), {
-            passive: false,
-          });
+          scratchCanvas.addEventListener(
+            "touchstart",
+            (e) => e.preventDefault(),
+            { passive: false },
+          );
+          scratchCanvas.addEventListener(
+            "touchmove",
+            (e) => e.preventDefault(),
+            { passive: false },
+          );
         }
 
         // Event handler functions
@@ -1666,7 +1654,7 @@
 
         // Scratch Function
         function scratch(clientX, clientY) {
-          if (!ctx) return;
+          if (!ctx || !scratchCanvas) return;
 
           const rect = scratchCanvas.getBoundingClientRect();
           const x = clientX - rect.left;
@@ -1692,7 +1680,7 @@
 
         // Check Scratch Completion
         function checkScratchCompletion() {
-          if (!ctx) return;
+          if (!ctx || !scratchCanvas) return;
 
           const imageData = ctx.getImageData(
             0,
