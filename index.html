@@ -29,19 +29,33 @@
         <div class="step-dot active" id="step1-dot"></div>
         <div class="step-dot" id="step2-dot"></div>
         <div class="step-dot" id="step3-dot"></div>
+        <div class="step-dot" id="step4-dot"></div>
       </div>
     </header>
 
+    <!-- Step 1: Relationship -->
     <div id="relationship-selection" class="max-w-6xl mx-auto mb-12 section-transition">
       <h2 class="text-2xl md:text-3xl font-playfair font-bold text-center text-amber-300 mb-6">
         Người trao đang gửi lộc xuân cho..?
       </h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 mb-8"></div>
+      <div class="scroll-indicator hidden" id="scroll-to-specific">
+        <i class="fas fa-chevron-down text-2xl"></i>
+      </div>
+    </div>
+
+    <!-- Step 2: Specific Person -->
+    <div id="specific-selection" class="max-w-6xl mx-auto mb-12 section-transition hidden">
+      <h2 class="text-2xl md:text-3xl font-playfair font-bold text-center text-amber-300 mb-6">
+        Cụ thể là..?
+      </h2>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 md:gap-6 mb-8"></div>
       <div class="scroll-indicator hidden" id="scroll-to-age">
         <i class="fas fa-chevron-down text-2xl"></i>
       </div>
     </div>
 
+    <!-- Step 3: Age -->
     <div id="age-selection" class="max-w-6xl mx-auto mb-12 section-transition hidden">
       <h2 class="text-2xl md:text-3xl font-playfair font-bold text-center text-amber-300 mb-6">
         Lộc xuân này gửi đến người ở độ tuổi nào?
@@ -52,6 +66,7 @@
       </div>
     </div>
 
+    <!-- Step 4: Hongbao -->
     <div id="hongbao-selection" class="max-w-6xl mx-auto mb-12 section-transition hidden">
       <h2 class="text-2xl md:text-3xl font-playfair font-bold text-center text-amber-300 mb-6">
         Chọn một phong bao — Mở ra vận may đầu xuân
@@ -334,22 +349,22 @@
           </div>
         </div>
 
-        <!-- Letter and Scratch Section - FIXED -->
+        <!-- Letter and Scratch Section -->
         <div id="letter-scratch-section" class="hidden">
-          <!-- Top Section: Letter with Scratch Card Inside -->
           <div class="mb-6">
             <div class="letter-paper rounded-lg p-4 md:p-6">
               <div class="text-center mb-4">
                 <div class="text-red-700 font-dancing text-2xl md:text-3xl mb-2">
                   Ít lời đầu năm, nhiều mong ước an khang
                 </div>
-                <div class="text-amber-700 text-sm mb-4">
+                <div class="text-amber-700 text-sm mb-4" id="letter-recipient">
                   Gửi đến người thân yêu
                 </div>
               </div>
 
               <div class="space-y-4 font-noto text-gray-800">
                 <div id="letter-date" class="text-right text-sm italic text-gray-600 mb-2"></div>
+                <div id="letter-greeting" class="font-semibold text-lg text-red-800 mb-3"></div>
                 <div id="letter-content" class="letter-content-styled text-base md:text-lg leading-relaxed"></div>
 
                 <!-- Signature and Scratch Card Side by Side -->
