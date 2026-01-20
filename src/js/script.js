@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // Elements
     const relationshipSelection = document.getElementById("relationship-selection");
     const relationshipGrid = relationshipSelection ? relationshipSelection.querySelector(".grid") : null;
+    const specificSelection = document.getElementById("specific-selection");
+    const specificGrid = specificSelection ? specificSelection.querySelector(".grid") : null;
     const ageSelection = document.getElementById("age-selection");
     const ageGrid = ageSelection ? ageSelection.querySelector(".grid") : null;
     const hongbaoSelection = document.getElementById("hongbao-selection");
@@ -13,7 +15,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const dice1 = document.getElementById("dice1");
     const dice2 = document.getElementById("dice2");
     const dice3 = document.getElementById("dice3");
+    const letterRecipient = document.getElementById("letter-recipient");
     const letterDate = document.getElementById("letter-date");
+    const letterGreeting = document.getElementById("letter-greeting");
     const letterContent = document.getElementById("letter-content");
     const letterClosing = document.getElementById("letter-closing");
     let scratchCanvas = null;
@@ -22,11 +26,14 @@ document.addEventListener("DOMContentLoaded", function () {
     const step1Dot = document.getElementById("step1-dot");
     const step2Dot = document.getElementById("step2-dot");
     const step3Dot = document.getElementById("step3-dot");
+    const step4Dot = document.getElementById("step4-dot");
+    const scrollToSpecific = document.getElementById("scroll-to-specific");
     const scrollToAge = document.getElementById("scroll-to-age");
     const scrollToHongbao = document.getElementById("scroll-to-hongbao");
 
     // Variables
     let selectedRelationship = null;
+    let selectedSpecific = null;
     let selectedAge = null;
     let selectedHongbao = null;
     let isRolling = false;
@@ -34,20 +41,67 @@ document.addEventListener("DOMContentLoaded", function () {
     let ctx = null;
     let currentAmount = 0;
     let selectedRelationshipId = "";
+    let selectedSpecificId = "";
     let selectedAgeId = "";
     let scratchPoints = [];
 
     // Relationships (8 options)
     const relationships = [
-        { id: "grandparents", name: "Ông Bà", icon: "fa-solid fa-person-cane", formal: "Kính gửi Ông Bà" },
-        { id: "parents", name: "Bố Mẹ", icon: "fa-solid fa-house-user", formal: "Kính gửi Bố Mẹ" },
-        { id: "children", name: "Con Cái", icon: "fa-solid fa-children", formal: "Gửi các con yêu" },
-        { id: "siblings", name: "Anh Chị Em", icon: "fa-solid fa-people-group", formal: "Gửi anh/chị/em" },
-        { id: "aunt_uncle", name: "Cô Dì Chú Bác", icon: "fa-solid fa-people-roof", formal: "Kính gửi Cô/Dì/Chú/Bác" },
-        { id: "friends", name: "Bạn Bè", icon: "fa-solid fa-user-group", formal: "Gửi bạn thân" },
-        { id: "colleagues", name: "Đồng Nghiệp", icon: "fa-solid fa-handshake", formal: "Gửi đồng nghiệp" },
-        { id: "lovers", name: "Người Yêu", icon: "fa-solid fa-heart-circle-plus", formal: "Gửi người yêu dấu" }
+        { id: "grandparents", name: "Ông Bà", icon: "fa-solid fa-person-cane" },
+        { id: "parents", name: "Bố Mẹ", icon: "fa-solid fa-house-user" },
+        { id: "children", name: "Con Cái", icon: "fa-solid fa-children" },
+        { id: "siblings", name: "Anh Chị Em", icon: "fa-solid fa-people-group" },
+        { id: "aunt_uncle", name: "Cô Dì Chú Bác", icon: "fa-solid fa-people-roof" },
+        { id: "friends", name: "Bạn Bè", icon: "fa-solid fa-user-group" },
+        { id: "colleagues", name: "Đồng Nghiệp", icon: "fa-solid fa-handshake" },
+        { id: "lovers", name: "Người Yêu", icon: "fa-solid fa-heart-circle-plus" }
     ];
+
+    // Specific options for each relationship
+    const specificOptions = {
+        grandparents: [
+            { id: "ong", name: "Ông", icon: "fa-solid fa-male" },
+            { id: "ba", name: "Bà", icon: "fa-solid fa-female" },
+            { id: "ong-ba", name: "Ông Bà", icon: "fa-solid fa-people-arrows" }
+        ],
+        parents: [
+            { id: "bo", name: "Bố", icon: "fa-solid fa-male" },
+            { id: "me", name: "Mẹ", icon: "fa-solid fa-female" },
+            { id: "bo-me", name: "Bố Mẹ", icon: "fa-solid fa-people-arrows" }
+        ],
+        children: [
+            { id: "con-trai", name: "Con Trai", icon: "fa-solid fa-child" },
+            { id: "con-gai", name: "Con Gái", icon: "fa-solid fa-child-dress" },
+            { id: "cac-con", name: "Các Con", icon: "fa-solid fa-children" }
+        ],
+        siblings: [
+            { id: "anh", name: "Anh", icon: "fa-solid fa-male" },
+            { id: "chi", name: "Chị", icon: "fa-solid fa-female" },
+            { id: "em-trai", name: "Em Trai", icon: "fa-solid fa-male" },
+            { id: "em-gai", name: "Em Gái", icon: "fa-solid fa-female" }
+        ],
+        aunt_uncle: [
+            { id: "co", name: "Cô", icon: "fa-solid fa-female" },
+            { id: "di", name: "Dì", icon: "fa-solid fa-female" },
+            { id: "chu", name: "Chú", icon: "fa-solid fa-male" },
+            { id: "bac", name: "Bác", icon: "fa-solid fa-male" }
+        ],
+        friends: [
+            { id: "ban-nam", name: "Bạn Nam", icon: "fa-solid fa-male" },
+            { id: "ban-nu", name: "Bạn Nữ", icon: "fa-solid fa-female" },
+            { id: "ban-be", name: "Bạn Bè", icon: "fa-solid fa-user-group" }
+        ],
+        colleagues: [
+            { id: "dong-nghiep-nam", name: "Đồng Nghiệp Nam", icon: "fa-solid fa-male" },
+            { id: "dong-nghiep-nu", name: "Đồng Nghiệp Nữ", icon: "fa-solid fa-female" },
+            { id: "dong-nghiep", name: "Đồng Nghiệp", icon: "fa-solid fa-handshake" }
+        ],
+        lovers: [
+            { id: "ban-trai", name: "Bạn Trai", icon: "fa-solid fa-male" },
+            { id: "ban-gai", name: "Bạn Gái", icon: "fa-solid fa-female" },
+            { id: "vo-chong", name: "Vợ/Chồng", icon: "fa-solid fa-ring" }
+        ]
+    };
 
     // Age groups (8 options)
     const ageGroups = [
@@ -60,6 +114,244 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "elder", name: "Cao Tuổi", range: "71-85 tuổi", icon: "fa-solid fa-chair" },
         { id: "venerable", name: "Thượng Thọ", range: "86+ tuổi", icon: "fa-solid fa-award" }
     ];
+
+    // Letter Templates - IMPROVED CONTENT
+    const letterTemplates = {
+        ong: {
+            greeting: "Kính gửi Ông,",
+            recipient: "Gửi Ông",
+            content: [
+                `Xuân về hoa nở khắp nơi, cháu xin kính gửi đến Ông lời chúc sức khỏe, sống lâu trăm tuổi. Tuổi già của Ông là phúc lành của cả gia đình.<br><br>Mong Ông luôn minh mẫn, vui vẻ bên con cháu. Những lời dạy bảo của Ông là kim chỉ nam cho cuộc đời cháu. Năm mới này, cháu chúc Ông luôn an khang thịnh vượng.`,
+                `Thưa Ông,<br><br>Tết đến xuân về, cháu xin kính chúc Ông phúc thọ miên trường. Tuổi cao của Ông là niềm tự hào và điểm tựa vững chắc của gia đình.<br><br>Cháu luôn ghi nhớ những lời dạy quý báu của Ông. Chúc Ông năm mới vạn sự như ý, tràn đầy niềm vui bên con cháu.`
+            ],
+            closing: "Kính chúc Ông"
+        },
+        ba: {
+            greeting: "Kính gửi Bà,",
+            recipient: "Gửi Bà",
+            content: [
+                `Xuân sang mang theo vạn điều tốt lành, cháu xin gửi đến Bà lời chúc sức khỏe, tuổi thọ như đá Sơn Tinh. Bà là ánh sáng ấm áp của gia đình.<br><br>Những bữa cơm Bà nấu, những lời ru ngọt ngào vẫn mãi trong lòng cháu. Chúc Bà năm mới luôn vui vẻ, an khang, sum vầy bên con cháu.`,
+                `Kính thưa Bà,<br><br>Tết đến xuân về, cháu xin chúc Bà sức khỏe dồi dào, phúc lộc viên mãn. Tình thương của Bà như mặt trời sưởi ấm tim cháu.<br><br>Cháu mong Bà luôn bình an, mạnh khỏe để chứng kiến con cháu lớn khôn. Năm mới vạn sự như ý!`
+            ],
+            closing: "Kính chúc Bà"
+        },
+        "ong-ba": {
+            greeting: "Kính gửi Ông Bà,",
+            recipient: "Gửi Ông Bà",
+            content: [
+                `Xuân về mang theo niềm vui mới, cháu xin kính chúc Ông Bà sức khỏe, sống lâu trăm tuổi, phúc như Đông Hải. Ông Bà là trụ cột, là bóng mát che chở cho cả gia đình.<br><br>Những lời dạy của Ông Bà là hành trang quý giá nhất cho cuộc đời cháu. Mong Ông Bà luôn vui vẻ, an lạc, được quây quần bên con cháu.`,
+                `Thưa Ông Bà,<br><br>Tết đến xuân về, cháu xin kính chúc Ông Bà vạn sự như ý, tuổi thọ miên trường. Sự bình an của Ông Bà chính là hạnh phúc lớn nhất của gia đình.<br><br>Cháu biết ơn Ông Bà đã dạy dỗ, nuôi nấng. Chúc Ông Bà năm mới nhiều sức khỏe, sum vầy cùng con cháu!`
+            ],
+            closing: "Kính chúc Ông Bà"
+        },
+        bo: {
+            greeting: "Kính gửi Bố,",
+            recipient: "Gửi Bố",
+            content: [
+                `Gửi Bố yêu quý,<br><br>Xuân về đầy ắp hy vọng, con xin chúc Bố sức khỏe, công việc thuận lợi, thành công rực rỡ. Bố là điểm tựa vững chắc, là người hùng trong lòng con.<br><br>Con biết Bố đã vất vả nuôi con khôn lớn. Mỗi giọt mồ hôi của Bố là tình yêu thương vô bờ bến. Năm mới này, con hứa sẽ cố gắng hơn nữa để Bố tự hào.`,
+                `Thưa Bố,<br><br>Tết đến xuân về, con xin chúc Bố năm mới an khang, phát tài phát lộc. Bố là tấm gương sáng cho con noi theo.<br><br>Con trân trọng từng lời dạy của Bố. Chúc Bố luôn mạnh khỏe, hạnh phúc bên gia đình!`
+            ],
+            closing: "Kính chúc Bố"
+        },
+        me: {
+            greeting: "Kính gửi Mẹ,",
+            recipient: "Gửi Mẹ",
+            content: [
+                `Gửi Mẹ yêu thương,<br><br>Xuân sang muôn hoa khoe sắc, con xin chúc Mẹ luôn xinh đẹp, tràn đầy sức khỏe và niềm vui. Tình yêu của Mẹ như ánh nắng sưởi ấm trái tim con.<br><br>Những bàn tay Mẹ đã chăm sóc con từng ngày từng giờ. Con biết ơn Mẹ vô cùng. Năm mới này, con chúc Mẹ luôn hạnh phúc, thanh xuân mãi không phai.`,
+                `Kính thưa Mẹ,<br><br>Tết đến xuân về, con xin chúc Mẹ sức khỏe dồi dào, vạn sự như ý. Mẹ là người con yêu thương nhất trên đời.<br><br>Những bữa cơm Mẹ nấu, những đêm Mẹ thức chăm con ốm... tất cả đều là tình yêu vô bờ. Chúc Mẹ năm mới tràn ngập niềm vui!`
+            ],
+            closing: "Kính chúc Mẹ"
+        },
+        "bo-me": {
+            greeting: "Kính gửi Bố Mẹ,",
+            recipient: "Gửi Bố Mẹ",
+            content: [
+                `Gửi Bố Mẹ yêu quý,<br><br>Xuân về với muôn vàn niềm vui, con xin chúc Bố Mẹ sức khỏe, hạnh phúc, gia đình luôn ấm no. Bố Mẹ là tất cả của con, là mái nhà bình yên nhất.<br><br>Con biết Bố Mẹ đã hi sinh rất nhiều để nuôi con khôn lớn. Tình thương của Bố Mẹ là món quà vô giá. Năm mới, con chúc Bố Mẹ luôn khỏe mạnh, sum vầy hạnh phúc.`,
+                `Kính thưa Bố Mẹ,<br><br>Tết đến xuân về, con xin gửi đến Bố Mẹ lời chúc tốt đẹp nhất. Chúc Bố Mẹ năm mới an khang thịnh vượng, phát tài phát lộc.<br><br>Con sẽ cố gắng học tập, làm việc thật tốt để đền đáp công ơn sinh thành của Bố Mẹ. Chúc gia đình luôn hạnh phúc!`
+            ],
+            closing: "Kính chúc Bố Mẹ"
+        },
+        "con-trai": {
+            greeting: "Gửi con trai yêu quý,",
+            recipient: "Gửi con trai",
+            content: [
+                `Con trai của Bố/Mẹ,<br><br>Xuân về đầy ắp niềm vui, Bố/Mẹ chúc con khỏe mạnh, học hành giỏi giang, trở thành người con ngoan, người em tốt. Con là niềm tự hào của gia đình.<br><br>Mong con luôn giữ được bản lĩnh, sống thật tốt. Năm mới này, Bố/Mẹ chúc con thành công, hạnh phúc, gặp nhiều may mắn.`,
+                `Gửi con yêu,<br><br>Tết đến rồi! Bố/Mẹ chúc con năm mới tràn đầy niềm vui, sức khỏe, học tập tiến bộ. Con là niềm hy vọng, là tương lai của gia đình.<br><br>Hãy luôn giữ cho mình tinh thần lạc quan, trái tim nhân hậu. Bố/Mẹ tin con sẽ làm được những điều tuyệt vời!`
+            ],
+            closing: "Yêu con"
+        },
+        "con-gai": {
+            greeting: "Gửi con gái yêu quý,",
+            recipient: "Gửi con gái",
+            content: [
+                `Con gái của Bố/Mẹ,<br><br>Xuân sang hoa nở rực rỡ, Bố/Mẹ chúc con luôn xinh đẹp, tươi tắn như hoa. Con là công chúa nhỏ của gia đình, là niềm vui mỗi ngày của Bố/Mẹ.<br><br>Mong con luôn vui vẻ, tự tin, và thành công trong mọi việc. Năm mới này, chúc con gặp nhiều điều tốt lành, luôn được yêu thương.`,
+                `Gửi công chúa nhỏ,<br><br>Tết đến xuân về, Bố/Mẹ chúc con năm mới an khang, học hành tấn tới, ngày càng khôn lớn. Con là ánh sáng trong cuộc đời Bố/Mẹ.<br><br>Hãy luôn giữ cho mình nụ cười tươi, trái tim ấm áp. Bố/Mẹ yêu con vô cùng!`
+            ],
+            closing: "Yêu con"
+        },
+        "cac-con": {
+            greeting: "Gửi các con yêu quý,",
+            recipient: "Gửi các con",
+            content: [
+                `Gửi những đứa con ngoan,<br><br>Xuân về với muôn màu sắc tươi vui, Bố/Mẹ chúc các con luôn khỏe mạnh, vui vẻ, học hành chăm ngoan. Các con là niềm tự hào và hạnh phúc lớn nhất của Bố/Mẹ.<br><br>Mong các con luôn yêu thương, giúp đỡ lẫn nhau. Năm mới này, chúc cả nhà luôn sum vầy, ấm áp, tràn đầy tiếng cười.`,
+                `Gửi các con yêu,<br><br>Tết đến rồi! Bố/Mẹ chúc các con năm mới an khang, thành công rực rỡ. Mỗi đứa con đều là món quà quý giá của cuộc đời Bố/Mẹ.<br><br>Hãy luôn giữ cho mình tinh thần lạc quan, trái tim nhân ái. Gia đình luôn là nơi bình yên nhất!`
+            ],
+            closing: "Thương yêu các con"
+        },
+        anh: {
+            greeting: "Gửi anh,",
+            recipient: "Gửi anh",
+            content: [
+                `Gửi anh trai thân yêu,<br><br>Xuân về tươi đẹp, em xin chúc anh sức khỏe, công việc thuận lợi, thành công vượt bậc. Anh là người anh tốt mà em luôn tự hào.<br><br>Những kỷ niệm tuổi thơ bên anh là kho báu của em. Chúc anh năm mới gặp nhiều may mắn, gia đình luôn hạnh phúc.`,
+                `Gửi anh,<br><br>Tết đến xuân về, em chúc anh vạn sự như ý, phát tài phát lộc. Anh luôn là tấm gương để em noi theo.<br><br>Mong anh luôn khỏe mạnh, vui vẻ. Chúc anh năm mới nhiều niềm vui!`
+            ],
+            closing: "Thân mến"
+        },
+        chi: {
+            greeting: "Gửi chị,",
+            recipient: "Gửi chị",
+            content: [
+                `Gửi chị gái yêu quý,<br><br>Xuân sang muôn hoa khoe sắc, em xin chúc chị luôn xinh đẹp, tràn đầy sức khỏe và niềm vui. Chị là người chị tuyệt vời mà em luôn yêu mến.<br><br>Cảm ơn chị đã luôn quan tâm, chăm sóc em. Chúc chị năm mới thật nhiều hạnh phúc, thành công rực rỡ.`,
+                `Gửi chị,<br><br>Tết đến rồi! Em chúc chị năm mới an khang, vạn sự như ý. Chị luôn là người em tin tưởng nhất.<br><br>Mong chị luôn vui vẻ, gặp nhiều điều tốt lành. Yêu chị nhiều!`
+            ],
+            closing: "Thân mến"
+        },
+        "em-trai": {
+            greeting: "Gửi em trai,",
+            recipient: "Gửi em trai",
+            content: [
+                `Gửi em trai thân yêu,<br><br>Xuân về đầy ắp niềm vui, anh/chị chúc em khỏe mạnh, học hành giỏi giang, trở thành người em ngoan. Em là niềm vui của gia đình.<br><br>Hãy luôn cố gắng, giữ vững tinh thần lạc quan. Năm mới này, chúc em thành công, gặp nhiều may mắn.`,
+                `Gửi em,<br><br>Tết đến xuân về, anh/chị chúc em năm mới vạn sự như ý, học tập tiến bộ. Em là người em tuyệt vời!<br><br>Mong em luôn vui vẻ, tự tin. Anh/chị luôn ở bên em!`
+            ],
+            closing: "Thương em"
+        },
+        "em-gai": {
+            greeting: "Gửi em gái,",
+            recipient: "Gửi em gái",
+            content: [
+                `Gửi em gái yêu quý,<br><br>Xuân sang hoa nở rực rỡ, anh/chị chúc em luôn xinh đẹp, tươi tắn như hoa. Em là công chúa nhỏ của gia đình.<br><br>Hãy luôn giữ cho mình nụ cười tươi, trái tim ấm áp. Năm mới này, chúc em thật nhiều niềm vui và thành công.`,
+                `Gửi em yêu,<br><br>Tết đến rồi! Anh/chị chúc em năm mới an khang, học hành tiến bộ. Em là niềm tự hào của anh/chị.<br><br>Mong em luôn vui vẻ, gặp nhiều điều tốt lành. Yêu em nhiều lắm!`
+            ],
+            closing: "Thương em"
+        },
+        co: {
+            greeting: "Kính gửi Cô,",
+            recipient: "Gửi Cô",
+            content: [
+                `Kính thưa Cô,<br><br>Xuân về tươi đẹp, cháu xin chúc Cô sức khỏe, gia đình hạnh phúc, công việc thuận lợi. Tình cảm của Cô dành cho cháu thật ấm áp.<br><br>Cháu luôn biết ơn sự quan tâm của Cô. Chúc Cô năm mới gặp nhiều may mắn, vạn sự như ý.`,
+                `Gửi Cô,<br><br>Tết đến xuân về, cháu chúc Cô năm mới an khang, xinh đẹp, tràn đầy niềm vui. Cô là người cháu luôn kính trọng.<br><br>Mong Cô luôn khỏe mạnh, hạnh phúc bên gia đình!`
+            ],
+            closing: "Kính chúc Cô"
+        },
+        di: {
+            greeting: "Kính gửi Dì,",
+            recipient: "Gửi Dì",
+            content: [
+                `Kính thưa Dì,<br><br>Xuân sang muôn hoa khoe sắc, cháu xin chúc Dì luôn xinh đẹp, sức khỏe, gia đình hạnh phúc. Dì luôn là người thân yêu của cháu.<br><br>Cảm ơn Dì đã luôn quan tâm, chăm sóc cháu. Chúc Dì năm mới nhiều niềm vui, thành công rực rỡ.`,
+                `Gửi Dì,<br><br>Tết đến rồi! Cháu chúc Dì năm mới vạn sự như ý, phát tài phát lộc. Dì là người cháu luôn yêu mến.<br><br>Mong Dì luôn vui vẻ, gặp nhiều điều tốt lành!`
+            ],
+            closing: "Kính chúc Dì"
+        },
+        chu: {
+            greeting: "Kính gửi Chú,",
+            recipient: "Gửi Chú",
+            content: [
+                `Kính thưa Chú,<br><br>Xuân về đầy ắp hy vọng, cháu xin chúc Chú sức khỏe, công việc thăng tiến, gia đình hạnh phúc. Chú là người cháu luôn kính trọng.<br><br>Cháu biết ơn những lời dạy bảo của Chú. Chúc Chú năm mới gặp nhiều may mắn, phát tài phát lộc.`,
+                `Gửi Chú,<br><br>Tết đến xuân về, cháu chúc Chú năm mới vạn sự như ý, thành công rực rỡ. Chú luôn là tấm gương cho cháu noi theo.<br><br>Mong Chú luôn khỏe mạnh, vui vẻ bên gia đình!`
+            ],
+            closing: "Kính chúc Chú"
+        },
+        bac: {
+            greeting: "Kính gửi Bác,",
+            recipient: "Gửi Bác",
+            content: [
+                `Kính thưa Bác,<br><br>Xuân sang tươi đẹp, cháu xin chúc Bác sức khỏe dồi dào, gia đình hạnh phúc, công việc thuận buồm xuôi gió. Bác là người cháu luôn kính mến.<br><br>Cảm ơn Bác đã luôn quan tâm đến cháu. Chúc Bác năm mới nhiều niềm vui, vạn sự như ý.`,
+                `Gửi Bác,<br><br>Tết đến rồi! Cháu chúc Bác năm mới an khang thịnh vượng, phát tài phát lộc. Bác luôn là người cháu tôn trọng.<br><br>Mong Bác luôn vui vẻ, khỏe mạnh!`
+            ],
+            closing: "Kính chúc Bác"
+        },
+        "ban-nam": {
+            greeting: "Gửi bạn,",
+            recipient: "Gửi bạn",
+            content: [
+                `Gửi bạn thân,<br><br>Xuân về rồi! Mình chúc bạn năm mới sức khỏe, thành công trong công việc, gặp nhiều may mắn. Tình bạn của chúng mình là món quà quý giá.<br><br>Cảm ơn bạn đã luôn bên cạnh, chia sẻ mọi lúc. Chúc bạn năm mới thật nhiều niềm vui, hạnh phúc.`,
+                `Gửi bạn,<br><br>Tết đến xuân về, mình chúc bạn vạn sự như ý, công danh thăng tiến. Bạn là người bạn tốt nhất của mình.<br><br>Mong chúng mình luôn là bạn tốt, cùng nhau vượt qua mọi thử thách!`
+            ],
+            closing: "Thân mến"
+        },
+        "ban-nu": {
+            greeting: "Gửi bạn,",
+            recipient: "Gửi bạn",
+            content: [
+                `Gửi bạn thân yêu,<br><br>Xuân sang hoa nở khắp nơi, mình chúc bạn luôn xinh đẹp, tràn đầy niềm vui và may mắn. Bạn là người bạn tuyệt vời nhất.<br><br>Cảm ơn bạn đã luôn lắng nghe, chia sẻ. Chúc bạn năm mới thật nhiều hạnh phúc, thành công rực rỡ.`,
+                `Gửi bạn yêu,<br><br>Tết đến rồi! Mình chúc bạn năm mới an khang, vạn sự như ý. Tình bạn của chúng mình là điều quý giá nhất.<br><br>Mong bạn luôn vui vẻ, gặp nhiều điều tốt lành!`
+            ],
+            closing: "Thân mến"
+        },
+        "ban-be": {
+            greeting: "Gửi các bạn,",
+            recipient: "Gửi các bạn",
+            content: [
+                `Gửi hội bạn thân,<br><br>Xuân về đầy ắp niềm vui, mình chúc tất cả năm mới sức khỏe, thành công, gặp nhiều may mắn. Những kỷ niệm bên nhau là kho báu của chúng mình.<br><br>Cảm ơn các bạn đã luôn ở bên, chia sẻ mọi lúc. Chúc chúng mình luôn là bạn tốt, cùng nhau vượt qua mọi thử thách.`,
+                `Gửi các bạn,<br><br>Tết đến xuân về, mình chúc tất cả vạn sự như ý, hạnh phúc viên mãn. Tình bạn của chúng mình là điều quý giá.<br><br>Mong chúng mình luôn vui vẻ, cùng nhau tạo thêm nhiều kỷ niệm đẹp!`
+            ],
+            closing: "Thân mến"
+        },
+        "dong-nghiep-nam": {
+            greeting: "Gửi đồng nghiệp,",
+            recipient: "Gửi đồng nghiệp",
+            content: [
+                `Gửi đồng nghiệp thân mến,<br><br>Xuân về với muôn vàn niềm vui, tôi xin chúc anh/bạn sức khỏe, công việc thăng tiến, gặp nhiều thành công. Được làm việc cùng là niềm vui lớn.<br><br>Mong năm mới chúng ta sẽ tiếp tục hợp tác tốt đẹp, cùng nhau đạt được nhiều mục tiêu. Chúc anh/bạn gia đình hạnh phúc, phát tài phát lộc.`,
+                `Gửi đồng nghiệp,<br><br>Tết đến xuân về, tôi chúc anh/bạn năm mới vạn sự như ý, sự nghiệp thăng hoa. Anh/bạn là đồng nghiệp tuyệt vời.<br><br>Chúc team luôn đoàn kết, thành công!`
+            ],
+            closing: "Trân trọng"
+        },
+        "dong-nghiep-nu": {
+            greeting: "Gửi đồng nghiệp,",
+            recipient: "Gửi đồng nghiệp",
+            content: [
+                `Gửi đồng nghiệp thân mến,<br><br>Xuân sang hoa nở khắp nơi, tôi xin chúc chị/bạn luôn xinh đẹp, sức khỏe, công việc thuận lợi. Được làm việc cùng là niềm vui.<br><br>Mong năm mới chúng ta sẽ tiếp tục hợp tác hiệu quả, cùng nhau đạt được nhiều thành công. Chúc chị/bạn gia đình hạnh phúc, vạn sự như ý.`,
+                `Gửi đồng nghiệp,<br><br>Tết đến rồi! Tôi chúc chị/bạn năm mới an khang, sự nghiệp thăng hoa. Chị/bạn là người đồng nghiệp tuyệt vời.<br><br>Chúc team luôn thành công!`
+            ],
+            closing: "Trân trọng"
+        },
+        "dong-nghiep": {
+            greeting: "Gửi đồng nghiệp,",
+            recipient: "Gửi đồng nghiệp",
+            content: [
+                `Gửi đồng nghiệp thân mến,<br><br>Xuân về tươi đẹp, tôi xin chúc tất cả sức khỏe dồi dào, công việc thuận lợi, gia đình hạnh phúc. Được làm việc cùng nhau là niềm vui lớn.<br><br>Mong năm mới chúng ta sẽ tiếp tục đoàn kết, hợp tác hiệu quả, cùng nhau đạt được nhiều thành tựu. Chúc team luôn thành công, phát triển.`,
+                `Gửi các đồng nghiệp,<br><br>Tết đến xuân về, tôi chúc mọi người năm mới vạn sự như ý, thăng tiến trong sự nghiệp. Chúng ta là một team tuyệt vời.<br><br>Chúc tất cả luôn vui vẻ, thành công!`
+            ],
+            closing: "Trân trọng"
+        },
+        "ban-trai": {
+            greeting: "Gửi anh yêu,",
+            recipient: "Gửi anh yêu",
+            content: [
+                `Gửi người yêu dấu,<br><br>Xuân về với muôn vàn niềm vui, em xin chúc anh sức khỏe, công việc thành công, luôn tràn đầy năng lượng. Anh là ánh sáng trong cuộc đời em.<br><br>Cảm ơn anh đã luôn bên cạnh, yêu thương em. Năm mới này, em chúc chúng ta sẽ có thêm nhiều kỷ niệm đẹp, cùng nhau vượt qua mọi thử thách. Em yêu anh rất nhiều.`,
+                `Gửi anh,<br><br>Tết đến rồi! Em chúc anh năm mới an khang, vạn sự như ý. Anh là tất cả của em.<br><br>Mong chúng ta luôn bên nhau, yêu thương mãi mãi. Em yêu anh!`
+            ],
+            closing: "Yêu anh"
+        },
+        "ban-gai": {
+            greeting: "Gửi em yêu,",
+            recipient: "Gửi em yêu",
+            content: [
+                `Gửi người yêu dấu,<br><br>Xuân sang hoa nở rực rỡ, anh xin chúc em luôn xinh đẹp, tươi tắn, tràn đầy niềm vui. Em là ánh sáng trong cuộc đời anh.<br><br>Cảm ơn em đã luôn ở bên, yêu thương anh. Năm mới này, anh chúc chúng ta sẽ có thêm nhiều kỷ niệm ngọt ngào, cùng nhau vượt qua mọi khó khăn. Anh yêu em rất nhiều.`,
+                `Gửi em,<br><br>Tết đến xuân về, anh chúc em năm mới an khang, xinh đẹp. Em là tất cả của anh.<br><br>Mong chúng ta luôn bên nhau, hạnh phúc mãi mãi. Anh yêu em!`
+            ],
+            closing: "Yêu em"
+        },
+        "vo-chong": {
+            greeting: "Gửi vợ/chồng yêu,",
+            recipient: "Gửi vợ/chồng yêu",
+            content: [
+                `Gửi người bạn đời thân yêu,<br><br>Xuân về với muôn vàn niềm vui, anh/em xin chúc em/anh sức khỏe, hạnh phúc, gia đình luôn ấm no. Em/anh là tất cả của anh/em, là nửa còn lại của cuộc đời.<br><br>Cảm ơn em/anh đã luôn ở bên, cùng anh/em vượt qua mọi thăng trầm. Năm mới này, chúc chúng ta luôn yêu thương, gia đình sum vầy, hạnh phúc.`,
+                `Gửi người yêu thương nhất,<br><br>Tết đến rồi! Anh/em chúc em/anh năm mới vạn sự như ý, gia đình luôn hạnh phúc. Em/anh là món quà quý giá nhất.<br><br>Mong chúng ta luôn bên nhau, yêu thương mãi mãi!`
+            ],
+            closing: "Yêu em/anh"
+        }
+    };
 
     // Money Messages
     const moneyMessages = [
@@ -75,54 +367,12 @@ document.addEventListener("DOMContentLoaded", function () {
         "Tiền vào như nước, tài lộc đầy nhà!"
     ];
 
-    // Letter closings
-    const letterClosings = {
-        grandparents: "Kính chúc Ông Bà",
-        parents: "Kính chúc Bố Mẹ",
-        children: "Thương yêu",
-        siblings: "Thân ái",
-        aunt_uncle: "Kính chúc",
-        friends: "Thân mến",
-        colleagues: "Trân trọng",
-        lovers: "Yêu thương"
-    };
-
-    // Letter Templates
-    const letterTemplates = {
-        grandparents: [
-            `Xuân mới lại về, mang theo bao niềm vui và hy vọng. Nhân dịp năm mới, cháu xin gửi đến Ông Bà lời chúc sức khỏe, an khang và thịnh vượng.<br><br>Chúc Ông Bà luôn dồi dào sức khỏe, tinh thần minh mẫn, và tràn đầy niềm vui trong cuộc sống. Mong rằng năm mới sẽ mang đến nhiều may mắn, thành công và hạnh phúc cho Ông Bà.<br><br>Dù không gian có cách trở nhưng tấm lòng và tình cảm luôn hướng về Ông Bà.`,
-            `Kính gửi Ông Bà,<br><br>Xuân về mang theo niềm vui mới, cháu xin gửi lời chúc đến Ông Bà. Chúc Ông Bà năm mới sức khỏe dồi dào, tuổi thọ như đá Sơn Tinh, phúc như Đông Hải.<br><br>Mong Ông Bà luôn vui vẻ, an lạc bên con cháu. Cháu biết rằng sự bình an của Ông Bà chính là hạnh phúc lớn nhất của gia đình.<br><br>Kính chúc Ông Bà một năm thật nhiều niềm vui!`,
-            `Thưa Ông Bà,<br><br>Tết đến xuân về, cháu xin kính chúc Ông Bà vạn sự như ý. Mong Ông Bà luôn mạnh khỏe, sống lâu trăm tuổi để chứng kiến con cháu khôn lớn.<br><br>Những lời dạy của Ông Bà là hành trang quý báu nhất cho cuộc đời cháu. Cháu sẽ cố gắng học tập, rèn luyện để không phụ lòng Ông Bà.<br><br>Năm mới này, cháu chúc gia đình luôn sum vầy, ấm áp!`
-        ],
-        parents: [
-            `Gửi Bố Mẹ yêu quý,<br><br>Xuân mới lại về, con xin gửi đến Bố Mẹ những lời chúc tốt đẹp nhất. Chúc Bố Mẹ năm mới thật nhiều sức khỏe, luôn vui vẻ và hạnh phúc.<br><br>Cảm ơn Bố Mẹ đã luôn yêu thương, chăm sóc và dạy dỗ con nên người. Mỗi dịp Tết đến, con lại nhớ về những kỷ niệm đẹp bên gia đình.<br><br>Con hứa sẽ cố gắng học tập và làm việc thật tốt để không phụ lòng Bố Mẹ.`,
-            `Kính gửi Bố Mẹ,<br><br>Năm mới đến, con xin chúc Bố Mẹ sức khỏe dồi dào, công việc thuận lợi, tài lộc đầy nhà. Bố Mẹ là điểm tựa vững chắc nhất của con.<br><br>Con biết Bố Mẹ đã vất vả nuôi con khôn lớn. Mỗi sợi tóc bạc của Bố Mẹ là tình yêu thương dành cho con. Con sẽ cố gắng để Bố Mẹ tự hào.<br><br>Chúc Bố Mẹ năm mới an khang, hạnh phúc bên con cháu!`
-        ],
-        children: [
-            `Gửi các con yêu quý,<br><br>Năm mới đến, ba/mẹ gửi đến các con lời chúc tốt đẹp nhất. Chúc các con luôn khỏe mạnh, vui vẻ và học hành chăm ngoan.<br><br>Ba/mẹ rất tự hào về các con, những đứa trẻ ngoan ngoãn và hiếu thảo. Mong rằng năm mới sẽ mang đến cho các con thật nhiều niềm vui và kỷ niệm đẹp.<br><br>Hãy luôn giữ cho mình trái tim ấm áp và tinh thần lạc quan.`
-        ],
-        siblings: [
-            `Gửi anh/chị/em thân yêu,<br><br>Xuân về với muôn vàn niềm vui, anh/chị/em gửi lời chúc năm mới an khang, thịnh vượng. Chúc mình luôn khỏe mạnh, thành công trong công việc.<br><br>Những kỷ niệm tuổi thơ bên nhau là kho báu quý giá. Dù cuộc sống có bận rộn, tình anh em mãi trong tim.<br><br>Chúc năm mới này đem đến nhiều điều tốt đẹp cho gia đình mình!`
-        ],
-        friends: [
-            `Gửi bạn thân yêu,<br><br>Năm mới đến rồi! Chúc bạn một năm tràn đầy sức khỏe, thành công và hạnh phúc. Tình bạn của chúng ta là món quà quý giá mà mình trân trọng.<br><br>Cảm ơn bạn đã luôn bên cạnh, chia sẻ trong những lúc vui buồn. Mong năm mới sẽ có thêm nhiều kỷ niệm đẹp cho đôi ta.<br><br>Chúc bạn luôn vui vẻ và may mắn!`
-        ],
-        colleagues: [
-            `Gửi đồng nghiệp thân mến,<br><br>Nhân dịp năm mới, xin chúc anh/chị/bạn sức khỏe dồi dào, công việc thăng tiến, gia đình hạnh phúc. Được làm việc cùng là niềm vui lớn.<br><br>Mong rằng năm mới, chúng ta sẽ tiếp tục hợp tác tốt đẹp, cùng nhau đạt được nhiều thành công. Chúc cả team luôn đoàn kết!<br><br>Chúc mừng năm mới!`
-        ],
-        aunt_uncle: [
-            `Kính gửi Cô/Dì/Chú/Bác,<br><br>Xuân về, cháu xin kính chúc Cô/Dì/Chú/Bác sức khỏe dồi dào, gia đình hạnh phúc, công việc thuận lợi. Tình cảm của Cô/Dì/Chú/Bác dành cho cháu thật ấm áp.<br><br>Mong năm mới mang đến nhiều niềm vui, thành công cho gia đình Cô/Dì/Chú/Bác. Cháu luôn biết ơn sự quan tâm của Cô/Dì/Chú/Bác.<br><br>Kính chúc một năm mới an khang!`
-        ],
-        lovers: [
-            `Gửi người yêu dấu,<br><br>Xuân về, anh/em xin gửi đến em/anh lời chúc ngọt ngào nhất. Chúc chúng ta một năm mới tràn đầy hạnh phúc, tình yêu thắm thiết.<br><br>Em/anh là ánh sáng trong cuộc đời anh/em. Mong rằng năm mới, chúng ta sẽ có thêm nhiều kỷ niệm đẹp, cùng nhau vượt qua mọi thử thách.<br><br>Anh/em yêu em/anh rất nhiều!`
-        ]
-    };
-
     // Update Step Indicator
     function updateStepIndicator(currentStep) {
         if (step1Dot) step1Dot.classList.remove("completed", "active");
         if (step2Dot) step2Dot.classList.remove("completed", "active");
         if (step3Dot) step3Dot.classList.remove("completed", "active");
+        if (step4Dot) step4Dot.classList.remove("completed", "active");
 
         if (currentStep === 1 && step1Dot) {
             step1Dot.classList.add("active");
@@ -133,6 +383,11 @@ document.addEventListener("DOMContentLoaded", function () {
             if (step1Dot) step1Dot.classList.add("completed");
             if (step2Dot) step2Dot.classList.add("completed");
             if (step3Dot) step3Dot.classList.add("active");
+        } else if (currentStep === 4) {
+            if (step1Dot) step1Dot.classList.add("completed");
+            if (step2Dot) step2Dot.classList.add("completed");
+            if (step3Dot) step3Dot.classList.add("completed");
+            if (step4Dot) step4Dot.classList.add("active");
         }
     }
 
@@ -151,7 +406,6 @@ document.addEventListener("DOMContentLoaded", function () {
           <i class="${relationship.icon}"></i>
         </div>
         <div class="text-lg font-bold text-white mb-1">${relationship.name}</div>
-        <div class="text-amber-200 text-sm">${relationship.formal}</div>
       `;
 
             card.addEventListener("click", function () {
@@ -166,6 +420,56 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add("selected");
 
                 updateStepIndicator(2);
+                if (scrollToSpecific) scrollToSpecific.classList.remove("hidden");
+
+                setTimeout(() => {
+                    initSpecificSelection();
+                    if (specificSelection) specificSelection.classList.remove("hidden");
+                    if (specificSelection) specificSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+
+                    setTimeout(() => {
+                        if (scrollToSpecific) scrollToSpecific.classList.add("hidden");
+                    }, 1000);
+                }, 300);
+            });
+
+            relationshipGrid.appendChild(card);
+        });
+
+        updateStepIndicator(1);
+    }
+
+    // Initialize Specific Selection
+    function initSpecificSelection() {
+        if (!specificGrid) return;
+        specificGrid.innerHTML = "";
+
+        const options = specificOptions[selectedRelationshipId] || [];
+
+        options.forEach((option) => {
+            const card = document.createElement("div");
+            card.className = "selection-card rounded-xl p-4 text-center cursor-pointer h-full";
+            card.dataset.specific = option.id;
+
+            card.innerHTML = `
+        <div class="text-3xl text-amber-300 mb-3">
+          <i class="${option.icon}"></i>
+        </div>
+        <div class="text-lg font-bold text-white mb-1">${option.name}</div>
+      `;
+
+            card.addEventListener("click", function () {
+                if (selectedSpecific === this) return;
+
+                document.querySelectorAll("#specific-selection .selection-card").forEach((c) => {
+                    c.classList.remove("selected");
+                });
+
+                selectedSpecific = this;
+                selectedSpecificId = option.id;
+                this.classList.add("selected");
+
+                updateStepIndicator(3);
                 if (scrollToAge) scrollToAge.classList.remove("hidden");
 
                 setTimeout(() => {
@@ -179,10 +483,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 }, 300);
             });
 
-            relationshipGrid.appendChild(card);
+            specificGrid.appendChild(card);
         });
-
-        updateStepIndicator(1);
     }
 
     // Initialize Age Selection
@@ -214,7 +516,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedAgeId = age.id;
                 this.classList.add("selected");
 
-                updateStepIndicator(3);
+                updateStepIndicator(4);
                 if (scrollToHongbao) scrollToHongbao.classList.remove("hidden");
 
                 setTimeout(() => {
@@ -336,15 +638,15 @@ document.addEventListener("DOMContentLoaded", function () {
             year: "numeric"
         });
 
-        const relationship = relationships.find((r) => r.id === selectedRelationshipId);
-        const templates = letterTemplates[selectedRelationshipId] || letterTemplates.friends;
-        const content = templates[Math.floor(Math.random() * templates.length)];
+        const template = letterTemplates[selectedSpecificId] || letterTemplates["ban-be"];
+        const content = template.content[Math.floor(Math.random() * template.content.length)];
 
         return {
             date: `Ngày ${dateStr}`,
-            greeting: `${relationship.formal},`,
+            recipient: template.recipient,
+            greeting: template.greeting,
             content: content,
-            closing: letterClosings[selectedRelationshipId]
+            closing: template.closing
         };
     }
 
@@ -376,7 +678,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (diceSection) diceSection.classList.add("hidden");
         if (letterScratchSection) letterScratchSection.classList.remove("hidden");
 
+        if (letterRecipient) letterRecipient.textContent = letter.recipient;
         if (letterDate) letterDate.textContent = letter.date;
+        if (letterGreeting) letterGreeting.textContent = letter.greeting;
         if (letterContent) letterContent.innerHTML = letter.content;
         if (letterClosing) letterClosing.textContent = letter.closing;
 
@@ -609,11 +913,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (hongbaoSelection) hongbaoSelection.classList.add("hidden");
         if (ageSelection) ageSelection.classList.add("hidden");
+        if (specificSelection) specificSelection.classList.add("hidden");
         if (relationshipSelection) relationshipSelection.classList.remove("hidden");
 
         if (selectedRelationship) {
             selectedRelationship.classList.remove("selected");
             selectedRelationship = null;
+        }
+        if (selectedSpecific) {
+            selectedSpecific.classList.remove("selected");
+            selectedSpecific = null;
         }
         if (selectedAge) {
             selectedAge.classList.remove("selected");
