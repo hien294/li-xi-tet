@@ -30,6 +30,307 @@ body {
     scroll-behavior: smooth;
 }
 
+/* Lucky Wheel Button Animation */
+.lucky-wheel-float {
+    animation: floatWheel 3s ease-in-out infinite;
+}
+
+@keyframes floatWheel {
+
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+
+    50% {
+        transform: translateY(-10px) rotate(5deg);
+    }
+}
+
+.wheel-icon-spin {
+    animation: spinIcon 4s linear infinite;
+}
+
+.lucky-wheel-float:hover .wheel-icon-spin {
+    animation: spinIcon 1s linear infinite;
+}
+
+@keyframes spinIcon {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Lucky Wheel Canvas */
+#wheel-canvas {
+    cursor: pointer;
+    filter: drop-shadow(0 15px 40px rgba(212, 175, 55, 0.6));
+    transition: all 0.3s ease;
+}
+
+#wheel-canvas:hover {
+    filter: drop-shadow(0 20px 50px rgba(212, 175, 55, 0.8));
+}
+
+#wheel-canvas.spinning {
+    pointer-events: none;
+    cursor: wait;
+}
+
+/* Compact Result Card */
+.result-card {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.15), rgba(239, 68, 68, 0.15));
+    border: 2px solid #fbbf24;
+    border-radius: 1rem;
+    padding: 1rem;
+    backdrop-filter: blur(10px);
+    animation: slideInUp 0.4s ease-out;
+}
+
+.result-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.result-icon {
+    font-size: 3rem;
+    animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.result-text {
+    flex: 1;
+    text-align: left;
+}
+
+.result-prize {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #fbbf24;
+    line-height: 1.2;
+    text-shadow: 0 2px 10px rgba(251, 191, 36, 0.5);
+}
+
+.result-message {
+    font-size: 0.875rem;
+    color: #fcd34d;
+    margin-top: 0.25rem;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+
+    50% {
+        transform: scale(1.05);
+    }
+
+    70% {
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.wheel-container {
+    position: relative;
+    display: inline-block;
+}
+
+.wheel-pointer {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+.pointer-triangle {
+    width: 0;
+    height: 0;
+    border-left: 20px solid transparent;
+    border-right: 20px solid transparent;
+    border-top: 40px solid #ef4444;
+    filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+    animation: pointerBounce 2s ease-in-out infinite;
+}
+
+@keyframes pointerBounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+.wheel-center-button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    border-radius: 50%;
+    border: 4px solid white;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4), inset 0 2px 10px rgba(255, 255, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 20;
+}
+
+.wheel-center-button:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 12px 30px rgba(251, 191, 36, 0.6), inset 0 2px 10px rgba(255, 255, 255, 0.5);
+}
+
+.wheel-center-button i {
+    font-size: 28px;
+    color: #7f1d1d;
+    margin-left: 4px;
+}
+
+.wheel-center-button:active {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+/* Name Modal Animations */
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOutLeft {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(-100px);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+@keyframes bounce-slow {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.animate-slideInLeft {
+    animation: slideInLeft 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-slideOutLeft {
+    animation: slideOutLeft 0.3s ease-out forwards;
+}
+
+.animate-scaleIn {
+    animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-fadeIn {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.animate-bounce-slow {
+    animation: bounce-slow 3s ease-in-out infinite;
+}
+
+/* Improved wheel result */
+#wheel-result {
+    animation: fadeIn 0.5s ease-out;
+}
+
+#wheel-result .animate-bounce {
+    animation: bounce 1s ease-in-out 3;
+}
+
+/* Mobile responsiveness for name modal */
+@media (max-width: 768px) {
+    #name-modal {
+        bottom: 1rem;
+        left: 1rem;
+        right: 1rem;
+        max-width: calc(100% - 2rem);
+        width: auto;
+    }
+}
+
 /* Hongbao Card Styles */
 .hongbao-card {
     background: linear-gradient(135deg, #b22222 0%, #8b0000 100%);
@@ -231,7 +532,7 @@ body {
     display: none;
 }
 
-/* Scratch Card - FIXED TO WORK PROPERLY */
+/* Scratch Card */
 .scratch-card-container {
     position: relative;
     overflow: hidden;
@@ -444,7 +745,7 @@ body {
     background: #b22222;
 }
 
-/* Letter Content Styling - Elegant Handwriting Style */
+/* Letter Content Styling */
 .letter-content-styled {
     font-family: "Noto Serif", serif;
     color: #5c3a3a;
@@ -475,23 +776,4 @@ body {
 .letter-content-styled i {
     font-style: italic;
     color: #6b5b4a;
-}
-
-/* Button Show Animation */
-#play-again-btn.show-button {
-    opacity: 1 !important;
-    pointer-events: auto !important;
-    animation: buttonSlideIn 0.5s ease-out;
-}
-
-@keyframes buttonSlideIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
 }
