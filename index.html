@@ -14,11 +14,11 @@
 </head>
 
 <body class="text-white">
-  <!-- Lucky Wheel Button (Fixed Position) -->
+  <!-- Lucky Wheel Button -->
   <button id="open-wheel-btn"
     class="lucky-wheel-float fixed top-20 right-4 md:right-8 z-50 w-16 h-16 md:w-20 md:h-20 bg-gradient-to-br from-amber-500 via-amber-600 to-red-600 hover:from-amber-400 hover:via-amber-500 hover:to-red-500 text-white font-bold rounded-full shadow-2xl transition-all duration-300 hover:scale-110 border-4 border-amber-300 flex items-center justify-center group">
     <div class="wheel-icon-spin">
-      <svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <svg class="w-10 h-10 md:w-12 md:h-12" viewBox="0 0 100 100" fill="none">
         <circle cx="50" cy="50" r="45" fill="#FCD34D" stroke="#7C2D12" stroke-width="2" />
         <circle cx="50" cy="50" r="35" fill="#F59E0B" stroke="#7C2D12" stroke-width="2" />
         <path d="M50 15 L50 50 L85 50" fill="#DC2626" opacity="0.8" />
@@ -35,6 +35,30 @@
     </div>
   </button>
 
+  <!-- Lucky Wheel Overlay -->
+  <div id="wheel-overlay" class="fixed inset-0 bg-black/85 z-[999] hidden items-center justify-center"
+    style="backdrop-filter: blur(8px)">
+    <div class="wheel-display-container relative">
+      <canvas id="wheel-canvas" width="450" height="450" class="wheel-canvas-direct"></canvas>
+      <div class="wheel-pointer-right">
+        <div class="pointer-triangle-right" id="pointer-triangle"></div>
+      </div>
+      <button id="spin-btn-center" class="wheel-center-button-new">
+        <i class="fas fa-play"></i>
+      </button>
+      <div id="wheel-result-display" class="wheel-result-badge hidden">
+        <div class="result-text-large">
+          <div class="result-prize-large font-dancing" id="wheel-prize-display">
+            100.000₫
+          </div>
+          <div class="result-message-large" id="wheel-message-display">
+            Chúc mừng!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="container mx-auto px-4 py-6">
     <header class="text-center mb-10">
       <div class="flex flex-col items-center mb-10 relative">
@@ -45,7 +69,6 @@
           Gửi trao yêu thương · Nhận lộc an khang
         </div>
       </div>
-
       <div class="step-indicator">
         <div class="step-dot active" id="step1-dot"></div>
         <div class="step-dot" id="step2-dot"></div>
@@ -54,7 +77,6 @@
       </div>
     </header>
 
-    <!-- Welcome Section (replaces name input section) -->
     <div id="welcome-section" class="max-w-4xl mx-auto mb-12 text-center">
       <div class="bg-gradient-to-br from-red-900/30 to-amber-900/30 rounded-2xl p-8 border border-amber-500/30">
         <h2 class="text-3xl md:text-4xl font-playfair font-bold text-amber-300 mb-4">
@@ -74,9 +96,6 @@
         Người trao đang gửi lộc xuân cho..?
       </h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 mb-8"></div>
-      <div class="scroll-indicator hidden" id="scroll-to-age">
-        <i class="fas fa-chevron-down text-2xl"></i>
-      </div>
     </div>
 
     <div id="age-selection" class="max-w-6xl mx-auto mb-12 section-transition hidden">
@@ -84,9 +103,6 @@
         Lộc xuân này gửi đến người ở độ tuổi nào?
       </h2>
       <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 md:gap-6 mb-8"></div>
-      <div class="scroll-indicator hidden" id="scroll-to-hongbao">
-        <i class="fas fa-chevron-down text-2xl"></i>
-      </div>
     </div>
 
     <div id="hongbao-selection" class="max-w-6xl mx-auto mb-12 section-transition hidden">
@@ -110,7 +126,6 @@
     </footer>
   </div>
 
-  <!-- Result Modal -->
   <div id="result-modal" class="modal-center hidden">
     <div
       class="bg-gradient-to-br from-gray-900 to-black rounded-xl md:rounded-2xl overflow-hidden shadow-2xl border-2 md:border-4 border-amber-500">
@@ -123,9 +138,7 @@
           <i class="fas fa-times"></i>
         </button>
       </div>
-
       <div class="p-4 md:p-6">
-        <!-- Dice Section -->
         <div id="dice-section" class="text-center mb-6">
           <div class="dice-container flex justify-center space-x-4 mb-4">
             <div class="dice rolling" id="dice1">
@@ -370,8 +383,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Letter and Scratch Section -->
         <div id="letter-scratch-section" class="hidden">
           <div class="mb-6">
             <div class="letter-paper rounded-lg p-4 md:p-6 max-h-[70vh] overflow-y-auto">
@@ -383,14 +394,11 @@
                   Gửi đến người thân yêu
                 </div>
               </div>
-
               <div class="space-y-4 font-noto text-gray-800">
                 <div id="letter-date" class="text-right text-sm italic text-gray-600 mb-2"></div>
                 <div id="letter-content" class="letter-content-styled text-base md:text-lg leading-relaxed"></div>
-
                 <div class="signature-box">
                   <div id="letter-closing" class="text-right mb-4 font-dancing text-red-700 text-xl"></div>
-
                   <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                     <div class="order-2 md:order-1">
                       <div class="scratch-card-container h-20 md:h-20">
@@ -404,7 +412,6 @@
                         </div>
                       </div>
                     </div>
-
                     <div class="order-1 md:order-2 text-right">
                       <div class="signature" id="signature-name">
                         Người gửi
@@ -421,79 +428,24 @@
     </div>
   </div>
 
-  <!-- Lucky Wheel Modal -->
-  <div id="wheel-modal" class="modal-center hidden">
-    <div
-      class="bg-gradient-to-br from-gray-900 to-black rounded-2xl overflow-hidden shadow-2xl border-4 border-amber-500 max-w-lg">
-      <div class="bg-gradient-to-r from-amber-600 to-red-700 p-4 md:p-5 text-center relative">
-        <h2 class="text-xl md:text-2xl font-playfair font-bold text-white">
-          🎁 VÒNG QUAY MAY MẮN 🎁
-        </h2>
-        <p class="text-amber-100 text-xs mt-1">
-          Nhấn vào vòng quay để bắt đầu
-        </p>
-        <button id="close-wheel-modal"
-          class="absolute top-3 right-3 text-white hover:text-amber-300 text-xl transition-colors">
-          <i class="fas fa-times"></i>
-        </button>
-      </div>
-
-      <div class="p-4 md:p-6">
-        <div class="relative wheel-container mx-auto" style="max-width: 380px">
-          <canvas id="wheel-canvas" width="380" height="380"
-            class="mx-auto cursor-pointer hover:scale-105 transition-transform duration-300"></canvas>
-          <div class="wheel-pointer">
-            <div class="pointer-triangle"></div>
-          </div>
-          <button id="spin-btn-center" class="wheel-center-button" title="Click để quay!">
-            <i class="fas fa-play"></i>
-          </button>
-        </div>
-
-        <!-- Compact Result Display -->
-        <div id="wheel-result" class="hidden mt-4">
-          <div class="result-card">
-            <div class="result-content">
-              <div class="result-icon" id="result-icon">🎉</div>
-              <div class="result-text">
-                <div class="result-prize font-dancing" id="wheel-prize">
-                  100.000₫
-                </div>
-                <div class="result-message" id="wheel-message">
-                  Chúc mừng!
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Name Input Popup (Can minimize) -->
   <div id="name-modal" class="fixed bottom-6 left-6 z-[200] max-w-sm w-full md:w-96 transition-all duration-300">
-    <!-- Minimized state -->
     <div id="name-minimized" class="hidden">
       <button
         class="bg-gradient-to-r from-red-800 to-amber-800 hover:from-red-700 hover:to-amber-700 text-white px-5 py-3 rounded-full shadow-2xl border-2 border-amber-400 transition-all duration-300 hover:scale-105 flex items-center gap-2">
         <div class="w-8 h-8 bg-amber-400 rounded-full flex items-center justify-center">
           <i class="fas fa-signature text-red-900 text-sm"></i>
         </div>
-        <span class="font-bold text-sm">Nhập tên chữ ký của bạn</span>
+        <span class="font-bold text-sm" id="minimized-name-display">Nhập tên chữ ký của bạn</span>
       </button>
     </div>
-
-    <!-- Expanded state -->
     <div id="name-expanded"
       class="relative bg-gradient-to-br from-red-800 to-amber-800 rounded-2xl overflow-hidden shadow-2xl border-3 border-amber-400 transform animate-slideInLeft">
       <div class="absolute top-0 right-0 w-24 h-24 bg-amber-400/20 rounded-full blur-2xl"></div>
-
       <div class="relative p-5">
         <button id="minimize-name-btn"
           class="absolute top-3 right-3 text-amber-300/60 hover:text-amber-200 transition-colors text-sm">
           <i class="fas fa-close"></i>
         </button>
-
         <div class="flex items-start gap-3 mb-3">
           <div
             class="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-amber-400 to-amber-600 rounded-full shadow-lg flex items-center justify-center">
@@ -508,18 +460,15 @@
             </p>
           </div>
         </div>
-
         <div class="mb-3">
           <input type="text" id="sender-name" placeholder="Ví dụ: Hiếu"
             class="w-full px-4 py-3 text-base bg-white/15 border-2 border-amber-400/40 rounded-xl text-white placeholder-amber-300/40 focus:outline-none focus:border-amber-300 focus:bg-white/25 transition-all font-dancing backdrop-blur-sm"
             autocomplete="off" maxlength="30" />
         </div>
-
         <button id="confirm-name-btn" disabled
           class="w-full bg-gradient-to-r from-amber-400 to-amber-600 hover:from-amber-500 hover:to-amber-700 text-red-900 font-bold py-2.5 px-4 rounded-xl text-sm transition-all duration-300 transform hover:scale-[1.02] hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none shadow-lg">
           <i class="fas fa-arrow-right mr-2"></i>Bắt đầu
         </button>
-
         <p class="text-amber-400/50 text-[10px] mt-2 text-center">
           <i class="fas fa-lock mr-1"></i>Thông tin chỉ dùng cho chữ ký
         </p>
@@ -528,7 +477,6 @@
   </div>
 
   <div id="modal-overlay" class="fixed inset-0 bg-black/80 z-40 hidden"></div>
-
   <script src="src/js/script.js"></script>
 </body>
 

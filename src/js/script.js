@@ -4,43 +4,48 @@ document.addEventListener("DOMContentLoaded", function () {
     const welcomeSection = document.getElementById("welcome-section");
     const senderNameInput = document.getElementById("sender-name");
     const confirmNameBtn = document.getElementById("confirm-name-btn");
+    const minimizeNameBtn = document.getElementById("minimize-name-btn");
+    const nameMinimized = document.getElementById("name-minimized");
+    const nameExpanded = document.getElementById("name-expanded");
+    const minimizedNameDisplay = document.getElementById("minimized-name-display");
+
     const relationshipSelection = document.getElementById("relationship-selection");
-    const relationshipGrid = relationshipSelection ? relationshipSelection.querySelector(".grid") : null;
+    const relationshipGrid = relationshipSelection?.querySelector(".grid");
     const ageSelection = document.getElementById("age-selection");
-    const ageGrid = ageSelection ? ageSelection.querySelector(".grid") : null;
+    const ageGrid = ageSelection?.querySelector(".grid");
     const hongbaoSelection = document.getElementById("hongbao-selection");
     const hongbaoGrid = document.getElementById("hongbao-grid");
+
     const resultModal = document.getElementById("result-modal");
     const modalOverlay = document.getElementById("modal-overlay");
     const diceSection = document.getElementById("dice-section");
     const letterScratchSection = document.getElementById("letter-scratch-section");
+
     const dice1 = document.getElementById("dice1");
     const dice2 = document.getElementById("dice2");
     const dice3 = document.getElementById("dice3");
+
     const letterDate = document.getElementById("letter-date");
     const letterContent = document.getElementById("letter-content");
     const letterClosing = document.getElementById("letter-closing");
     const signatureName = document.getElementById("signature-name");
-    let scratchCanvas = null;
     const moneyAmount = document.getElementById("money-amount");
     const closeModalBtn = document.getElementById("close-modal");
+
     const step1Dot = document.getElementById("step1-dot");
     const step2Dot = document.getElementById("step2-dot");
     const step3Dot = document.getElementById("step3-dot");
     const step4Dot = document.getElementById("step4-dot");
-    const scrollToRelationship = document.getElementById("scroll-to-relationship");
-    const scrollToAge = document.getElementById("scroll-to-age");
-    const scrollToHongbao = document.getElementById("scroll-to-hongbao");
 
     // Lucky Wheel Elements
     const openWheelBtn = document.getElementById("open-wheel-btn");
-    const wheelModal = document.getElementById("wheel-modal");
-    const closeWheelModal = document.getElementById("close-wheel-modal");
+    const wheelOverlay = document.getElementById("wheel-overlay");
     const wheelCanvas = document.getElementById("wheel-canvas");
-    const spinWheelBtn = document.getElementById("spin-wheel-btn");
-    const wheelResult = document.getElementById("wheel-result");
-    const wheelPrize = document.getElementById("wheel-prize");
-    const wheelMessage = document.getElementById("wheel-message");
+    const spinBtnCenter = document.getElementById("spin-btn-center");
+    const wheelResultDisplay = document.getElementById("wheel-result-display");
+    const wheelPrizeDisplay = document.getElementById("wheel-prize-display");
+    const wheelMessageDisplay = document.getElementById("wheel-message-display");
+    const pointerTriangle = document.getElementById("pointer-triangle");
 
     // Variables
     let senderName = "";
@@ -50,6 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let isRolling = false;
     let isScratching = false;
     let ctx = null;
+    let scratchCanvas = null;
     let currentAmount = 0;
     let selectedRelationshipId = "";
     let selectedAgeId = "";
@@ -57,6 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let wheelCtx = null;
     let isSpinning = false;
     let currentRotation = 0;
+    let lastSegmentIndex = -1;
 
     // Relationships (8 options)
     const relationships = [
@@ -108,50 +115,35 @@ document.addEventListener("DOMContentLoaded", function () {
         lovers: "Yêu thương"
     };
 
-    // EXPANDED Letter Templates - Much Longer and More Variety
+    // Letter Templates (shortened for brevity)
     const letterTemplates = {
         grandparents: [
-            `Xuân mới lại về, mang theo bao niềm vui và hy vọng. Nhân dịp năm mới, cháu xin gửi đến Ông Bà lời chúc sức khỏe, an khang và thịnh vượng.<br><br>Chúc Ông Bà luôn dồi dào sức khỏe, tinh thần minh mẫn, và tràn đầy niềm vui trong cuộc sống. Mong rằng năm mới sẽ mang đến nhiều may mắn, thành công và hạnh phúc cho Ông Bà.<br><br>Dù không gian có cách trở nhưng tấm lòng và tình cảm luôn hướng về Ông Bà. Những lời dạy bảo của Ông Bà là kim chỉ nam quý giá nhất cho cháu trong cuộc đời. Cháu luôn ghi nhớ ơn Ông Bà đã nuôi nấng, chăm sóc gia đình chúng cháu.<br><br>Năm mới này, cháu mong Ông Bà được khỏe mạnh để chứng kiến con cháu sum vầy, hạnh phúc. Gia đình là nơi cháu tìm thấy sự ấm áp nhất, và Ông Bà chính là trụ cột vững chắc của gia đình.<br><br>Cháu xin chúc Ông Bà tuổi thọ vô cương, phúc lộc tràn đầy, an khang thịnh vượng trong suốt năm mới. Mong Ông Bà luôn mỉm cười, vui vẻ bên con cháu.`,
-
-            `Kính gửi Ông Bà,<br><br>Xuân về mang theo niềm vui mới, cháu xin gửi lời chúc đến Ông Bà. Chúc Ông Bà năm mới sức khỏe dồi dào, tuổi thọ như đá Sơn Tinh, phúc như Đông Hải.<br><br>Mong Ông Bà luôn vui vẻ, an lạc bên con cháu. Cháu biết rằng sự bình an của Ông Bà chính là hạnh phúc lớn nhất của gia đình. Từng bước chân của Ông Bà đã dựng nên mái ấm gia đình, từng lời dạy đã chỉ cho chúng cháu con đường đúng đắn.<br><br>Cháu còn nhớ những câu chuyện Ông Bà kể về thuở xưa, về những gian khó mà gia đình đã vượt qua. Những bài học ấy giúp cháu trân trọng cuộc sống hơn, biết yêu thương người thân hơn.<br><br>Năm mới, cháu chúc Ông Bà luôn được bình an, mạnh khỏe. Chúc Ông Bà có thêm nhiều niềm vui bên con cháu, được hưởng trọn vẹn hạnh phúc tuổi già. Cháu sẽ cố gắng học tập, làm việc tốt để không phụ lòng Ông Bà.<br><br>Kính chúc Ông Bà một năm mới thật nhiều sức khỏe, niềm vui và may mắn!`,
-
-            `Thưa Ông Bà,<br><br>Tết đến xuân về, cháu xin kính chúc Ông Bà vạn sự như ý. Mong Ông Bà luôn mạnh khỏe, sống lâu trăm tuổi để chứng kiến con cháu khôn lớn, thành đạt.<br><br>Những lời dạy của Ông Bà là hành trang quý báu nhất cho cuộc đời cháu. Từng câu chuyện, từng lời khuyên đều in sâu trong lòng cháu. Cháu sẽ cố gắng học tập, rèn luyện để không phụ lòng Ông Bà.<br><br>Mỗi dịp Tết đến, cháu lại nhớ về những kỷ niệm đẹp bên Ông Bà. Những buổi chiều ngồi nghe Ông kể chuyện xưa, những bữa cơm sum vầy có Bà nấu nướng. Đó là những kỷ niệm mà cháu sẽ luôn trân trọng suốt đời.<br><br>Năm mới này, cháu chúc gia đình luôn sum vầy, ấm áp. Chúc Ông Bà được hưởng trọn vẹn niềm vui bên con cháu, được sống trong sự an lành và hạnh phúc. Sức khỏe của Ông Bà chính là phúc lành lớn nhất cho cả gia đình.<br><br>Cháu kính chúc Ông Bà năm mới an khang, thịnh vượng, vạn sự như ý!`
+            `Xuân mới lại về, mang theo bao niềm vui và hy vọng. Nhân dịp năm mới, cháu xin gửi đến Ông Bà lời chúc sức khỏe, an khang và thịnh vượng.<br><br>Chúc Ông Bà luôn dồi dào sức khỏe, tinh thần minh mẫn, và tràn đầy niềm vui trong cuộc sống. Mong rằng năm mới sẽ mang đến nhiều may mắn, thành công và hạnh phúc cho Ông Bà.<br><br>Dù không gian có cách trở nhưng tấm lòng và tình cảm luôn hướng về Ông Bà. Những lời dạy bảo của Ông Bà là kim chỉ nam quý giá nhất cho cháu trong cuộc đời.`
         ],
-
         parents: [
-            `Gửi Bố Mẹ yêu quý,<br><br>Xuân mới lại về, con xin gửi đến Bố Mẹ những lời chúc tốt đẹp nhất. Chúc Bố Mẹ năm mới thật nhiều sức khỏe, luôn vui vẻ và hạnh phúc.<br><br>Cảm ơn Bố Mẹ đã luôn yêu thương, chăm sóc và dạy dỗ con nên người. Mỗi dịp Tết đến, con lại nhớ về những kỷ niệm đẹp bên gia đình. Từ những buổi sáng thức dậy với mùi bánh chưng, đến những buổi tối sum họp quanh mâm cơm gia đình.<br><br>Con biết Bố Mẹ đã vất vả nuôi con khôn lớn. Mỗi sợi tóc bạc của Bố Mẹ là tình yêu thương dành cho con. Con hứa sẽ cố gắng học tập và làm việc thật tốt để không phụ lòng Bố Mẹ.<br><br>Năm mới, con chúc Bố Mẹ luôn khỏe mạnh, công việc thuận lợi, tài lộc đầy nhà. Chúc gia đình mình luôn sum vầy, ấm áp và hạnh phúc. Con yêu Bố Mẹ rất nhiều!<br><br>Con chúc Bố Mẹ một năm mới tràn đầy niềm vui, sức khỏe và thành công!`,
-
-            `Kính gửi Bố Mẹ,<br><br>Năm mới đến, con xin chúc Bố Mẹ sức khỏe dồi dào, công việc thuận lợi, tài lộc đầy nhà. Bố Mẹ là điểm tựa vững chắc nhất của con trong cuộc đời này.<br><br>Con biết Bố Mẹ đã hy sinh rất nhiều để nuôi con ăn học. Những đêm Mẹ thức trắng chăm con ốm, những ngày Bố làm việc vất vả để kiếm tiền nuôi gia đình. Tất cả đều in sâu trong trái tim con.<br><br>Mỗi thành công của con đều có công lao to lớn của Bố Mẹ. Con sẽ cố gắng để Bố Mẹ tự hào, để Bố Mẹ thấy rằng công sức bỏ ra không uổng phí.<br><br>Năm mới này, con mong Bố Mẹ luôn được khỏe mạnh, vui vẻ. Chúc Bố có thêm nhiều thành công trong công việc, chúc Mẹ luôn xinh đẹp và trẻ trung. Chúc gia đình mình luôn sum vầy, hạnh phúc bên nhau.<br><br>Con yêu Bố Mẹ rất nhiều. Chúc Bố Mẹ năm mới an khang, hạnh phúc bên con cháu!`,
-
-            `Gửi Bố Mẹ thân yêu,<br><br>Xuân sang, con gửi đến Bố Mẹ lời chúc năm mới an khang, thịnh vượng. Chúc Bố Mẹ luôn khỏe mạnh, vui vẻ để cùng con đón nhận những điều tốt đẹp năm mới mang lại.<br><br>Con biết ơn Bố Mẹ đã dành cả cuộc đời để nuôi dạy con. Những hy sinh thầm lặng, những lo toan không ngừng nghỉ, tất cả đều vì con. Con sẽ luôn ghi nhớ ơn đức sinh thành của Bố Mẹ.<br><br>Dù cuộc sống có bận rộn đến đâu, con vẫn luôn nhớ về mái nhà ấm áp với Bố Mẹ. Nhớ tiếng cười của Mẹ, nhớ lời dạy bảo của Bố. Đó là nguồn động lực lớn nhất giúp con vượt qua mọi khó khăn.<br><br>Năm mới, con chúc Bố Mẹ sức khỏe dồi dào, công việc hanh thông, gia đạo an khang. Chúc Bố Mẹ được hưởng trọn vẹn niềm vui bên con cháu, được sống trong hạnh phúc và bình an.<br><br>Con yêu Bố Mẹ và mãi mãi biết ơn Bố Mẹ!`
+            `Gửi Bố Mẹ yêu quý,<br><br>Xuân mới lại về, con xin gửi đến Bố Mẹ những lời chúc tốt đẹp nhất. Chúc Bố Mẹ năm mới thật nhiều sức khỏe, luôn vui vẻ và hạnh phúc.<br><br>Cảm ơn Bố Mẹ đã luôn yêu thương, chăm sóc và dạy dỗ con nên người. Con yêu Bố Mẹ rất nhiều!`
         ],
-
         children: [
-            `Gửi các con yêu quý,<br><br>Năm mới đến, ba/mẹ gửi đến các con lời chúc tốt đẹp nhất. Chúc các con luôn khỏe mạnh, vui vẻ và học hành chăm ngoan.<br><br>Ba/mẹ rất tự hào về các con, những đứa trẻ ngoan ngoãn và hiếu thảo. Mong rằng năm mới sẽ mang đến cho các con thật nhiều niềm vui và kỷ niệm đẹp.<br><br>Hãy luôn giữ cho mình trái tim ấm áp và tinh thần lạc quan. Dù cuộc sống có khó khăn đến đâu, hãy nhớ rằng ba/mẹ luôn bên cạnh các con. Gia đình là nơi các con luôn có thể trở về.<br><br>Ba/mẹ mong các con học tập thật tốt, phát triển toàn diện cả về học vấn lẫn đạo đức. Hãy trở thành những người con hiếu thảo, những công dân tốt của đất nước.<br><br>Chúc các con năm mới nhiều niềm vui, luôn khỏe mạnh và gặp nhiều may mắn. Ba/mẹ yêu các con rất nhiều!`
+            `Gửi các con yêu quý,<br><br>Năm mới đến, ba/mẹ gửi đến các con lời chúc tốt đẹp nhất. Chúc các con luôn khỏe mạnh, vui vẻ và học hành chăm ngoan.<br><br>Ba/mẹ rất tự hào về các con. Chúc các con năm mới nhiều niềm vui!`
         ],
-
         siblings: [
-            `Gửi anh/chị/em thân yêu,<br><br>Xuân về với muôn vàn niềm vui, anh/chị/em gửi lời chúc năm mới an khang, thịnh vượng. Chúc mình luôn khỏe mạnh, thành công trong công việc và hạnh phúc trong cuộc sống.<br><br>Những kỷ niệm tuổi thơ bên nhau là kho báu quý giá mà không gì có thể thay thế. Từ những trò chơi ngày bé, những lần cùng nhau vượt qua khó khăn, đến những niềm vui được chia sẻ cùng nhau.<br><br>Dù cuộc sống có bận rộn, tình anh em mãi trong tim. Mình luôn là chỗ dựa vững chắc cho nhau, là người hiểu mình nhất trên đời này.<br><br>Năm mới, chúc anh/chị/em công việc thuận lợi, gia đình hạnh phúc, tài lộc dồi dào. Chúc năm mới này đem đến nhiều điều tốt đẹp cho gia đình mình!<br><br>Luôn nhớ mình và mong sớm được gặp lại!`
+            `Gửi anh/chị/em thân yêu,<br><br>Xuân về với muôn vàn niềm vui, anh/chị/em gửi lời chúc năm mới an khang, thịnh vượng. Chúc mình luôn khỏe mạnh, thành công trong công việc và hạnh phúc trong cuộc sống.`
         ],
-
         friends: [
-            `Gửi bạn thân yêu,<br><br>Năm mới đến rồi! Chúc bạn một năm tràn đầy sức khỏe, thành công và hạnh phúc. Tình bạn của chúng ta là món quà quý giá mà mình trân trọng nhất.<br><br>Cảm ơn bạn đã luôn bên cạnh, chia sẻ trong những lúc vui buồn. Từ những buổi trò chuyện đêm khuya, những chuyến đi chơi vui vẻ, đến những lúc khó khăn có nhau động viên.<br><br>Bạn là người bạn tuyệt vời nhất mà mình từng có. Hy vọng tình bạn của chúng ta sẽ mãi bền vững, vượt qua mọi thử thách của thời gian.<br><br>Năm mới, mình chúc bạn đạt được tất cả những mục tiêu đã đề ra. Chúc bạn luôn vui vẻ, may mắn và gặp nhiều điều tốt lành. Mong năm mới sẽ có thêm nhiều kỷ niệm đẹp cho đôi ta.<br><br>Chúc bạn luôn vui vẻ và thành công trong mọi việc!`
+            `Gửi bạn thân yêu,<br><br>Năm mới đến rồi! Chúc bạn một năm tràn đầy sức khỏe, thành công và hạnh phúc. Tình bạn của chúng ta là món quà quý giá mà mình trân trọng nhất.`
         ],
-
         colleagues: [
-            `Gửi đồng nghiệp thân mến,<br><br>Nhân dịp năm mới, xin chúc anh/chị/bạn sức khỏe dồi dào, công việc thăng tiến, gia đình hạnh phúc. Được làm việc cùng là niềm vui lớn và cũng là cơ hội để mình học hỏi rất nhiều.<br><br>Cảm ơn anh/chị/bạn đã luôn hỗ trợ, giúp đỡ trong công việc. Những kinh nghiệm quý báu mà anh/chị/bạn chia sẻ đã giúp mình trưởng thành rất nhiều trong nghề nghiệp.<br><br>Mong rằng năm mới, chúng ta sẽ tiếp tục hợp tác tốt đẹp, cùng nhau đạt được nhiều thành công hơn nữa. Chúc cả team luôn đoàn kết, vượt qua mọi thử thách để đạt được những mục tiêu cao hơn.<br><br>Chúc anh/chị/bạn năm mới an khang, thịnh vượng, sự nghiệp phát đạt. Chúc mừng năm mới!`
+            `Gửi đồng nghiệp thân mến,<br><br>Nhân dịp năm mới, xin chúc anh/chị/bạn sức khỏe dồi dào, công việc thăng tiến, gia đình hạnh phúc. Chúc mừng năm mới!`
         ],
-
         aunt_uncle: [
-            `Kính gửi Cô/Dì/Chú/Bác,<br><br>Xuân về, cháu xin kính chúc Cô/Dì/Chú/Bác sức khỏe dồi dào, gia đình hạnh phúc, công việc thuận lợi. Tình cảm của Cô/Dì/Chú/Bác dành cho cháu thật ấm áp và trân quý.<br><br>Cháu còn nhớ những lần Cô/Dì/Chú/Bác quan tâm, chăm sóc cháu như con đẻ. Những lời khuyên, sự động viên của Cô/Dì/Chú/Bác đã giúp cháu vượt qua nhiều khó khăn trong cuộc sống.<br><br>Mong năm mới mang đến nhiều niềm vui, thành công cho gia đình Cô/Dì/Chú/Bác. Cháu luôn biết ơn sự quan tâm và yêu thương mà Cô/Dì/Chú/Bác dành cho cháu.<br><br>Cháu xin kính chúc Cô/Dì/Chú/Bác một năm mới an khang, thịnh vượng, vạn sự như ý. Chúc cả gia đình luôn sum vầy, hạnh phúc!`
+            `Kính gửi Cô/Dì/Chú/Bác,<br><br>Xuân về, cháu xin kính chúc Cô/Dì/Chú/Bác sức khỏe dồi dào, gia đình hạnh phúc, công việc thuận lợi. Chúc cả gia đình luôn sum vầy, hạnh phúc!`
         ],
-
         lovers: [
-            `Gửi người yêu dấu,<br><br>Xuân về, anh/em xin gửi đến em/anh lời chúc ngọt ngào nhất. Chúc chúng ta một năm mới tràn đầy hạnh phúc, tình yêu thắm thiết và luôn bên nhau vượt qua mọi thử thách.<br><br>Em/anh là ánh sáng trong cuộc đời anh/em, là động lực để anh/em cố gắng mỗi ngày. Mỗi khoảnh khắc bên em/anh đều là những kỷ niệm đẹp mà anh/em trân trọng.<br><br>Mong rằng năm mới, chúng ta sẽ có thêm nhiều kỷ niệm đẹp, cùng nhau đi đến những nơi mới, trải nghiệm những điều mới mẻ. Anh/em hứa sẽ luôn yêu thương, chăm sóc em/anh như hiện tại, thậm chí còn hơn thế nữa.<br><br>Chúc em/anh luôn xinh đẹp/đẹp trai, khỏe mạnh và thành công. Chúc tình yêu của chúng ta mãi mãi bền vững, vượt qua mọi sóng gió cuộc đời.<br><br>Anh/em yêu em/anh rất nhiều và mãi mãi như vậy!`
+            `Gửi người yêu dấu,<br><br>Xuân về, anh/em xin gửi đến em/anh lời chúc ngọt ngào nhất. Chúc chúng ta một năm mới tràn đầy hạnh phúc, tình yêu thắm thiết. Anh/em yêu em/anh rất nhiều!`
         ]
     };
 
-    // Wheel Prize Configuration - 15 items (12 money + 3 miss)
+    // Wheel Prize Configuration
     const wheelPrizes = [
         { text: "200.000₫", amount: 200000, color: "#FFD700", probability: 3, icon: "💰" },
         { text: "100.000₫", amount: 100000, color: "#FF6B6B", probability: 5, icon: "💵" },
@@ -169,6 +161,115 @@ document.addEventListener("DOMContentLoaded", function () {
         { text: "5.000₫", amount: 5000, color: "#AA96DA", probability: 10, icon: "💷" },
         { text: "2.000₫", amount: 2000, color: "#C7CEEA", probability: 8, icon: "💳" }
     ];
+
+
+    // ========== LOCALSTORAGE: Lưu và lấy tên người dùng ==========
+    function loadSavedName() {
+        const saved = localStorage.getItem('lixi_sender_name');
+        if (saved) {
+            senderName = saved;
+            if (minimizedNameDisplay) {
+                minimizedNameDisplay.textContent = saved;
+            }
+            return true;
+        }
+        return false;
+    }
+
+    function saveName(name) {
+        localStorage.setItem('lixi_sender_name', name);
+        senderName = name;
+    }
+
+    function clearName() {
+        localStorage.removeItem('lixi_sender_name');
+        senderName = "";
+    }
+
+    // Initialize - kiểm tra xem đã có tên chưa
+    const hasName = loadSavedName();
+    if (hasName) {
+        // Đã có tên - hiển thị minimized, không cần nhập lại
+        if (nameExpanded) nameExpanded.classList.add("hidden");
+        if (nameMinimized) nameMinimized.classList.remove("hidden");
+    } else {
+        // Chưa có tên - hiển thị modal nhập tên
+        if (nameExpanded) nameExpanded.classList.remove("hidden");
+        if (nameMinimized) nameMinimized.classList.add("hidden");
+        setTimeout(() => {
+            if (senderNameInput) senderNameInput.focus();
+        }, 500);
+    }
+
+    // Name Input Handlers
+    if (senderNameInput) {
+        senderNameInput.addEventListener("input", function () {
+            if (confirmNameBtn) {
+                confirmNameBtn.disabled = this.value.trim().length === 0;
+            }
+        });
+
+        senderNameInput.addEventListener("keypress", function (e) {
+            if (e.key === "Enter" && this.value.trim().length > 0) {
+                confirmNameBtn.click();
+            }
+        });
+    }
+
+    if (minimizeNameBtn) {
+        minimizeNameBtn.addEventListener("click", function () {
+            if (nameExpanded) nameExpanded.classList.add("hidden");
+            if (nameMinimized) nameMinimized.classList.remove("hidden");
+        });
+    }
+
+    if (nameMinimized) {
+        nameMinimized.addEventListener("click", function () {
+            // Click để thay đổi tên
+            if (senderNameInput) senderNameInput.value = senderName;
+            if (nameExpanded) nameExpanded.classList.remove("hidden");
+            if (nameMinimized) nameMinimized.classList.add("hidden");
+            setTimeout(() => {
+                if (senderNameInput) {
+                    senderNameInput.focus();
+                    senderNameInput.select();
+                }
+            }, 100);
+        });
+    }
+
+    if (confirmNameBtn) {
+        confirmNameBtn.addEventListener("click", function () {
+            const name = senderNameInput.value.trim();
+            if (name) {
+                saveName(name);
+                if (minimizedNameDisplay) {
+                    minimizedNameDisplay.textContent = name;
+                }
+                hideNameModal();
+            }
+        });
+    }
+
+    function hideNameModal() {
+        if (nameModal) {
+            nameModal.classList.add("animate-slideOutLeft");
+            setTimeout(() => {
+                if (nameExpanded) nameExpanded.classList.add("hidden");
+                if (nameMinimized) nameMinimized.classList.remove("hidden");
+                nameModal.classList.remove("animate-slideOutLeft");
+            }, 300);
+        }
+
+        updateStepIndicator(2);
+
+        setTimeout(() => {
+            if (welcomeSection) welcomeSection.classList.add("hidden");
+            initRelationshipSelection();
+            if (relationshipSelection) relationshipSelection.classList.remove("hidden");
+            if (relationshipSelection) relationshipSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+        }, 300);
+    }
 
     // Update Step Indicator
     function updateStepIndicator(currentStep) {
@@ -194,74 +295,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Name Input Handler
-    const minimizeNameBtn = document.getElementById("minimize-name-btn");
-    const nameMinimized = document.getElementById("name-minimized");
-    const nameExpanded = document.getElementById("name-expanded");
-
-    if (senderNameInput) {
-        senderNameInput.addEventListener("input", function () {
-            if (confirmNameBtn) {
-                confirmNameBtn.disabled = this.value.trim().length === 0;
-            }
-        });
-
-        // Allow Enter key to submit
-        senderNameInput.addEventListener("keypress", function (e) {
-            if (e.key === "Enter" && this.value.trim().length > 0) {
-                confirmNameBtn.click();
-            }
-        });
-    }
-
-    // Minimize button
-    if (minimizeNameBtn) {
-        minimizeNameBtn.addEventListener("click", function () {
-            if (nameExpanded) nameExpanded.classList.add("hidden");
-            if (nameMinimized) nameMinimized.classList.remove("hidden");
-        });
-    }
-
-    // Maximize button (click on minimized version)
-    if (nameMinimized) {
-        nameMinimized.addEventListener("click", function () {
-            if (nameExpanded) nameExpanded.classList.remove("hidden");
-            if (nameMinimized) nameMinimized.classList.add("hidden");
-            setTimeout(() => {
-                if (senderNameInput) senderNameInput.focus();
-            }, 100);
-        });
-    }
-
-    if (confirmNameBtn) {
-        confirmNameBtn.addEventListener("click", function () {
-            const name = senderNameInput.value.trim();
-            if (name) {
-                senderName = name;
-                hideNameModal();
-            }
-        });
-    }
-
-    function hideNameModal() {
-        // Hide entire name modal
-        if (nameModal) {
-            nameModal.classList.add("animate-slideOutLeft");
-            setTimeout(() => {
-                nameModal.classList.add("hidden");
-                nameModal.classList.remove("animate-slideOutLeft");
-            }, 300);
-        }
-
-        updateStepIndicator(2);
-
-        setTimeout(() => {
-            if (welcomeSection) welcomeSection.classList.add("hidden");
-            initRelationshipSelection();
-            if (relationshipSelection) relationshipSelection.classList.remove("hidden");
-            if (relationshipSelection) relationshipSelection.scrollIntoView({ behavior: "smooth", block: "start" });
-        }, 300);
-    }
 
     // Initialize Relationship Selection
     function initRelationshipSelection() {
@@ -272,11 +305,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const card = document.createElement("div");
             card.className = "selection-card rounded-xl p-4 text-center cursor-pointer h-full";
             card.dataset.relationship = relationship.id;
-
             card.innerHTML = `
-                <div class="text-3xl text-amber-300 mb-3">
-                    <i class="${relationship.icon}"></i>
-                </div>
+                <div class="text-3xl text-amber-300 mb-3"><i class="${relationship.icon}"></i></div>
                 <div class="text-lg font-bold text-white mb-1">${relationship.name}</div>
                 <div class="text-amber-200 text-sm">${relationship.formal}</div>
             `;
@@ -292,32 +322,19 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedRelationshipId = relationship.id;
                 this.classList.add("selected");
 
-                // Skip age selection for lovers
                 if (relationship.id === "lovers") {
                     updateStepIndicator(4);
-                    if (scrollToHongbao) scrollToHongbao.classList.remove("hidden");
-
                     setTimeout(() => {
                         createHongbaos();
                         if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
                         if (hongbaoSelection) hongbaoSelection.scrollIntoView({ behavior: "smooth", block: "start" });
-
-                        setTimeout(() => {
-                            if (scrollToHongbao) scrollToHongbao.classList.add("hidden");
-                        }, 1000);
                     }, 300);
                 } else {
                     updateStepIndicator(3);
-                    if (scrollToAge) scrollToAge.classList.remove("hidden");
-
                     setTimeout(() => {
                         initAgeSelection();
                         if (ageSelection) ageSelection.classList.remove("hidden");
                         if (ageSelection) ageSelection.scrollIntoView({ behavior: "smooth", block: "start" });
-
-                        setTimeout(() => {
-                            if (scrollToAge) scrollToAge.classList.add("hidden");
-                        }, 1000);
                     }, 300);
                 }
             });
@@ -335,11 +352,8 @@ document.addEventListener("DOMContentLoaded", function () {
             const card = document.createElement("div");
             card.className = "selection-card rounded-xl p-4 text-center cursor-pointer h-full";
             card.dataset.age = age.id;
-
             card.innerHTML = `
-                <div class="text-3xl text-amber-300 mb-3">
-                    <i class="${age.icon}"></i>
-                </div>
+                <div class="text-3xl text-amber-300 mb-3"><i class="${age.icon}"></i></div>
                 <div class="text-lg font-bold text-white mb-1">${age.name}</div>
                 <div class="text-amber-200 text-sm">${age.range}</div>
             `;
@@ -356,16 +370,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add("selected");
 
                 updateStepIndicator(4);
-                if (scrollToHongbao) scrollToHongbao.classList.remove("hidden");
-
                 setTimeout(() => {
                     createHongbaos();
                     if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
                     if (hongbaoSelection) hongbaoSelection.scrollIntoView({ behavior: "smooth", block: "start" });
-
-                    setTimeout(() => {
-                        if (scrollToHongbao) scrollToHongbao.classList.add("hidden");
-                    }, 1000);
                 }, 300);
             });
 
@@ -373,49 +381,28 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Get Random Amount with weighted probabilities based on relationship
+    // Get Random Amount
     function getRandomAmount() {
         const random = Math.random() * 100;
-
-        // Special relationships get better amounts
         const isSpecial = ["grandparents", "parents", "lovers"].includes(selectedRelationshipId);
 
         if (isSpecial) {
-            // Better distribution for special relationships
-            if (random < 8) {
-                return 200000;
-            } else if (random < 20) {
-                return 100000;
-            } else if (random < 40) {
-                return 50000;
-            } else if (random < 65) {
-                return 20000;
-            } else if (random < 85) {
-                return 10000;
-            } else if (random < 95) {
-                return 5000;
-            } else {
-                return 2000;
-            }
+            if (random < 8) return 200000;
+            else if (random < 20) return 100000;
+            else if (random < 40) return 50000;
+            else if (random < 65) return 20000;
+            else if (random < 85) return 10000;
+            else if (random < 95) return 5000;
+            else return 2000;
         } else {
-            // Regular distribution for other relationships
-            if (random < 5) {
-                return 200000;
-            } else if (random < 15) {
-                return 100000;
-            } else if (random < 30) {
-                return 50000;
-            } else if (random < 60) {
-                return 20000;
-            } else if (random < 80) {
-                return 10000;
-            } else if (random < 90) {
-                return 5000;
-            } else if (random < 95) {
-                return 2000;
-            } else {
-                return 1000;
-            }
+            if (random < 5) return 200000;
+            else if (random < 15) return 100000;
+            else if (random < 30) return 50000;
+            else if (random < 60) return 20000;
+            else if (random < 80) return 10000;
+            else if (random < 90) return 5000;
+            else if (random < 95) return 2000;
+            else return 1000;
         }
     }
 
@@ -485,22 +472,332 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // Show Result Modal
+
+    // ========== LUCKY WHEEL ==========
+    // Open Wheel
+    if (openWheelBtn) {
+        openWheelBtn.addEventListener("click", function () {
+            if (wheelOverlay) {
+                wheelOverlay.classList.remove("hidden");
+                wheelOverlay.classList.add("flex");
+            }
+            document.body.style.overflow = "hidden";
+
+            if (wheelCanvas) {
+                wheelCtx = wheelCanvas.getContext("2d");
+                currentRotation = 0;
+                drawWheel();
+            }
+
+            if (wheelResultDisplay) wheelResultDisplay.classList.add("hidden");
+        });
+    }
+
+    // Close wheel - click outside
+    if (wheelOverlay) {
+        wheelOverlay.addEventListener("click", function (e) {
+            if (e.target === wheelOverlay) {
+                closeWheel();
+            }
+        });
+    }
+
+    function closeWheel() {
+        if (wheelOverlay) {
+            wheelOverlay.classList.remove("flex");
+            wheelOverlay.classList.add("hidden");
+        }
+        document.body.style.overflow = "auto";
+        if (wheelResultDisplay) wheelResultDisplay.classList.add("hidden");
+    }
+
+    // Draw Wheel
+    function drawWheel() {
+        if (!wheelCanvas || !wheelCtx) return;
+
+        const centerX = wheelCanvas.width / 2;
+        const centerY = wheelCanvas.height / 2;
+        const radius = Math.min(centerX, centerY) - 30;
+
+        wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
+
+        // Outer glow - multiple layers for depth
+        wheelCtx.save();
+        wheelCtx.shadowColor = "rgba(251, 191, 36, 0.4)";
+        wheelCtx.shadowBlur = 50;
+        wheelCtx.beginPath();
+        wheelCtx.arc(centerX, centerY, radius + 15, 0, 2 * Math.PI);
+        wheelCtx.strokeStyle = "#fbbf24";
+        wheelCtx.lineWidth = 5;
+        wheelCtx.stroke();
+        wheelCtx.restore();
+
+        // Draw segments with 3D effect
+        let startAngle = currentRotation;
+        const anglePerSlice = (2 * Math.PI) / wheelPrizes.length;
+
+        wheelPrizes.forEach((prize, index) => {
+            const endAngle = startAngle + anglePerSlice;
+            const midAngle = startAngle + anglePerSlice / 2;
+
+            // Segment gradient with 3D lighting effect
+            const gradient = wheelCtx.createRadialGradient(
+                centerX + Math.cos(midAngle) * radius * 0.3,
+                centerY + Math.sin(midAngle) * radius * 0.3,
+                0,
+                centerX,
+                centerY,
+                radius
+            );
+            const color1 = adjustBrightness(prize.color, 30);
+            const color2 = prize.color;
+            const color3 = adjustBrightness(prize.color, -30);
+
+            gradient.addColorStop(0, color1);
+            gradient.addColorStop(0.5, color2);
+            gradient.addColorStop(1, color3);
+
+            wheelCtx.beginPath();
+            wheelCtx.moveTo(centerX, centerY);
+            wheelCtx.arc(centerX, centerY, radius, startAngle, endAngle);
+            wheelCtx.closePath();
+            wheelCtx.fillStyle = gradient;
+            wheelCtx.fill();
+
+            // Border
+            wheelCtx.strokeStyle = "rgba(255, 255, 255, 0.3)";
+            wheelCtx.lineWidth = 2;
+            wheelCtx.stroke();
+
+            // Text
+            wheelCtx.save();
+            wheelCtx.translate(centerX, centerY);
+            wheelCtx.rotate(startAngle + anglePerSlice / 2);
+            wheelCtx.textAlign = "center";
+            wheelCtx.textBaseline = "middle";
+            wheelCtx.shadowColor = "rgba(0, 0, 0, 0.7)";
+            wheelCtx.shadowBlur = 6;
+            wheelCtx.shadowOffsetX = 2;
+            wheelCtx.shadowOffsetY = 2;
+            wheelCtx.font = "bold 17px 'Montserrat', sans-serif";
+            wheelCtx.fillStyle = "#fff";
+            wheelCtx.fillText(prize.text, radius * 0.68, 0);
+            wheelCtx.restore();
+
+            startAngle = endAngle;
+        });
+
+        // Inner shadow for depth
+        wheelCtx.save();
+        wheelCtx.globalCompositeOperation = 'source-atop';
+        const innerShadow = wheelCtx.createRadialGradient(centerX, centerY, radius * 0.7, centerX, centerY, radius);
+        innerShadow.addColorStop(0, 'rgba(0, 0, 0, 0)');
+        innerShadow.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
+        wheelCtx.fillStyle = innerShadow;
+        wheelCtx.beginPath();
+        wheelCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        wheelCtx.fill();
+        wheelCtx.restore();
+
+        // Outer ring - golden with 3D effect
+        wheelCtx.save();
+        wheelCtx.beginPath();
+        wheelCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+        const ringGradient = wheelCtx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
+        ringGradient.addColorStop(0, '#ffd700');
+        ringGradient.addColorStop(0.5, '#fbbf24');
+        ringGradient.addColorStop(1, '#f59e0b');
+        wheelCtx.strokeStyle = ringGradient;
+        wheelCtx.lineWidth = 12;
+        wheelCtx.shadowColor = 'rgba(251, 191, 36, 0.6)';
+        wheelCtx.shadowBlur = 15;
+        wheelCtx.stroke();
+        wheelCtx.restore();
+
+        // Decorative dots
+        const dotCount = 30;
+        for (let i = 0; i < dotCount; i++) {
+            const angle = (i / dotCount) * Math.PI * 2;
+            const dotX = centerX + Math.cos(angle) * (radius + 6);
+            const dotY = centerY + Math.sin(angle) * (radius + 6);
+
+            wheelCtx.beginPath();
+            wheelCtx.arc(dotX, dotY, 3.5, 0, 2 * Math.PI);
+            wheelCtx.fillStyle = i % 2 === 0 ? "#fff" : "#ef4444";
+            wheelCtx.shadowColor = i % 2 === 0 ? 'rgba(255, 255, 255, 0.8)' : 'rgba(239, 68, 68, 0.8)';
+            wheelCtx.shadowBlur = 5;
+            wheelCtx.fill();
+        }
+    }
+
+    function adjustBrightness(color, amount) {
+        const hex = color.replace('#', '');
+        const r = Math.max(0, Math.min(255, parseInt(hex.substr(0, 2), 16) + amount));
+        const g = Math.max(0, Math.min(255, parseInt(hex.substr(2, 2), 16) + amount));
+        const b = Math.max(0, Math.min(255, parseInt(hex.substr(4, 2), 16) + amount));
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+    }
+
+    // Spin Wheel
+    function spinWheel() {
+        if (isSpinning) return;
+
+        isSpinning = true;
+        if (wheelResultDisplay) wheelResultDisplay.classList.add("hidden");
+        if (wheelCanvas) wheelCanvas.classList.add("spinning");
+
+        const selectedPrize = getWeightedRandomPrize();
+        const prizeIndex = wheelPrizes.indexOf(selectedPrize);
+
+        const fullSpins = 5 + Math.random() * 2;
+        const anglePerSlice = (Math.PI * 2) / wheelPrizes.length;
+        const targetAngle = prizeIndex * anglePerSlice + anglePerSlice / 2;
+        const targetRotation = (Math.PI * 2 * fullSpins) - targetAngle + (Math.PI / 2);
+
+        const duration = 5000;
+        const startTime = Date.now();
+        const startRotation = currentRotation;
+
+        function animate() {
+            const now = Date.now();
+            const elapsed = now - startTime;
+            const progress = Math.min(elapsed / duration, 1);
+
+            const easeOut = 1 - Math.pow(1 - progress, 4);
+            currentRotation = startRotation + targetRotation * easeOut;
+
+            drawWheel();
+
+            // Check segment crossing for pointer bounce
+            const currentSegment = Math.floor(((currentRotation % (Math.PI * 2)) + (Math.PI / 2)) / anglePerSlice) % wheelPrizes.length;
+            if (currentSegment !== lastSegmentIndex) {
+                triggerPointerBounce();
+                lastSegmentIndex = currentSegment;
+            }
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                currentRotation = currentRotation % (Math.PI * 2);
+                isSpinning = false;
+                if (wheelCanvas) wheelCanvas.classList.remove("spinning");
+                lastSegmentIndex = -1;
+
+                bounceWheel(() => {
+                    showWheelResult(selectedPrize);
+                });
+            }
+        }
+
+        animate();
+    }
+
+    // Trigger pointer bounce animation
+    function triggerPointerBounce() {
+        if (pointerTriangle) {
+            pointerTriangle.classList.remove("pointer-bounce");
+            void pointerTriangle.offsetWidth; // Force reflow
+            pointerTriangle.classList.add("pointer-bounce");
+            setTimeout(() => {
+                pointerTriangle.classList.remove("pointer-bounce");
+            }, 200);
+        }
+    }
+
+    function bounceWheel(callback) {
+        const bounceAmount = 0.1;
+        const bounceDuration = 200;
+        const startTime = Date.now();
+        const startRotation = currentRotation;
+
+        function animate() {
+            const elapsed = Date.now() - startTime;
+            const progress = elapsed / bounceDuration;
+
+            if (progress < 0.5) {
+                currentRotation = startRotation + bounceAmount * Math.sin(progress * Math.PI * 2);
+            } else {
+                currentRotation = startRotation + bounceAmount * Math.sin((1 - progress) * Math.PI * 2);
+            }
+
+            drawWheel();
+
+            if (progress < 1) {
+                requestAnimationFrame(animate);
+            } else {
+                currentRotation = startRotation;
+                drawWheel();
+                callback();
+            }
+        }
+
+        animate();
+    }
+
+    function getWeightedRandomPrize() {
+        const totalProbability = wheelPrizes.reduce((sum, prize) => sum + prize.probability, 0);
+        let random = Math.random() * totalProbability;
+
+        for (const prize of wheelPrizes) {
+            random -= prize.probability;
+            if (random <= 0) {
+                return prize;
+            }
+        }
+
+        return wheelPrizes[wheelPrizes.length - 1];
+    }
+
+    function showWheelResult(prize) {
+        if (wheelPrizeDisplay) wheelPrizeDisplay.textContent = prize.text;
+
+        if (wheelMessageDisplay) {
+            if (prize.amount > 0) {
+                const messages = [
+                    "Xuân an vui, Tết hạnh phúc!",
+                    "Chúc mừng bạn!",
+                    "May mắn đến rồi!",
+                    "Phát tài phát lộc!",
+                    "Tài lộc dồi dào!"
+                ];
+                wheelMessageDisplay.textContent = messages[Math.floor(Math.random() * messages.length)];
+            } else {
+                wheelMessageDisplay.textContent = "Đừng bỏ cuộc! Thử lại nhé! 💪";
+            }
+        }
+
+        if (wheelResultDisplay) wheelResultDisplay.classList.remove("hidden");
+    }
+
+    // Spin button
+    if (spinBtnCenter) {
+        spinBtnCenter.addEventListener("click", function (e) {
+            e.stopPropagation();
+            spinWheel();
+        });
+    }
+
+    if (wheelCanvas) {
+        wheelCanvas.addEventListener("click", function () {
+            if (!isSpinning) {
+                spinWheel();
+            }
+        });
+    }
+
+
+    // ========== RESULT MODAL & DICE ==========
     function showResultModal(selectedId) {
         if (diceSection) diceSection.classList.remove("hidden");
         if (letterScratchSection) letterScratchSection.classList.add("hidden");
-
         if (resultModal) resultModal.classList.remove("hidden");
         if (modalOverlay) modalOverlay.classList.remove("hidden");
         document.body.style.overflow = "hidden";
-
         startDiceRolling(selectedId);
     }
 
-    // Start Dice Rolling
     function startDiceRolling(selectedId) {
         isRolling = true;
-
         if (dice1) dice1.classList.add("rolling");
         if (dice2) dice2.classList.add("rolling");
         if (dice3) dice3.classList.add("rolling");
@@ -512,14 +809,12 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             stopDiceRolling();
             isRolling = false;
-
             setTimeout(() => {
                 showLetterAndScratch(letter, currentAmount, message);
             }, 1000);
         }, 3000);
     }
 
-    // Generate Letter
     function generateLetter() {
         const today = new Date();
         const dateStr = today.toLocaleDateString("vi-VN", {
@@ -540,7 +835,6 @@ document.addEventListener("DOMContentLoaded", function () {
         };
     }
 
-    // Stop Dice Rolling
     function stopDiceRolling() {
         if (dice1) dice1.classList.remove("rolling");
         if (dice2) dice2.classList.remove("rolling");
@@ -563,22 +857,18 @@ document.addEventListener("DOMContentLoaded", function () {
         if (dice3) dice3.style.transform = `rotateX(${rotations[2].x}deg) rotateY(${rotations[2].y}deg)`;
     }
 
-    // Show Letter and Scratch
     function showLetterAndScratch(letter, amount, message) {
         if (diceSection) diceSection.classList.add("hidden");
         if (letterScratchSection) letterScratchSection.classList.remove("hidden");
-
         if (letterDate) letterDate.textContent = letter.date;
         if (letterContent) letterContent.innerHTML = letter.content;
         if (letterClosing) letterClosing.textContent = letter.closing;
         if (signatureName) signatureName.textContent = senderName;
-
         if (moneyAmount) moneyAmount.textContent = formatCurrency(amount);
-
         initScratchCard();
     }
 
-    // Initialize Scratch Card
+    // ========== SCRATCH CARD ==========
     function initScratchCard() {
         const container = document.querySelector('.scratch-card-container');
         if (!container) return;
@@ -593,7 +883,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         scratchCanvas.width = container.offsetWidth;
         scratchCanvas.height = container.offsetHeight;
-
         ctx = scratchCanvas.getContext("2d", { willReadFrequently: true });
 
         ctx.fillStyle = "#E0E0E0";
@@ -624,7 +913,6 @@ document.addEventListener("DOMContentLoaded", function () {
         scratchCanvas.addEventListener("mousedown", handleMouseDown);
         scratchCanvas.addEventListener("mousemove", handleMouseMove);
         scratchCanvas.addEventListener("mouseup", handleMouseUp);
-
         scratchCanvas.addEventListener("touchstart", handleTouchStart, { passive: false });
         scratchCanvas.addEventListener("touchmove", handleTouchMove, { passive: false });
         scratchCanvas.addEventListener("touchend", handleTouchEnd);
@@ -713,7 +1001,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const x = clientX;
         const y = clientY;
-
         const clampedX = Math.max(0, Math.min(x, scratchCanvas.width));
         const clampedY = Math.max(0, Math.min(y, scratchCanvas.height));
 
@@ -729,243 +1016,9 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.arc(clampedX, clampedY, radius, 0, Math.PI * 2);
         ctx.fillStyle = gradient;
         ctx.fill();
-
-        if (!skipCheck) {
-            checkScratchCompletion();
-        }
     }
 
-    function checkScratchCompletion() {
-        if (!ctx || !scratchCanvas) return;
-
-        const imageData = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
-        const pixels = imageData.data;
-        let transparentCount = 0;
-
-        for (let i = 3; i < pixels.length; i += 4) {
-            if (pixels[i] < 128) {
-                transparentCount++;
-            }
-        }
-
-        const totalPixels = pixels.length / 4;
-        const scratchedPercent = (transparentCount / totalPixels) * 100;
-    }
-
-    // Lucky Wheel Functions
-    function drawWheel() {
-        if (!wheelCanvas || !wheelCtx) return;
-
-        const centerX = wheelCanvas.width / 2;
-        const centerY = wheelCanvas.height / 2;
-        const radius = Math.min(centerX, centerY) - 20;
-
-        wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-
-        // Draw outer glow
-        wheelCtx.save();
-        wheelCtx.shadowColor = "rgba(251, 191, 36, 0.5)";
-        wheelCtx.shadowBlur = 30;
-        wheelCtx.beginPath();
-        wheelCtx.arc(centerX, centerY, radius + 10, 0, 2 * Math.PI);
-        wheelCtx.strokeStyle = "#fbbf24";
-        wheelCtx.lineWidth = 3;
-        wheelCtx.stroke();
-        wheelCtx.restore();
-
-        // Draw wheel segments
-        let startAngle = currentRotation;
-        const anglePerSlice = (2 * Math.PI) / wheelPrizes.length;
-
-        wheelPrizes.forEach((prize, index) => {
-            const endAngle = startAngle + anglePerSlice;
-
-            // Draw segment with gradient
-            const gradient = wheelCtx.createRadialGradient(centerX, centerY, 0, centerX, centerY, radius);
-            const color1 = prize.color;
-            const color2 = adjustBrightness(prize.color, -20);
-            gradient.addColorStop(0, color1);
-            gradient.addColorStop(1, color2);
-
-            wheelCtx.beginPath();
-            wheelCtx.moveTo(centerX, centerY);
-            wheelCtx.arc(centerX, centerY, radius, startAngle, endAngle);
-            wheelCtx.closePath();
-            wheelCtx.fillStyle = gradient;
-            wheelCtx.fill();
-
-            // Draw segment border
-            wheelCtx.strokeStyle = "#fff";
-            wheelCtx.lineWidth = 3;
-            wheelCtx.stroke();
-
-            // Draw text
-            wheelCtx.save();
-            wheelCtx.translate(centerX, centerY);
-            wheelCtx.rotate(startAngle + anglePerSlice / 2);
-            wheelCtx.textAlign = "center";
-            wheelCtx.textBaseline = "middle";
-
-            // Text shadow for better readability
-            wheelCtx.shadowColor = "rgba(0, 0, 0, 0.5)";
-            wheelCtx.shadowBlur = 4;
-            wheelCtx.shadowOffsetX = 2;
-            wheelCtx.shadowOffsetY = 2;
-
-            wheelCtx.font = "bold 18px 'Montserrat', sans-serif";
-            wheelCtx.fillStyle = "#fff";
-            wheelCtx.fillText(prize.text, radius * 0.65, 0);
-            wheelCtx.restore();
-
-            startAngle = endAngle;
-        });
-
-        // Draw outer ring
-        wheelCtx.beginPath();
-        wheelCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        wheelCtx.strokeStyle = "#fbbf24";
-        wheelCtx.lineWidth = 8;
-        wheelCtx.stroke();
-
-        // Draw decorative dots on outer ring
-        const dotCount = 24;
-        for (let i = 0; i < dotCount; i++) {
-            const angle = (i / dotCount) * Math.PI * 2;
-            const dotX = centerX + Math.cos(angle) * (radius + 4);
-            const dotY = centerY + Math.sin(angle) * (radius + 4);
-
-            wheelCtx.beginPath();
-            wheelCtx.arc(dotX, dotY, 4, 0, 2 * Math.PI);
-            wheelCtx.fillStyle = i % 2 === 0 ? "#fbbf24" : "#ef4444";
-            wheelCtx.fill();
-        }
-    }
-
-    function adjustBrightness(color, amount) {
-        const hex = color.replace('#', '');
-        const r = Math.max(0, Math.min(255, parseInt(hex.substr(0, 2), 16) + amount));
-        const g = Math.max(0, Math.min(255, parseInt(hex.substr(2, 2), 16) + amount));
-        const b = Math.max(0, Math.min(255, parseInt(hex.substr(4, 2), 16) + amount));
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-    }
-
-    function spinWheel() {
-        if (isSpinning) return;
-
-        isSpinning = true;
-        if (wheelResult) wheelResult.classList.add("hidden");
-
-        // Add spinning class for visual effects
-        if (wheelCanvas) wheelCanvas.classList.add("spinning");
-
-        const selectedPrize = getWeightedRandomPrize();
-        const prizeIndex = wheelPrizes.indexOf(selectedPrize);
-
-        // Calculate target rotation (multiple full spins + landing position)
-        const fullSpins = 5 + Math.random() * 2; // 5-7 full rotations
-        const anglePerSlice = (Math.PI * 2) / wheelPrizes.length;
-        const targetAngle = prizeIndex * anglePerSlice + anglePerSlice / 2;
-        const targetRotation = (Math.PI * 2 * fullSpins) - targetAngle + (Math.PI / 2);
-
-        const duration = 5000; // 5 seconds
-        const startTime = Date.now();
-        const startRotation = currentRotation;
-
-        function animate() {
-            const now = Date.now();
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-
-            // Easing function for smooth deceleration
-            const easeOut = 1 - Math.pow(1 - progress, 4);
-            currentRotation = startRotation + targetRotation * easeOut;
-
-            drawWheel();
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                currentRotation = currentRotation % (Math.PI * 2);
-                isSpinning = false;
-                if (wheelCanvas) wheelCanvas.classList.remove("spinning");
-
-                // Small bounce effect at the end
-                bounceWheel(() => {
-                    showWheelResult(selectedPrize);
-                });
-            }
-        }
-
-        animate();
-    }
-
-    function bounceWheel(callback) {
-        const bounceAmount = 0.1;
-        const bounceDuration = 200;
-        const startTime = Date.now();
-        const startRotation = currentRotation;
-
-        function animate() {
-            const elapsed = Date.now() - startTime;
-            const progress = elapsed / bounceDuration;
-
-            if (progress < 0.5) {
-                currentRotation = startRotation + bounceAmount * Math.sin(progress * Math.PI * 2);
-            } else {
-                currentRotation = startRotation + bounceAmount * Math.sin((1 - progress) * Math.PI * 2);
-            }
-
-            drawWheel();
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                currentRotation = startRotation;
-                drawWheel();
-                callback();
-            }
-        }
-
-        animate();
-    }
-
-    function getWeightedRandomPrize() {
-        const totalProbability = wheelPrizes.reduce((sum, prize) => sum + prize.probability, 0);
-        let random = Math.random() * totalProbability;
-
-        for (const prize of wheelPrizes) {
-            random -= prize.probability;
-            if (random <= 0) {
-                return prize;
-            }
-        }
-
-        return wheelPrizes[wheelPrizes.length - 1];
-    }
-
-    function showWheelResult(prize) {
-        const resultIcon = document.getElementById("result-icon");
-        if (wheelPrize) wheelPrize.textContent = prize.text;
-        if (resultIcon) resultIcon.textContent = prize.icon || (prize.amount > 0 ? "🎉" : "😢");
-
-        if (wheelMessage) {
-            if (prize.amount > 0) {
-                const messages = [
-                    "Xuân an vui, Tết hạnh phúc!",
-                    "Chúc mừng bạn!",
-                    "May mắn đến rồi!",
-                    "Phát tài phát lộc!",
-                    "Tài lộc dồi dào!"
-                ];
-                wheelMessage.textContent = messages[Math.floor(Math.random() * messages.length)];
-            } else {
-                wheelMessage.textContent = "Đừng bỏ cuộc! Thử lại nhé! 💪";
-            }
-        }
-        if (wheelResult) wheelResult.classList.remove("hidden");
-    }
-
-    // Close Modal Functions
+    // ========== CLOSE MODAL ==========
     function closeModal() {
         if (resultModal) resultModal.classList.add("hidden");
         if (modalOverlay) modalOverlay.classList.add("hidden");
@@ -994,28 +1047,10 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedAge = null;
         }
 
-        // Reset name and show modal again
-        senderName = "";
-        if (senderNameInput) senderNameInput.value = "";
-        if (nameModal) {
-            nameModal.classList.remove("hidden", "animate-slideOutLeft");
-            // Show expanded by default
-            if (nameExpanded) nameExpanded.classList.remove("hidden");
-            if (nameMinimized) nameMinimized.classList.add("hidden");
-        }
-
         updateStepIndicator(1);
         if (relationshipGrid) relationshipGrid.innerHTML = "";
     }
 
-    function closeWheelModalFunc() {
-        if (wheelModal) wheelModal.classList.add("hidden");
-        if (modalOverlay) modalOverlay.classList.add("hidden");
-        document.body.style.overflow = "auto";
-        if (wheelResult) wheelResult.classList.add("hidden");
-    }
-
-    // Event Listeners
     if (closeModalBtn) {
         closeModalBtn.addEventListener("click", closeModal);
     }
@@ -1026,45 +1061,6 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (!resultModal.classList.contains("hidden")) {
                     closeModal();
                 }
-                if (!wheelModal.classList.contains("hidden")) {
-                    closeWheelModalFunc();
-                }
-            }
-        });
-    }
-
-    if (openWheelBtn) {
-        openWheelBtn.addEventListener("click", function () {
-            if (wheelModal) wheelModal.classList.remove("hidden");
-            if (modalOverlay) modalOverlay.classList.remove("hidden");
-            document.body.style.overflow = "hidden";
-
-            if (wheelCanvas) {
-                wheelCtx = wheelCanvas.getContext("2d");
-                currentRotation = 0;
-                drawWheel();
-            }
-        });
-    }
-
-    if (closeWheelModal) {
-        closeWheelModal.addEventListener("click", closeWheelModalFunc);
-    }
-
-    // Add center button spin functionality
-    const spinBtnCenter = document.getElementById("spin-btn-center");
-    if (spinBtnCenter) {
-        spinBtnCenter.addEventListener("click", function (e) {
-            e.stopPropagation();
-            spinWheel();
-        });
-    }
-
-    // Add canvas click to spin
-    if (wheelCanvas) {
-        wheelCanvas.addEventListener("click", function () {
-            if (!isSpinning) {
-                spinWheel();
             }
         });
     }
@@ -1074,19 +1070,12 @@ document.addEventListener("DOMContentLoaded", function () {
             if (resultModal && !resultModal.classList.contains("hidden")) {
                 closeModal();
             }
-            if (wheelModal && !wheelModal.classList.contains("hidden")) {
-                closeWheelModalFunc();
+            if (wheelOverlay && !wheelOverlay.classList.contains("hidden")) {
+                closeWheel();
             }
         }
     });
 
-    // Initialize - Show name modal on load
-    updateStepIndicator(1);
-
-    // Auto-focus on name input when modal is visible
-    setTimeout(() => {
-        if (senderNameInput && nameModal && !nameModal.classList.contains("hidden")) {
-            senderNameInput.focus();
-        }
-    }, 500);
+    // Initialize
+    updateStepIndicator(hasName ? 1 : 1);
 });
