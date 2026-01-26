@@ -37,16 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const step3Dot = document.getElementById("step3-dot");
     const step4Dot = document.getElementById("step4-dot");
 
-    // Lucky Wheel Elements
-    const openWheelBtn = document.getElementById("open-wheel-btn");
-    const wheelOverlay = document.getElementById("wheel-overlay");
-    const wheelCanvas = document.getElementById("wheel-canvas");
-    const spinBtnCenter = document.getElementById("spin-btn-center");
-    const wheelResultDisplay = document.getElementById("wheel-result-display");
-    const wheelPrizeDisplay = document.getElementById("wheel-prize-display");
-    const wheelMessageDisplay = document.getElementById("wheel-message-display");
-    const pointerTriangle = document.getElementById("pointer-triangle");
-
     // Variables
     let senderName = "";
     let selectedRelationship = null;
@@ -60,11 +50,6 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedRelationshipId = "";
     let selectedAgeId = "";
     let scratchPoints = [];
-    let wheelCtx = null;
-    let isSpinning = false;
-    let currentRotation = 0;
-    let lastSegmentIndex = -1;
-
     // Relationships (8 options)
     const relationships = [
         { id: "grandparents", name: "Ông Bà", icon: "fa-solid fa-person-cane", formal: "Kính gửi Ông Bà" },
@@ -144,24 +129,6 @@ document.addEventListener("DOMContentLoaded", function () {
     };
 
     // Wheel Prize Configuration
-    const wheelPrizes = [
-        { text: "200.000₫", amount: 200000, color: "#FFD700", probability: 3, icon: "💰" },
-        { text: "100.000₫", amount: 100000, color: "#FF6B6B", probability: 5, icon: "💵" },
-        { text: "Trượt rồi!", amount: 0, color: "#6B7280", probability: 8, icon: "😢" },
-        { text: "50.000₫", amount: 50000, color: "#4ECDC4", probability: 8, icon: "💸" },
-        { text: "20.000₫", amount: 20000, color: "#95E1D3", probability: 10, icon: "💴" },
-        { text: "Trượt rồi!", amount: 0, color: "#6B7280", probability: 8, icon: "😭" },
-        { text: "10.000₫", amount: 10000, color: "#F38181", probability: 12, icon: "💶" },
-        { text: "5.000₫", amount: 5000, color: "#AA96DA", probability: 10, icon: "💷" },
-        { text: "Trượt rồi!", amount: 0, color: "#6B7280", probability: 8, icon: "😔" },
-        { text: "50.000₫", amount: 50000, color: "#4ECDC4", probability: 8, icon: "💸" },
-        { text: "20.000₫", amount: 20000, color: "#95E1D3", probability: 10, icon: "💴" },
-        { text: "10.000₫", amount: 10000, color: "#F38181", probability: 12, icon: "💶" },
-        { text: "100.000₫", amount: 100000, color: "#FF6B6B", probability: 5, icon: "💵" },
-        { text: "5.000₫", amount: 5000, color: "#AA96DA", probability: 10, icon: "💷" },
-        { text: "2.000₫", amount: 2000, color: "#C7CEEA", probability: 8, icon: "💳" }
-    ];
-
 
     // ========== LOCALSTORAGE: Lưu và lấy tên người dùng ==========
     function loadSavedName() {
@@ -189,9 +156,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Initialize - kiểm tra xem đã có tên chưa
     const hasName = loadSavedName();
     if (hasName) {
-        // Đã có tên - hiển thị minimized, không cần nhập lại
+        // Đã có tên - hiển thị minimized và TỰ ĐỘNG HIỂN thị relationship selection
         if (nameExpanded) nameExpanded.classList.add("hidden");
         if (nameMinimized) nameMinimized.classList.remove("hidden");
+
+        // TỰ ĐỘNG hiển thị giao diện relationship selection
+        if (welcomeSection) welcomeSection.classList.add("hidden");
+        initRelationshipSelection();
+        if (relationshipSelection) relationshipSelection.classList.remove("hidden");
+        updateStepIndicator(2);
     } else {
         // Chưa có tên - hiển thị modal nhập tên
         if (nameExpanded) nameExpanded.classList.remove("hidden");
@@ -471,320 +444,6 @@ document.addEventListener("DOMContentLoaded", function () {
             hongbaoGrid.appendChild(hongbaoItem);
         }
     }
-
-
-    // ========== LUCKY WHEEL ==========
-    // Open Wheel
-    if (openWheelBtn) {
-        openWheelBtn.addEventListener("click", function () {
-            if (wheelOverlay) {
-                wheelOverlay.classList.remove("hidden");
-                wheelOverlay.classList.add("flex");
-            }
-            document.body.style.overflow = "hidden";
-
-            if (wheelCanvas) {
-                wheelCtx = wheelCanvas.getContext("2d");
-                currentRotation = 0;
-                drawWheel();
-            }
-
-            if (wheelResultDisplay) wheelResultDisplay.classList.add("hidden");
-        });
-    }
-
-    // Close wheel - click outside
-    if (wheelOverlay) {
-        wheelOverlay.addEventListener("click", function (e) {
-            if (e.target === wheelOverlay) {
-                closeWheel();
-            }
-        });
-    }
-
-    function closeWheel() {
-        if (wheelOverlay) {
-            wheelOverlay.classList.remove("flex");
-            wheelOverlay.classList.add("hidden");
-        }
-        document.body.style.overflow = "auto";
-        if (wheelResultDisplay) wheelResultDisplay.classList.add("hidden");
-    }
-
-    // Draw Wheel
-    function drawWheel() {
-        if (!wheelCanvas || !wheelCtx) return;
-
-        const centerX = wheelCanvas.width / 2;
-        const centerY = wheelCanvas.height / 2;
-        const radius = Math.min(centerX, centerY) - 30;
-
-        wheelCtx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-
-        // Outer glow - multiple layers for depth
-        wheelCtx.save();
-        wheelCtx.shadowColor = "rgba(251, 191, 36, 0.4)";
-        wheelCtx.shadowBlur = 50;
-        wheelCtx.beginPath();
-        wheelCtx.arc(centerX, centerY, radius + 15, 0, 2 * Math.PI);
-        wheelCtx.strokeStyle = "#fbbf24";
-        wheelCtx.lineWidth = 5;
-        wheelCtx.stroke();
-        wheelCtx.restore();
-
-        // Draw segments with 3D effect
-        let startAngle = currentRotation;
-        const anglePerSlice = (2 * Math.PI) / wheelPrizes.length;
-
-        wheelPrizes.forEach((prize, index) => {
-            const endAngle = startAngle + anglePerSlice;
-            const midAngle = startAngle + anglePerSlice / 2;
-
-            // Segment gradient with 3D lighting effect
-            const gradient = wheelCtx.createRadialGradient(
-                centerX + Math.cos(midAngle) * radius * 0.3,
-                centerY + Math.sin(midAngle) * radius * 0.3,
-                0,
-                centerX,
-                centerY,
-                radius
-            );
-            const color1 = adjustBrightness(prize.color, 30);
-            const color2 = prize.color;
-            const color3 = adjustBrightness(prize.color, -30);
-
-            gradient.addColorStop(0, color1);
-            gradient.addColorStop(0.5, color2);
-            gradient.addColorStop(1, color3);
-
-            wheelCtx.beginPath();
-            wheelCtx.moveTo(centerX, centerY);
-            wheelCtx.arc(centerX, centerY, radius, startAngle, endAngle);
-            wheelCtx.closePath();
-            wheelCtx.fillStyle = gradient;
-            wheelCtx.fill();
-
-            // Border
-            wheelCtx.strokeStyle = "rgba(255, 255, 255, 0.3)";
-            wheelCtx.lineWidth = 2;
-            wheelCtx.stroke();
-
-            // Text
-            wheelCtx.save();
-            wheelCtx.translate(centerX, centerY);
-            wheelCtx.rotate(startAngle + anglePerSlice / 2);
-            wheelCtx.textAlign = "center";
-            wheelCtx.textBaseline = "middle";
-            wheelCtx.shadowColor = "rgba(0, 0, 0, 0.7)";
-            wheelCtx.shadowBlur = 6;
-            wheelCtx.shadowOffsetX = 2;
-            wheelCtx.shadowOffsetY = 2;
-            wheelCtx.font = "bold 17px 'Montserrat', sans-serif";
-            wheelCtx.fillStyle = "#fff";
-            wheelCtx.fillText(prize.text, radius * 0.68, 0);
-            wheelCtx.restore();
-
-            startAngle = endAngle;
-        });
-
-        // Inner shadow for depth
-        wheelCtx.save();
-        wheelCtx.globalCompositeOperation = 'source-atop';
-        const innerShadow = wheelCtx.createRadialGradient(centerX, centerY, radius * 0.7, centerX, centerY, radius);
-        innerShadow.addColorStop(0, 'rgba(0, 0, 0, 0)');
-        innerShadow.addColorStop(1, 'rgba(0, 0, 0, 0.3)');
-        wheelCtx.fillStyle = innerShadow;
-        wheelCtx.beginPath();
-        wheelCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        wheelCtx.fill();
-        wheelCtx.restore();
-
-        // Outer ring - golden with 3D effect
-        wheelCtx.save();
-        wheelCtx.beginPath();
-        wheelCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
-        const ringGradient = wheelCtx.createLinearGradient(centerX - radius, centerY - radius, centerX + radius, centerY + radius);
-        ringGradient.addColorStop(0, '#ffd700');
-        ringGradient.addColorStop(0.5, '#fbbf24');
-        ringGradient.addColorStop(1, '#f59e0b');
-        wheelCtx.strokeStyle = ringGradient;
-        wheelCtx.lineWidth = 12;
-        wheelCtx.shadowColor = 'rgba(251, 191, 36, 0.6)';
-        wheelCtx.shadowBlur = 15;
-        wheelCtx.stroke();
-        wheelCtx.restore();
-
-        // Decorative dots
-        const dotCount = 30;
-        for (let i = 0; i < dotCount; i++) {
-            const angle = (i / dotCount) * Math.PI * 2;
-            const dotX = centerX + Math.cos(angle) * (radius + 6);
-            const dotY = centerY + Math.sin(angle) * (radius + 6);
-
-            wheelCtx.beginPath();
-            wheelCtx.arc(dotX, dotY, 3.5, 0, 2 * Math.PI);
-            wheelCtx.fillStyle = i % 2 === 0 ? "#fff" : "#ef4444";
-            wheelCtx.shadowColor = i % 2 === 0 ? 'rgba(255, 255, 255, 0.8)' : 'rgba(239, 68, 68, 0.8)';
-            wheelCtx.shadowBlur = 5;
-            wheelCtx.fill();
-        }
-    }
-
-    function adjustBrightness(color, amount) {
-        const hex = color.replace('#', '');
-        const r = Math.max(0, Math.min(255, parseInt(hex.substr(0, 2), 16) + amount));
-        const g = Math.max(0, Math.min(255, parseInt(hex.substr(2, 2), 16) + amount));
-        const b = Math.max(0, Math.min(255, parseInt(hex.substr(4, 2), 16) + amount));
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
-    }
-
-    // Spin Wheel
-    function spinWheel() {
-        if (isSpinning) return;
-
-        isSpinning = true;
-        if (wheelResultDisplay) wheelResultDisplay.classList.add("hidden");
-        if (wheelCanvas) wheelCanvas.classList.add("spinning");
-
-        const selectedPrize = getWeightedRandomPrize();
-        const prizeIndex = wheelPrizes.indexOf(selectedPrize);
-
-        const fullSpins = 5 + Math.random() * 2;
-        const anglePerSlice = (Math.PI * 2) / wheelPrizes.length;
-        const targetAngle = prizeIndex * anglePerSlice + anglePerSlice / 2;
-        const targetRotation = (Math.PI * 2 * fullSpins) - targetAngle + (Math.PI / 2);
-
-        const duration = 5000;
-        const startTime = Date.now();
-        const startRotation = currentRotation;
-
-        function animate() {
-            const now = Date.now();
-            const elapsed = now - startTime;
-            const progress = Math.min(elapsed / duration, 1);
-
-            const easeOut = 1 - Math.pow(1 - progress, 4);
-            currentRotation = startRotation + targetRotation * easeOut;
-
-            drawWheel();
-
-            // Check segment crossing for pointer bounce
-            const currentSegment = Math.floor(((currentRotation % (Math.PI * 2)) + (Math.PI / 2)) / anglePerSlice) % wheelPrizes.length;
-            if (currentSegment !== lastSegmentIndex) {
-                triggerPointerBounce();
-                lastSegmentIndex = currentSegment;
-            }
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                currentRotation = currentRotation % (Math.PI * 2);
-                isSpinning = false;
-                if (wheelCanvas) wheelCanvas.classList.remove("spinning");
-                lastSegmentIndex = -1;
-
-                bounceWheel(() => {
-                    showWheelResult(selectedPrize);
-                });
-            }
-        }
-
-        animate();
-    }
-
-    // Trigger pointer bounce animation
-    function triggerPointerBounce() {
-        if (pointerTriangle) {
-            pointerTriangle.classList.remove("pointer-bounce");
-            void pointerTriangle.offsetWidth; // Force reflow
-            pointerTriangle.classList.add("pointer-bounce");
-            setTimeout(() => {
-                pointerTriangle.classList.remove("pointer-bounce");
-            }, 200);
-        }
-    }
-
-    function bounceWheel(callback) {
-        const bounceAmount = 0.1;
-        const bounceDuration = 200;
-        const startTime = Date.now();
-        const startRotation = currentRotation;
-
-        function animate() {
-            const elapsed = Date.now() - startTime;
-            const progress = elapsed / bounceDuration;
-
-            if (progress < 0.5) {
-                currentRotation = startRotation + bounceAmount * Math.sin(progress * Math.PI * 2);
-            } else {
-                currentRotation = startRotation + bounceAmount * Math.sin((1 - progress) * Math.PI * 2);
-            }
-
-            drawWheel();
-
-            if (progress < 1) {
-                requestAnimationFrame(animate);
-            } else {
-                currentRotation = startRotation;
-                drawWheel();
-                callback();
-            }
-        }
-
-        animate();
-    }
-
-    function getWeightedRandomPrize() {
-        const totalProbability = wheelPrizes.reduce((sum, prize) => sum + prize.probability, 0);
-        let random = Math.random() * totalProbability;
-
-        for (const prize of wheelPrizes) {
-            random -= prize.probability;
-            if (random <= 0) {
-                return prize;
-            }
-        }
-
-        return wheelPrizes[wheelPrizes.length - 1];
-    }
-
-    function showWheelResult(prize) {
-        if (wheelPrizeDisplay) wheelPrizeDisplay.textContent = prize.text;
-
-        if (wheelMessageDisplay) {
-            if (prize.amount > 0) {
-                const messages = [
-                    "Xuân an vui, Tết hạnh phúc!",
-                    "Chúc mừng bạn!",
-                    "May mắn đến rồi!",
-                    "Phát tài phát lộc!",
-                    "Tài lộc dồi dào!"
-                ];
-                wheelMessageDisplay.textContent = messages[Math.floor(Math.random() * messages.length)];
-            } else {
-                wheelMessageDisplay.textContent = "Đừng bỏ cuộc! Thử lại nhé! 💪";
-            }
-        }
-
-        if (wheelResultDisplay) wheelResultDisplay.classList.remove("hidden");
-    }
-
-    // Spin button
-    if (spinBtnCenter) {
-        spinBtnCenter.addEventListener("click", function (e) {
-            e.stopPropagation();
-            spinWheel();
-        });
-    }
-
-    if (wheelCanvas) {
-        wheelCanvas.addEventListener("click", function () {
-            if (!isSpinning) {
-                spinWheel();
-            }
-        });
-    }
-
 
     // ========== RESULT MODAL & DICE ==========
     function showResultModal(selectedId) {
@@ -1070,12 +729,7 @@ document.addEventListener("DOMContentLoaded", function () {
             if (resultModal && !resultModal.classList.contains("hidden")) {
                 closeModal();
             }
-            if (wheelOverlay && !wheelOverlay.classList.contains("hidden")) {
-                closeWheel();
-            }
         }
     });
 
-    // Initialize
-    updateStepIndicator(hasName ? 1 : 1);
 });
