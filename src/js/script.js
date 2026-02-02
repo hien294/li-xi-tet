@@ -37,6 +37,23 @@ document.addEventListener("DOMContentLoaded", function () {
     const step3Dot = document.getElementById("step3-dot");
     const step4Dot = document.getElementById("step4-dot");
 
+    const settingsBtn = document.getElementById('settings-btn');
+    const settingsModal = document.getElementById('settings-modal');
+    const closeSettings = document.getElementById('close-settings');
+    const saveSettingsBtn = document.getElementById('save-settings');
+
+    // Các input
+    const maxGrandparentsInput = document.getElementById('max-grandparents');
+    const maxParentsInput = document.getElementById('max-parents');
+    const maxLoversInput = document.getElementById('max-lovers');
+    const maxOthersInput = document.getElementById('max-others');
+
+    // Hiển thị giá trị
+    const displayGrandparents = document.getElementById('display-grandparents');
+    const displayParents = document.getElementById('display-parents');
+    const displayLovers = document.getElementById('display-lovers');
+    const displayOthers = document.getElementById('display-others');
+
     // Variables
     let senderName = "";
     let selectedRelationship = null;
@@ -356,27 +373,36 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Get Random Amount
     function getRandomAmount() {
-        const random = Math.random() * 100;
-        const isSpecial = ["grandparents", "parents", "lovers"].includes(selectedRelationshipId);
+        const maxLimit = (() => {
+            if (["grandparents", "parents"].includes(selectedRelationshipId)) {
+                return maxAmounts.grandparents || 200000;
+            }
+            if (selectedRelationshipId === "lovers") {
+                return maxAmounts.lovers || 200000;
+            }
+            return maxAmounts.others || 100000;
+        })();
 
-        if (isSpecial) {
-            if (random < 8) return 200000;
-            else if (random < 20) return 100000;
-            else if (random < 40) return 50000;
-            else if (random < 65) return 20000;
-            else if (random < 85) return 10000;
-            else if (random < 95) return 5000;
-            else return 2000;
-        } else {
-            if (random < 5) return 200000;
-            else if (random < 15) return 100000;
-            else if (random < 30) return 50000;
-            else if (random < 60) return 20000;
-            else if (random < 80) return 10000;
-            else if (random < 90) return 5000;
-            else if (random < 95) return 2000;
-            else return 1000;
+        // Tạo mảng các mức tiền có thể (có thể tùy chỉnh thêm)
+        const possibleAmounts = [
+            1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000
+        ].filter(n => n <= maxLimit);
+
+        if (possibleAmounts.length === 0) return 10000;
+
+        // Chọn ngẫu nhiên có trọng số (càng nhỏ càng dễ ra hơn)
+        const weights = possibleAmounts.map((_, i) => possibleAmounts.length - i);
+        const totalWeight = weights.reduce((a, b) => a + b, 0);
+        let random = Math.random() * totalWeight;
+
+        for (let i = 0; i < possibleAmounts.length; i++) {
+            random -= weights[i];
+            if (random <= 0) {
+                return possibleAmounts[i];
+            }
         }
+
+        return possibleAmounts[possibleAmounts.length - 1];
     }
 
     // Format Currency
@@ -732,4 +758,83 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function formatDisplay(amount) {
+        return amount.toLocaleString('vi-VN') + ' ₫';
+    }
+
+    // Load saved settings
+    function loadMaxAmounts() {
+        const defaults = {
+            grandparents: 200000,
+            parents: 200000,
+            lovers: 200000,
+            others: 100000
+        };
+
+        try {
+            const saved = JSON.parse(localStorage.getItem('lixi_max_amounts') || '{}');
+            return { ...defaults, ...saved };
+        } catch (e) {
+            return defaults;
+        }
+    }
+
+    let maxAmounts = loadMaxAmounts();
+
+    // Cập nhật giao diện khi mở modal
+    function updateSettingsUI() {
+        maxGrandparentsInput.value = maxAmounts.grandparents;
+        maxParentsInput.value = maxAmounts.parents;
+        maxLoversInput.value = maxAmounts.lovers;
+        maxOthersInput.value = maxAmounts.others;
+
+        displayGrandparents.textContent = formatDisplay(maxAmounts.grandparents);
+        displayParents.textContent = formatDisplay(maxAmounts.parents);
+        displayLovers.textContent = formatDisplay(maxAmounts.lovers);
+        displayOthers.textContent = formatDisplay(maxAmounts.others);
+    }
+
+    // Cập nhật hiển thị realtime khi kéo slider
+    [maxGrandparentsInput, maxParentsInput, maxLoversInput, maxOthersInput].forEach(input => {
+        input.addEventListener('input', () => {
+            const id = input.id.replace('max-', '');
+            const display = document.getElementById(`display-${id}`);
+            if (display) {
+                display.textContent = formatDisplay(Number(input.value));
+            }
+        });
+    });
+
+    // Mở modal
+    settingsBtn?.addEventListener('click', () => {
+        updateSettingsUI();
+        settingsModal?.classList.remove('hidden');
+    });
+
+    // Đóng modal
+    closeSettings?.addEventListener('click', () => {
+        settingsModal?.classList.add('hidden');
+    });
+
+    settingsModal?.addEventListener('click', e => {
+        if (e.target === settingsModal) {
+            settingsModal.classList.add('hidden');
+        }
+    });
+
+    // Lưu cài đặt
+    saveSettingsBtn?.addEventListener('click', () => {
+        maxAmounts = {
+            grandparents: Number(maxGrandparentsInput.value),
+            parents: Number(maxParentsInput.value),
+            lovers: Number(maxLoversInput.value),
+            others: Number(maxOthersInput.value)
+        };
+
+        localStorage.setItem('lixi_max_amounts', JSON.stringify(maxAmounts));
+        settingsModal?.classList.add('hidden');
+
+        // Có thể thêm thông báo nhỏ (toast) nếu muốn
+        alert('Đã lưu cài đặt số tiền tối đa!');
+    });
 });
