@@ -431,3 +431,48 @@ body {
         transform: translateY(0);
     }
 }
+
+#settings-btn i.fa-cog {
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#settings-btn:hover i.fa-cog {
+    animation-play-state: paused;
+}
+
+#settings-modal:not(.hidden)>div {
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+input[type="range"] {
+    height: 8px;
+    /* mobile */
+}
+
+@media (min-width: 640px) {
+    input[type="range"] {
+        height: 10px;
+    }
+}

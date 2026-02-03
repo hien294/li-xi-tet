@@ -24,8 +24,10 @@
         <div class="relative text-2xl md:text-3xl font-dancing text-amber-300 mb-4 tracking-wide">Gửi trao yêu thương ·
           Nhận lộc an khang</div>
       </div>
-      <button id="settings-btn"
-        class="absolute top-0 right-4 md:right-8 text-amber-300 hover:text-amber-100 transition-colors text-2xl z-10">
+      <button id="settings-btn" class="absolute right-4 md:right-8 
+               top-10 md:top-4 lg:top-2 
+               text-amber-300 hover:text-amber-100 
+               transition-colors text-2xl z-20">
         <i class="fas fa-cog"></i>
       </button>
       <div class="step-indicator">
@@ -408,101 +410,113 @@
 
   <!-- Settings Modal -->
   <div id="settings-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[200] hidden">
-    <div
-      class="bg-gradient-to-br from-gray-900 to-black rounded-2xl w-full max-w-lg mx-4 border border-amber-500/40 shadow-2xl overflow-hidden">
-      <div class="bg-gradient-to-r from-amber-800 to-red-800 p-5 text-center relative">
-        <h3 class="text-xl font-playfair font-bold text-white">Cài đặt hạn mức tối thiểu & tối đa</h3>
-        <button id="close-settings" class="absolute top-4 right-5 text-white hover:text-amber-200 text-xl">
+    <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl 
+              w-full max-w-md mx-4 sm:max-w-lg 
+              border border-amber-500/30 shadow-2xl overflow-hidden
+              max-h-[90vh] sm:max-h-[85vh]">
+
+      <!-- Header -->
+      <div class="bg-gradient-to-r from-amber-800 to-red-800 px-5 py-4 text-center relative">
+        <h3 class="text-xl sm:text-2xl font-playfair font-bold text-white">Cài đặt hạn mức</h3>
+        <button id="close-settings"
+          class="absolute top-1/2 -translate-y-1/2 right-4 text-white hover:text-amber-200 text-2xl p-2">
           <i class="fas fa-times"></i>
         </button>
       </div>
 
-      <div class="p-6 space-y-8 max-h-[70vh] overflow-y-auto">
+      <!-- Nội dung chính - cuộn được -->
+      <div
+        class="p-5 sm:p-6 space-y-6 sm:space-y-8 overflow-y-auto max-h-[calc(90vh-140px)] sm:max-h-[calc(85vh-140px)]">
 
         <!-- Ông Bà -->
         <div class="space-y-3">
-          <label class="block text-amber-300 font-medium">Ông Bà</label>
-          <div class="flex gap-4">
+          <label class="block text-amber-300 font-medium text-base sm:text-lg">Ông Bà</label>
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-grandparents" min="10000" max="500000" step="10000" value="50000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-min-grandparents">50.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-grandparents">50.000 ₫</div>
             </div>
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-grandparents" min="50000" max="500000" step="10000" value="500000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-grandparents">500.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-grandparents">500.000 ₫</div>
             </div>
           </div>
         </div>
 
         <!-- Bố Mẹ -->
         <div class="space-y-3">
-          <label class="block text-amber-300 font-medium">Bố Mẹ</label>
-          <div class="flex gap-4">
+          <label class="block text-amber-300 font-medium text-base sm:text-lg">Bố Mẹ</label>
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-parents" min="10000" max="500000" step="10000" value="50000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-min-parents">50.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-parents">50.000 ₫</div>
             </div>
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-parents" min="50000" max="500000" step="10000" value="500000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-parents">500.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-parents">500.000 ₫</div>
             </div>
           </div>
         </div>
 
         <!-- Người yêu -->
         <div class="space-y-3">
-          <label class="block text-amber-300 font-medium">Người yêu</label>
-          <div class="flex gap-4">
+          <label class="block text-amber-300 font-medium text-base sm:text-lg">Người yêu</label>
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-lovers" min="10000" max="500000" step="10000" value="50000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-min-lovers">50.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-lovers">50.000 ₫</div>
             </div>
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-lovers" min="50000" max="500000" step="10000" value="500000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-lovers">500.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-lovers">500.000 ₫</div>
             </div>
           </div>
         </div>
 
         <!-- Các mối quan hệ khác -->
         <div class="space-y-3">
-          <label class="block text-amber-300 font-medium">Các mối quan hệ khác</label>
-          <div class="flex gap-4">
+          <label class="block text-amber-300 font-medium text-base sm:text-lg">Các mối quan hệ khác</label>
+          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-others" min="1000" max="500000" step="5000" value="10000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-min-others">10.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-others">10.000 ₫</div>
             </div>
             <div class="flex-1">
               <div class="text-sm text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-others" min="10000" max="500000" step="10000" value="500000"
-                class="w-full accent-amber-500">
-              <div class="text-right text-amber-200 text-sm" id="display-others">500.000 ₫</div>
+                class="w-full accent-amber-500 h-2 rounded-lg">
+              <div class="text-right text-amber-200 text-sm mt-1" id="display-others">500.000 ₫</div>
             </div>
           </div>
         </div>
 
-        <div class="pt-4 border-t border-amber-800/40 text-center text-sm text-amber-400/80">
-          Số tiền sẽ random trong khoảng [Tối thiểu — Tối đa] đã chọn
+        <!-- Ghi chú -->
+        <div class="pt-4 border-t border-amber-800/40 text-center text-sm sm:text-base text-amber-400/80 italic">
+          Số tiền sẽ được random trong khoảng bạn đã chọn
         </div>
       </div>
 
-      <div class="p-5 bg-black/40 text-center">
-        <button id="save-settings"
-          class="bg-gradient-to-r from-amber-500 to-amber-700 hover:from-amber-600 hover:to-amber-800 text-white font-bold py-3 px-10 rounded-xl transition-all shadow-lg">
+      <!-- Nút Lưu -->
+      <div class="p-5 bg-black/40 text-center border-t border-amber-900/30">
+        <button id="save-settings" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-amber-700 
+                     hover:from-amber-600 hover:to-amber-800 
+                     text-white font-bold py-3 px-10 rounded-xl 
+                     transition-all shadow-lg text-base sm:text-lg
+                     active:scale-95">
           Lưu cài đặt
         </button>
       </div>
