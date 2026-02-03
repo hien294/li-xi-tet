@@ -470,10 +470,18 @@ document.addEventListener("DOMContentLoaded", function () {
             "from-amber-900 to-red-700", "from-red-900 to-amber-950", "from-red-600 to-amber-700",
             "from-amber-700 to-red-800", "from-red-800 to-amber-800", "from-amber-800 to-red-700",
             "from-red-700 to-amber-900", "from-amber-900 to-red-600", "from-red-900 to-amber-700",
+            "from-amber-700 to-red-900", "from-red-600 to-amber-800", "from-amber-800 to-red-600",
+            "from-red-600 to-red-800", "from-red-700 to-red-900", "from-amber-600 to-amber-800",
+            "from-red-800 to-red-950", "from-amber-700 to-amber-900", "from-red-900 to-amber-900",
+            "from-amber-800 to-red-900", "from-red-700 to-amber-800", "from-amber-900 to-red-800",
+            "from-red-800 to-amber-700", "from-amber-800 to-red-950", "from-red-950 to-amber-800",
+            "from-amber-900 to-red-700", "from-red-900 to-amber-950", "from-red-600 to-amber-700",
+            "from-amber-700 to-red-800", "from-red-800 to-amber-800", "from-amber-800 to-red-700",
+            "from-red-700 to-amber-900", "from-amber-900 to-red-600", "from-red-900 to-amber-700",
             "from-amber-700 to-red-900", "from-red-600 to-amber-800", "from-amber-800 to-red-600"
         ];
 
-        for (let i = 1; i <= 24; i++) {
+        for (let i = 1; i <= 40; i++) {
             const colorClass = colorVariants[i - 1];
             const hongbaoItem = document.createElement("div");
             hongbaoItem.className = `hongbao-card rounded-lg flex flex-col cursor-pointer h-40 md:h-48`;
