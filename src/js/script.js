@@ -420,11 +420,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const min = range.min;
         const max = range.max;
-        if (min >= max) return min;
 
-        let amount = min + Math.random() * (max - min);
-        amount = Math.round(amount / 5000) * 5000;
-        return Math.max(min, Math.min(max, amount));
+        const popularAmounts = [10000, 20000, 50000, 100000, 200000, 500000];
+        const possibleAmounts = popularAmounts.filter(amount => amount >= min && amount <= max);
+        if (possibleAmounts.length === 0) {
+            return popularAmounts.reduce((prev, curr) =>
+                Math.abs(curr - min) < Math.abs(prev - min) ? curr : prev
+            );
+        }
+        const randomIndex = Math.floor(Math.random() * possibleAmounts.length);
+        return possibleAmounts[randomIndex];
     }
 
     // ========== CREATE HONGBAOS (giữ nguyên) ==========
