@@ -104,29 +104,140 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Letter Templates (giữ nguyên toàn bộ nội dung dài của bạn)
     const letterTemplates = {
+        // Ông Bà - trang trọng, kính trọng, ấm áp
         grandparents: [
-            `Xuân mới lại về, mang theo bao niềm vui và hy vọng. Nhân dịp năm mới, cháu xin gửi đến Ông Bà lời chúc sức khỏe, an khang và thịnh vượng.<br><br>Chúc Ông Bà luôn dồi dào sức khỏe, tinh thần minh mẫn, và tràn đầy niềm vui trong cuộc sống. Mong rằng năm mới sẽ mang đến nhiều may mắn, thành công và hạnh phúc cho Ông Bà.<br><br>Dù không gian có cách trở nhưng tấm lòng và tình cảm luôn hướng về Ông Bà. Những lời dạy bảo của Ông Bà là kim chỉ nam quý giá nhất cho cháu trong cuộc đời.`
+            `Xuân mới lại về, mang theo bao niềm vui và hy vọng. Nhân dịp năm mới, cháu xin gửi đến Ông Bà lời chúc sức khỏe, an khang và thịnh vượng.<br><br>Chúc Ông Bà luôn dồi dào sức khỏe, tinh thần minh mẫn, và tràn đầy niềm vui trong cuộc sống. Mong rằng năm mới sẽ mang đến nhiều may mắn, thành công và hạnh phúc cho Ông Bà.`,
+
+            `Kính gửi Ông Bà kính yêu,<br><br>Năm mới đến rồi ạ! Cháu chúc Ông Bà một năm mới thật nhiều sức khỏe, ăn ngon miệng, ngủ ngon giấc và luôn vui vẻ bên con cháu. Cảm ơn Ông Bà đã luôn yêu thương, che chở và dạy dỗ cháu nên người.`,
+
+            `Thưa Ông Bà,<br><br>Cháu kính chúc Ông Bà năm mới bình an, mạnh khỏe, vạn sự như ý. Mong mỗi ngày trôi qua, Ông Bà đều được tận hưởng những niềm vui giản dị bên gia đình. Cháu luôn tự hào vì được làm cháu của Ông Bà.`,
+
+            `Thưa Ông Bà,<br><br>Xuân sang, cháu xin kính chúc Ông Bà tuổi mới thêm xuân, sức khỏe dồi dào, phúc lộc đầy nhà. Mong Ông Bà luôn giữ được nụ cười hiền từ và sự minh mẫn như hiện tại.`,
+
+            `Ông Bà yêu quý,<br><br>Cháu chúc Ông Bà năm mới thật nhiều phúc thọ, an khang, thịnh vượng. Dù cháu có đi xa đến đâu, trái tim cháu vẫn luôn hướng về Ông Bà. Cảm ơn Ông Bà vì tất cả.`,
+
+            `Kính gửi Ông Bà,<br><br>Năm mới cháu chúc Ông Bà sức khỏe dồi dào như suối nguồn, hạnh phúc viên mãn như trăng rằm, và tuổi thọ trăm năm. Cháu mong sớm được quây quần bên Ông Bà trong những ngày Tết ấm áp.`,
+
+            `Thưa Ông Bà kính mến,<br><br>Cháu xin chúc Ông Bà một năm mới tràn đầy sức sống, tinh thần lạc quan, và luôn được con cháu vây quanh yêu thương. Cháu yêu Ông Bà nhiều lắm ạ!`
         ],
+
+        // Bố Mẹ - tình cảm, biết ơn, gần gũi
         parents: [
-            `Gửi Bố Mẹ yêu quý,<br><br>Xuân mới lại về, con xin gửi đến Bố Mẹ những lời chúc tốt đẹp nhất. Chúc Bố Mẹ năm mới thật nhiều sức khỏe, luôn vui vẻ và hạnh phúc.<br><br>Cảm ơn Bố Mẹ đã luôn yêu thương, chăm sóc và dạy dỗ con nên người. Con yêu Bố Mẹ rất nhiều!`
+            `Gửi Bố Mẹ yêu quý,<br><br>Xuân mới lại về, con xin gửi đến Bố Mẹ những lời chúc tốt đẹp nhất. Chúc Bố Mẹ năm mới thật nhiều sức khỏe, luôn vui vẻ và hạnh phúc. Con yêu Bố Mẹ rất nhiều!`,
+
+            `Bố Mẹ ơi,<br><br>Năm mới đến rồi! Con chúc Bố Mẹ luôn khỏe mạnh, công việc thuận lợi, gia đình yên vui. Con hứa sẽ cố gắng học tập/làm việc thật tốt để Bố Mẹ tự hào.`,
+
+            `Kính gửi Bố Mẹ,<br><br>Con chúc Bố Mẹ một năm mới an khang, thịnh vượng, sức khỏe dồi dào. Cảm ơn Bố Mẹ vì tất cả những hy sinh thầm lặng. Con luôn biết ơn và yêu thương Bố Mẹ nhất trên đời.`,
+
+            `Bố Mẹ yêu quý,<br><br>Chúc Bố Mẹ năm mới thật nhiều niềm vui, ít lo toan, sức khỏe tốt và luôn cười thật tươi. Con mong Bố Mẹ luôn vui vẻ như thế này mãi nhé!`,
+
+            `Bố Mẹ kính yêu,<br><br>Năm mới con chúc Bố Mẹ sức khỏe như voi, hạnh phúc như mơ, và tiền vào như nước. Con sẽ cố gắng để sau này có thể lo cho Bố Mẹ thật tốt ạ.`,
+
+            `Gửi hai người quan trọng nhất đời con,<br><br>Chúc Bố Mẹ năm mới bình an, khỏe mạnh, và luôn thấy tự hào về con. Con yêu Bố Mẹ nhiều hơn mọi lời nói có thể diễn tả.`,
+
+            `Bố Mẹ ơi,<br><br>Năm mới rồi nha! Chúc Bố Mẹ ngủ ngon, ăn ngon, ít cáu, nhiều tiền và luôn vui vẻ bên con. Con thương Bố Mẹ nhất trên đời luôn!`
         ],
+
+        // Con cái - yêu thương, động viên, gần gũi
         children: [
-            `Gửi các con yêu quý,<br><br>Năm mới đến, ba/mẹ gửi đến các con lời chúc tốt đẹp nhất. Chúc các con luôn khỏe mạnh, vui vẻ và học hành chăm ngoan.<br><br>Ba/mẹ rất tự hào về các con. Chúc các con năm mới nhiều niềm vui!`
+            `Gửi các con yêu quý,<br><br>Năm mới đến, ba/mẹ gửi đến các con lời chúc tốt đẹp nhất. Chúc các con luôn khỏe mạnh, vui vẻ và học hành chăm ngoan. Ba/mẹ rất tự hào về các con.`,
+
+            `Các con yêu của ba/mẹ,<br><br>Chúc các con năm mới thật nhiều may mắn, học giỏi, chơi vui, lớn lên thật ngoan ngoãn và khỏe mạnh. Ba/mẹ yêu các con rất nhiều!`,
+
+            `Gửi các thiên thần nhỏ,<br><br>Năm mới đến rồi nhé! Chúc các con luôn cười thật tươi, ăn ngoan, học giỏi và luôn làm ba/mẹ vui lòng. Yêu các con nhiều lắm!`,
+
+            `Các con yêu,<br><br>Ba/mẹ chúc các con một năm mới tràn đầy năng lượng, học hành tấn tới, sức khỏe dồi dào và luôn vui vẻ bên gia đình.`,
+
+            `Các bé cưng của ba/mẹ,<br><br>Năm mới chúc các con cao lớn, xinh đẹp, thông minh, và luôn ngoan ngoãn. Ba/mẹ sẽ luôn ở bên các con nhé!`,
+
+            `Gửi các con trai/con gái của ba/mẹ,<br><br>Chúc các con năm mới gặp nhiều điều tốt đẹp, bạn bè tốt, thầy cô thương, và luôn giữ được nụ cười rạng rỡ.`,
+
+            `Các con yêu dấu,<br><br>Ba/mẹ mong các con năm mới này sẽ tự tin hơn, mạnh mẽ hơn và luôn biết mình được yêu thương rất nhiều. Yêu các con!`
         ],
+
+        // Anh chị em - thân mật, gần gũi, có thể pha chút hài hước
         siblings: [
-            `Gửi anh/chị/em thân yêu,<br><br>Xuân về với muôn vàn niềm vui, anh/chị/em gửi lời chúc năm mới an khang, thịnh vượng. Chúc mình luôn khỏe mạnh, thành công trong công việc và hạnh phúc trong cuộc sống.`
+            `Gửi anh/chị/em thân yêu,<br><br>Xuân về với muôn vàn niềm vui, anh/chị/em gửi lời chúc năm mới an khang, thịnh vượng. Chúc mình luôn khỏe mạnh, thành công và hạnh phúc.`,
+
+            `Ê anh/em/chị,<br><br>Năm mới rồi nha! Chúc mày khỏe mạnh, kiếm thật nhiều tiền, yêu đương thuận lợi, và đừng có lười nữa nha =)) Yêu mày nhiều!`,
+
+            `Gửi anh/chị/em iu dấu,<br><br>Chúc em/anh/chị một năm mới thật rực rỡ, công việc thăng hoa, sức khỏe tốt và luôn vui vẻ. Tình anh em mình vẫn bền chặt nhé!`,
+
+            `Anh/chị/em ơi,<br><br>Năm mới chúc em/anh/chị phát tài phát lộc, gặp toàn chuyện tốt, và đừng quên rủ anh/chị/em đi ăn uống chơi bời nha!`,
+
+            `Gửi đứa em/anh/chị đáng ghét mà thương nhất,<br><br>Chúc mày năm mới đẹp hơn, giàu hơn, và bớt cà chớn với tao lại chút nha =)) Thương mày lắm!`,
+
+            `Anh/chị/em yêu,<br><br>Năm mới chúc mình vẫn giữ được tình cảm anh em keo sơn, cùng nhau vượt qua mọi khó khăn, và cùng nhau ăn chơi xả láng nhé!`,
+
+            `Ê ku/ê chị/ê anh,<br><br>Năm mới chúc mày tiền vô như nước, deadline trôi như mây, và crush đổ đứ đừ. Yêu mày nhiều!`
         ],
+
+        // Bạn bè - thoải mái, vui vẻ, hiện đại, hài hước
         friends: [
-            `Gửi bạn thân yêu,<br><br>Năm mới đến rồi! Chúc bạn một năm tràn đầy sức khỏe, thành công và hạnh phúc. Tình bạn của chúng ta là món quà quý giá mà mình trân trọng nhất.`
+            `Gửi bạn thân yêu,<br><br>Năm mới đến rồi! Chúc bạn một năm tràn đầy sức khỏe, thành công và hạnh phúc. Tình bạn của chúng ta là món quà quý giá nhất.`,
+
+            `Ê mày,<br><br>Năm mới rồi đó! Chúc mày phát tài, đẹp trai/xinh gái hơn, yêu đương ưng ý, và đừng có "mất tích" nữa nha =)) Yêu mày!`,
+
+            `Bạn iu dấu,<br><br>Chúc cậu một năm mới thật nhiều niềm vui, công việc thuận buồm xuôi gió, sức khỏe dồi dào và luôn cười thật tươi như bây giờ nhé!`,
+
+            `Gửi crush kiêm bạn thân,<br><br>Năm mới chúc bạn gặp nhiều may mắn, thành công rực rỡ, và... biết đâu đấy, tình cảm cũng thuận lợi hơn nha =))`,
+
+            `Ê bro/sis,<br><br>Năm mới chúc mày tiền đầy túi, người yêu xinh/đẹp, sức khỏe tốt và bọn mình vẫn quậy tưng bừng như xưa nhé!`,
+
+            `Bạn thân nhất hệ mặt trời,<br><br>Chúc cậu năm mới không drama, không nợ nần, chỉ có tiền và niềm vui. Cảm ơn vì luôn ở bên tao!`,
+
+            `Gửi người bạn tuyệt vời,<br><br>Năm mới chúc bạn mọi điều tốt đẹp nhất: tiền vào túi, crush đổ, và bọn mình mãi là bạn thân nhé!`,
+
+            `Ê ku,<br><br>Năm mới rồi nha! Chúc mày đẹp hơn, giàu hơn, và bớt "cục súc" với tao lại chút xíu =)) Yêu mày nhiều!`
         ],
+
+        // Đồng nghiệp - lịch sự, chuyên nghiệp, tích cực
         colleagues: [
-            `Gửi đồng nghiệp thân mến,<br><br>Nhân dịp năm mới, xin chúc anh/chị/bạn sức khỏe dồi dào, công việc thăng tiến, gia đình hạnh phúc. Chúc mừng năm mới!`
+            `Gửi đồng nghiệp thân mến,<br><br>Nhân dịp năm mới, xin chúc anh/chị/bạn sức khỏe dồi dào, công việc thăng tiến, gia đình hạnh phúc. Chúc mừng năm mới!`,
+
+            `Chào anh/chị/bạn đồng nghiệp,<br><br>Chúc anh/chị/bạn năm mới công việc thuận lợi, lương tăng vù vù, sếp thương, khách quý và luôn vui vẻ nhé!`,
+
+            `Gửi đồng nghiệp tuyệt vời,<br><br>Năm mới chúc bạn sức khỏe tốt, deadline trôi qua nhẹ nhàng, bonus khủng và luôn giữ được tinh thần lạc quan.`,
+
+            `Anh/chị/bạn ơi,<br><br>Chúc năm mới công việc hanh thông, thu nhập tăng cao, và sớm đạt được mục tiêu đã đề ra. Mong tiếp tục được làm việc cùng bạn!`,
+
+            `Gửi đồng đội thân thiết,<br><br>Năm mới chúc bạn luôn tràn đầy năng lượng, sáng tạo dồi dào, và thành công rực rỡ trong sự nghiệp.`,
+
+            `Chúc anh/chị/bạn,<br><br>Một năm mới nhiều dự án thành công, nhiều cơ hội thăng tiến, và đặc biệt là nhiều ngày nghỉ phép nhé!`,
+
+            `Gửi người đồng nghiệp tuyệt vời,<br><br>Chúc bạn năm mới khỏe mạnh, vui vẻ, và công việc luôn thuận buồm xuôi gió như mong đợi.`
         ],
+
+        // Cô Dì Chú Bác - kính trọng, gần gũi vừa phải
         aunt_uncle: [
-            `Kính gửi Cô/Dì/Chú/Bác,<br><br>Xuân về, cháu xin kính chúc Cô/Dì/Chú/Bác sức khỏe dồi dào, gia đình hạnh phúc, công việc thuận lợi. Chúc cả gia đình luôn sum vầy, hạnh phúc!`
+            `Kính gửi Cô/Dì/Chú/Bác,<br><br>Xuân về, cháu xin kính chúc Cô/Dì/Chú/Bác sức khỏe dồi dào, gia đình hạnh phúc, công việc thuận lợi.`,
+
+            `Kính gửi Cô/Chú/Dì/Bác,<br><br>Cháu chúc Cô/Dì/Chú/Bác năm mới thật nhiều sức khỏe, an vui và gặp nhiều thuận lợi. Cảm ơn vì đã luôn yêu thương cháu.`,
+
+            `Thưa Cô/Dì/Chú/Bác,<br><br>Năm mới cháu kính chúc Cô/Dì/Chú/Bác phúc lộc đầy nhà, sức khỏe bền lâu, và luôn giữ được nụ cười ấm áp.`,
+
+            `Kính gửi Cô/Chú/Dì/Bác yêu quý,<br><br>Cháu chúc Cô/Dì/Chú/Bác năm mới an khang, thịnh vượng, và gia đình luôn sum vầy, hạnh phúc.`,
+
+            `Cô/Dì/Chú/Bác ơi,<br><br>Cháu chúc Cô/Dì/Chú/Bác năm mới thật nhiều may mắn, sức khỏe tốt và luôn vui vẻ bên con cháu ạ!`
         ],
+
+        // Người yêu - lãng mạn, ngọt ngào, tình cảm
         lovers: [
-            `Gửi người yêu dấu,<br><br>Xuân về, anh/em xin gửi đến em/anh lời chúc ngọt ngào nhất. Chúc chúng ta một năm mới tràn đầy hạnh phúc, tình yêu thắm thiết. Anh/em yêu em/anh rất nhiều!`
+            `Gửi người yêu dấu,<br><br>Xuân về, anh/em xin gửi đến em/anh lời chúc ngọt ngào nhất. Chúc chúng ta một năm mới tràn đầy hạnh phúc, tình yêu thắm thiết.`,
+
+            `Anh/em yêu,<br><br>Năm mới rồi nha! Chúc mình mãi bên nhau, yêu thương nhau nhiều hơn mỗi ngày, và cùng nhau tạo thật nhiều kỷ niệm đẹp.`,
+
+            `Người thương của anh/em,<br><br>Chúc em/anh năm mới thật nhiều niềm vui, sức khỏe tốt, và tình yêu của chúng ta ngày càng bền chặt.`,
+
+            `Em/Anh iu dấu,<br><br>Năm mới chúc mình luôn nắm tay nhau đi qua mọi điều, cùng cười, cùng mơ ước. Anh/em yêu em/anh hơn cả những lời có thể nói ra.`,
+
+            `Người ấy của anh/em,<br><br>Chúc em/anh một năm mới thật ngọt ngào, thật nhiều khoảnh khắc hạnh phúc bên anh/em. Yêu em/anh mãi mãi nhé!`,
+
+            `Anh/em yêu quý,<br><br>Năm mới này anh/em chỉ mong một điều duy nhất: được ở bên em/anh mỗi ngày, mỗi khoảnh khắc. Yêu em/anh nhiều lắm!`,
+
+            `Gửi crush của đời anh/em,<br><br>Chúc em/anh năm mới xinh đẹp/đẹp trai hơn, hạnh phúc hơn, và yêu anh/em nhiều hơn nữa nha <3`,
+
+            `Người quan trọng nhất,<br><br>Năm mới chúc chúng ta luôn có nhau, luôn hiểu nhau, và tình yêu ngày càng sâu đậm. Anh/em yêu em/anh rất nhiều!`
         ]
     };
 
@@ -565,12 +676,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const relationship = relationships.find((r) => r.id === selectedRelationshipId);
         const templates = letterTemplates[selectedRelationshipId] || letterTemplates.friends;
-        const content = templates[Math.floor(Math.random() * templates.length)];
+        const randomContent = templates[Math.floor(Math.random() * templates.length)];
 
         return {
             date: `Ngày ${dateStr}`,
             greeting: `${relationship.formal},`,
-            content: content,
+            content: randomContent,
             closing: letterClosings[selectedRelationshipId]
         };
     }
