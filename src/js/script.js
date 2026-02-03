@@ -176,33 +176,46 @@ document.addEventListener("DOMContentLoaded", function () {
     // ========== SETTINGS LOGIC (min & max) ==========
     function updateSettingsUI() {
         ['grandparents', 'parents', 'lovers', 'others'].forEach(group => {
-            document.getElementById(`min-${group}`).value = amountRanges[group].min;
-            document.getElementById(`max-${group}`).value = amountRanges[group].max;
-            document.getElementById(`display-min-${group}`).textContent = formatCurrency(amountRanges[group].min);
-            document.getElementById(`display-${group}`).textContent = formatCurrency(amountRanges[group].max);
+            const minInput = document.getElementById(`min-${group}`);
+            const maxInput = document.getElementById(`max-${group}`);
+            const minDisplay = document.getElementById(`display-min-${group}`);
+            const maxDisplay = document.getElementById(`display-${group}`);
+
+            minInput.value = amountRanges[group].min;
+            maxInput.value = amountRanges[group].max;
+            minDisplay.textContent = formatCurrency(amountRanges[group].min);
+            maxDisplay.textContent = formatCurrency(amountRanges[group].max);
         });
+    }
+
+    function syncMinMax(group, changedType) {
+        const minInput = document.getElementById(`min-${group}`);
+        const maxInput = document.getElementById(`max-${group}`);
+        const minDisplay = document.getElementById(`display-min-${group}`);
+        const maxDisplay = document.getElementById(`display-${group}`);
+
+        let minVal = Number(minInput.value);
+        let maxVal = Number(maxInput.value);
+
+        if (minVal > maxVal) {
+            if (changedType === 'min') {
+                maxInput.value = minVal;
+                maxDisplay.textContent = formatCurrency(minVal);
+            } else if (changedType === 'max') {
+                minInput.value = maxVal;
+                minDisplay.textContent = formatCurrency(maxVal);
+            }
+        } else {
+            minDisplay.textContent = formatCurrency(minVal);
+            maxDisplay.textContent = formatCurrency(maxVal);
+        }
     }
 
     document.querySelectorAll('#settings-modal input[type="range"]').forEach(slider => {
         slider.addEventListener('input', () => {
             const [type, group] = slider.id.split('-');
-            const displayId = type === 'min' ? `display-min-${group}` : `display-${group}`;
-            document.getElementById(displayId).textContent = formatCurrency(Number(slider.value));
 
-            if (type === 'min') {
-                const maxEl = document.getElementById(`max-${group}`);
-                if (Number(slider.value) > Number(maxEl.value)) {
-                    maxEl.value = slider.value;
-                    document.getElementById(`display-${group}`).textContent = formatCurrency(Number(maxEl.value));
-                }
-            }
-            if (type === 'max') {
-                const minEl = document.getElementById(`min-${group}`);
-                if (Number(slider.value) < Number(minEl.value)) {
-                    minEl.value = slider.value;
-                    document.getElementById(`display-min-${group}`).textContent = formatCurrency(Number(minEl.value));
-                }
-            }
+            syncMinMax(group, type);
         });
     });
 
@@ -218,11 +231,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
     saveSettingsBtn?.addEventListener('click', () => {
         ['grandparents', 'parents', 'lovers', 'others'].forEach(group => {
+            const minInput = document.getElementById(`min-${group}`);
+            const maxInput = document.getElementById(`max-${group}`);
+
+            let minVal = Number(minInput.value);
+            let maxVal = Number(maxInput.value);
+
+            if (minVal > maxVal) {
+                maxVal = minVal;
+                maxInput.value = maxVal;
+            }
+
             amountRanges[group] = {
-                min: Number(document.getElementById(`min-${group}`).value),
-                max: Number(document.getElementById(`max-${group}`).value)
+                min: minVal,
+                max: maxVal
             };
         });
+
         localStorage.setItem('lixi_amount_ranges', JSON.stringify(amountRanges));
         settingsModal?.classList.add('hidden');
     });
