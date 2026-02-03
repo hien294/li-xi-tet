@@ -42,18 +42,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeSettings = document.getElementById('close-settings');
     const saveSettingsBtn = document.getElementById('save-settings');
 
-    // Các input
-    const maxGrandparentsInput = document.getElementById('max-grandparents');
-    const maxParentsInput = document.getElementById('max-parents');
-    const maxLoversInput = document.getElementById('max-lovers');
-    const maxOthersInput = document.getElementById('max-others');
-
-    // Hiển thị giá trị
-    const displayGrandparents = document.getElementById('display-grandparents');
-    const displayParents = document.getElementById('display-parents');
-    const displayLovers = document.getElementById('display-lovers');
-    const displayOthers = document.getElementById('display-others');
-
     // Variables
     let senderName = "";
     let selectedRelationship = null;
@@ -67,28 +55,25 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedRelationshipId = "";
     let selectedAgeId = "";
     let scratchPoints = [];
-    // Relationships (8 options)
+
+    // Relationships (đã thêm needsAge)
     const relationships = [
-        { id: "grandparents", name: "Ông Bà", icon: "fa-solid fa-person-cane", formal: "Kính gửi Ông Bà" },
-        { id: "parents", name: "Bố Mẹ", icon: "fa-solid fa-house-user", formal: "Kính gửi Bố Mẹ" },
-        { id: "children", name: "Con Cái", icon: "fa-solid fa-children", formal: "Gửi các con yêu" },
-        { id: "siblings", name: "Anh Chị Em", icon: "fa-solid fa-people-group", formal: "Gửi anh/chị/em" },
-        { id: "aunt_uncle", name: "Cô Dì Chú Bác", icon: "fa-solid fa-people-roof", formal: "Kính gửi Cô/Dì/Chú/Bác" },
-        { id: "friends", name: "Bạn Bè", icon: "fa-solid fa-user-group", formal: "Gửi bạn thân" },
-        { id: "colleagues", name: "Đồng Nghiệp", icon: "fa-solid fa-handshake", formal: "Gửi đồng nghiệp" },
-        { id: "lovers", name: "Người Yêu", icon: "fa-solid fa-heart-circle-plus", formal: "Gửi người yêu dấu" }
+        { id: "grandparents", name: "Ông Bà", icon: "fa-solid fa-person-cane", formal: "Kính gửi Ông Bà", needsAge: false },
+        { id: "parents", name: "Bố Mẹ", icon: "fa-solid fa-house-user", formal: "Kính gửi Bố Mẹ", needsAge: false },
+        { id: "children", name: "Con Cái", icon: "fa-solid fa-children", formal: "Gửi các con yêu", needsAge: true },
+        { id: "siblings", name: "Anh Chị Em", icon: "fa-solid fa-people-group", formal: "Gửi anh/chị/em", needsAge: true },
+        { id: "aunt_uncle", name: "Cô Dì Chú Bác", icon: "fa-solid fa-people-roof", formal: "Kính gửi Cô/Dì/Chú/Bác", needsAge: false },
+        { id: "friends", name: "Bạn Bè", icon: "fa-solid fa-user-group", formal: "Gửi bạn thân", needsAge: true },
+        { id: "colleagues", name: "Đồng Nghiệp", icon: "fa-solid fa-handshake", formal: "Gửi đồng nghiệp", needsAge: true },
+        { id: "lovers", name: "Người Yêu", icon: "fa-solid fa-heart-circle-plus", formal: "Gửi người yêu dấu", needsAge: false }
     ];
 
-    // Age groups (8 options)
+    // Age groups (chỉ giữ 4 nhóm)
     const ageGroups = [
         { id: "child", name: "Trẻ Em", range: "1-12 tuổi", icon: "fa-solid fa-child-reaching" },
         { id: "teen", name: "Thiếu Niên", range: "13-17 tuổi", icon: "fa-solid fa-graduation-cap" },
         { id: "young_adult", name: "Thanh Niên", range: "18-25 tuổi", icon: "fa-solid fa-person-running" },
-        { id: "adult", name: "Trưởng Thành", range: "26-40 tuổi", icon: "fa-solid fa-user-tie" },
-        { id: "middle_age", name: "Trung Niên", range: "41-55 tuổi", icon: "fa-solid fa-briefcase" },
-        { id: "senior", name: "Trung Lão", range: "56-70 tuổi", icon: "fa-solid fa-person-walking-with-cane" },
-        { id: "elder", name: "Cao Tuổi", range: "71-85 tuổi", icon: "fa-solid fa-chair" },
-        { id: "venerable", name: "Thượng Thọ", range: "86+ tuổi", icon: "fa-solid fa-award" }
+        { id: "adult", name: "Trưởng Thành", range: "26-40 tuổi", icon: "fa-solid fa-user-tie" }
     ];
 
     // Money Messages
@@ -117,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
         lovers: "Yêu thương"
     };
 
-    // Letter Templates (shortened for brevity)
+    // Letter Templates (giữ nguyên toàn bộ nội dung dài của bạn)
     const letterTemplates = {
         grandparents: [
             `Xuân mới lại về, mang theo bao niềm vui và hy vọng. Nhân dịp năm mới, cháu xin gửi đến Ông Bà lời chúc sức khỏe, an khang và thịnh vượng.<br><br>Chúc Ông Bà luôn dồi dào sức khỏe, tinh thần minh mẫn, và tràn đầy niềm vui trong cuộc sống. Mong rằng năm mới sẽ mang đến nhiều may mắn, thành công và hạnh phúc cho Ông Bà.<br><br>Dù không gian có cách trở nhưng tấm lòng và tình cảm luôn hướng về Ông Bà. Những lời dạy bảo của Ông Bà là kim chỉ nam quý giá nhất cho cháu trong cuộc đời.`
@@ -145,16 +130,12 @@ document.addEventListener("DOMContentLoaded", function () {
         ]
     };
 
-    // Wheel Prize Configuration
-
-    // ========== LOCALSTORAGE: Lưu và lấy tên người dùng ==========
+    // ========== LOCALSTORAGE ==========
     function loadSavedName() {
         const saved = localStorage.getItem('lixi_sender_name');
         if (saved) {
             senderName = saved;
-            if (minimizedNameDisplay) {
-                minimizedNameDisplay.textContent = saved;
-            }
+            if (minimizedNameDisplay) minimizedNameDisplay.textContent = saved;
             return true;
         }
         return false;
@@ -165,128 +146,181 @@ document.addEventListener("DOMContentLoaded", function () {
         senderName = name;
     }
 
-    function clearName() {
-        localStorage.removeItem('lixi_sender_name');
-        senderName = "";
+    function loadAmountRanges() {
+        const defaults = {
+            grandparents: { min: 50000, max: 500000 },
+            parents: { min: 50000, max: 500000 },
+            lovers: { min: 50000, max: 500000 },
+            others: { min: 10000, max: 500000 }
+        };
+        try {
+            const saved = JSON.parse(localStorage.getItem('lixi_amount_ranges') || '{}');
+            return {
+                grandparents: { ...defaults.grandparents, ...saved.grandparents },
+                parents: { ...defaults.parents, ...saved.parents },
+                lovers: { ...defaults.lovers, ...saved.lovers },
+                others: { ...defaults.others, ...saved.others }
+            };
+        } catch (e) {
+            return defaults;
+        }
     }
 
-    // Initialize - kiểm tra xem đã có tên chưa
+    let amountRanges = loadAmountRanges();
+
+    // Format currency
+    function formatCurrency(amount) {
+        return amount.toLocaleString("vi-VN") + " ₫";
+    }
+
+    // ========== SETTINGS LOGIC (min & max) ==========
+    function updateSettingsUI() {
+        ['grandparents', 'parents', 'lovers', 'others'].forEach(group => {
+            document.getElementById(`min-${group}`).value = amountRanges[group].min;
+            document.getElementById(`max-${group}`).value = amountRanges[group].max;
+            document.getElementById(`display-min-${group}`).textContent = formatCurrency(amountRanges[group].min);
+            document.getElementById(`display-${group}`).textContent = formatCurrency(amountRanges[group].max);
+        });
+    }
+
+    document.querySelectorAll('#settings-modal input[type="range"]').forEach(slider => {
+        slider.addEventListener('input', () => {
+            const [type, group] = slider.id.split('-');
+            const displayId = type === 'min' ? `display-min-${group}` : `display-${group}`;
+            document.getElementById(displayId).textContent = formatCurrency(Number(slider.value));
+
+            if (type === 'min') {
+                const maxEl = document.getElementById(`max-${group}`);
+                if (Number(slider.value) > Number(maxEl.value)) {
+                    maxEl.value = slider.value;
+                    document.getElementById(`display-${group}`).textContent = formatCurrency(Number(maxEl.value));
+                }
+            }
+            if (type === 'max') {
+                const minEl = document.getElementById(`min-${group}`);
+                if (Number(slider.value) < Number(minEl.value)) {
+                    minEl.value = slider.value;
+                    document.getElementById(`display-min-${group}`).textContent = formatCurrency(Number(minEl.value));
+                }
+            }
+        });
+    });
+
+    settingsBtn?.addEventListener('click', () => {
+        updateSettingsUI();
+        settingsModal?.classList.remove('hidden');
+    });
+
+    closeSettings?.addEventListener('click', () => settingsModal?.classList.add('hidden'));
+    settingsModal?.addEventListener('click', e => {
+        if (e.target === settingsModal) settingsModal.classList.add('hidden');
+    });
+
+    saveSettingsBtn?.addEventListener('click', () => {
+        ['grandparents', 'parents', 'lovers', 'others'].forEach(group => {
+            amountRanges[group] = {
+                min: Number(document.getElementById(`min-${group}`).value),
+                max: Number(document.getElementById(`max-${group}`).value)
+            };
+        });
+        localStorage.setItem('lixi_amount_ranges', JSON.stringify(amountRanges));
+        settingsModal?.classList.add('hidden');
+    });
+
+    // ========== NAME & INITIALIZATION (giữ nguyên) ==========
     const hasName = loadSavedName();
     if (hasName) {
-        // Đã có tên - hiển thị minimized và TỰ ĐỘNG HIỂN thị relationship selection
-        if (nameExpanded) nameExpanded.classList.add("hidden");
-        if (nameMinimized) nameMinimized.classList.remove("hidden");
-
-        // TỰ ĐỘNG hiển thị giao diện relationship selection
-        if (welcomeSection) welcomeSection.classList.add("hidden");
+        nameExpanded.classList.add("hidden");
+        nameMinimized.classList.remove("hidden");
+        welcomeSection.classList.add("hidden");
         initRelationshipSelection();
-        if (relationshipSelection) relationshipSelection.classList.remove("hidden");
+        relationshipSelection.classList.remove("hidden");
         updateStepIndicator(2);
     } else {
-        // Chưa có tên - hiển thị modal nhập tên
-        if (nameExpanded) nameExpanded.classList.remove("hidden");
-        if (nameMinimized) nameMinimized.classList.add("hidden");
+        nameExpanded.classList.remove("hidden");
+        nameMinimized.classList.add("hidden");
         setTimeout(() => {
             if (senderNameInput) senderNameInput.focus();
         }, 500);
     }
 
-    // Name Input Handlers
+    // Các event name (giữ nguyên)
     if (senderNameInput) {
         senderNameInput.addEventListener("input", function () {
-            if (confirmNameBtn) {
-                confirmNameBtn.disabled = this.value.trim().length === 0;
-            }
+            if (confirmNameBtn) confirmNameBtn.disabled = this.value.trim().length === 0;
         });
 
         senderNameInput.addEventListener("keypress", function (e) {
-            if (e.key === "Enter" && this.value.trim().length > 0) {
-                confirmNameBtn.click();
-            }
+            if (e.key === "Enter" && this.value.trim().length > 0) confirmNameBtn.click();
         });
     }
 
-    if (minimizeNameBtn) {
-        minimizeNameBtn.addEventListener("click", function () {
-            if (nameExpanded) nameExpanded.classList.add("hidden");
-            if (nameMinimized) nameMinimized.classList.remove("hidden");
-        });
-    }
+    minimizeNameBtn?.addEventListener("click", () => {
+        nameExpanded.classList.add("hidden");
+        nameMinimized.classList.remove("hidden");
+    });
 
-    if (nameMinimized) {
-        nameMinimized.addEventListener("click", function () {
-            // Click để thay đổi tên
-            if (senderNameInput) senderNameInput.value = senderName;
-            if (nameExpanded) nameExpanded.classList.remove("hidden");
-            if (nameMinimized) nameMinimized.classList.add("hidden");
-            setTimeout(() => {
-                if (senderNameInput) {
-                    senderNameInput.focus();
-                    senderNameInput.select();
-                }
-            }, 100);
-        });
-    }
+    nameMinimized?.addEventListener("click", () => {
+        senderNameInput.value = senderName;
+        nameExpanded.classList.remove("hidden");
+        nameMinimized.classList.add("hidden");
+        setTimeout(() => {
+            senderNameInput.focus();
+            senderNameInput.select();
+        }, 100);
+    });
 
-    if (confirmNameBtn) {
-        confirmNameBtn.addEventListener("click", function () {
-            const name = senderNameInput.value.trim();
-            if (name) {
-                saveName(name);
-                if (minimizedNameDisplay) {
-                    minimizedNameDisplay.textContent = name;
-                }
-                hideNameModal();
-            }
-        });
-    }
+    confirmNameBtn?.addEventListener("click", () => {
+        const name = senderNameInput.value.trim();
+        if (name) {
+            saveName(name);
+            minimizedNameDisplay.textContent = name;
+            hideNameModal();
+        }
+    });
 
     function hideNameModal() {
-        if (nameModal) {
-            nameModal.classList.add("animate-slideOutLeft");
-            setTimeout(() => {
-                if (nameExpanded) nameExpanded.classList.add("hidden");
-                if (nameMinimized) nameMinimized.classList.remove("hidden");
-                nameModal.classList.remove("animate-slideOutLeft");
-            }, 300);
-        }
+        nameModal.classList.add("animate-slideOutLeft");
+        setTimeout(() => {
+            nameExpanded.classList.add("hidden");
+            nameMinimized.classList.remove("hidden");
+            nameModal.classList.remove("animate-slideOutLeft");
+        }, 300);
 
         updateStepIndicator(2);
-
         setTimeout(() => {
-            if (welcomeSection) welcomeSection.classList.add("hidden");
+            welcomeSection.classList.add("hidden");
             initRelationshipSelection();
-            if (relationshipSelection) relationshipSelection.classList.remove("hidden");
-            if (relationshipSelection) relationshipSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+            relationshipSelection.classList.remove("hidden");
+            relationshipSelection.scrollIntoView({ behavior: "smooth" });
         }, 300);
     }
 
-    // Update Step Indicator
+    // Step Indicator (giữ nguyên)
     function updateStepIndicator(currentStep) {
-        if (step1Dot) step1Dot.classList.remove("completed", "active");
-        if (step2Dot) step2Dot.classList.remove("completed", "active");
-        if (step3Dot) step3Dot.classList.remove("completed", "active");
-        if (step4Dot) step4Dot.classList.remove("completed", "active");
+        [step1Dot, step2Dot, step3Dot, step4Dot].forEach(dot => {
+            dot.classList.remove("completed", "active");
+        });
 
-        if (currentStep === 1 && step1Dot) {
-            step1Dot.classList.add("active");
-        } else if (currentStep === 2) {
-            if (step1Dot) step1Dot.classList.add("completed");
-            if (step2Dot) step2Dot.classList.add("active");
-        } else if (currentStep === 3) {
-            if (step1Dot) step1Dot.classList.add("completed");
-            if (step2Dot) step2Dot.classList.add("completed");
-            if (step3Dot) step3Dot.classList.add("active");
-        } else if (currentStep === 4) {
-            if (step1Dot) step1Dot.classList.add("completed");
-            if (step2Dot) step2Dot.classList.add("completed");
-            if (step3Dot) step3Dot.classList.add("completed");
-            if (step4Dot) step4Dot.classList.add("active");
+        if (currentStep === 1) step1Dot?.classList.add("active");
+        if (currentStep === 2) {
+            step1Dot?.classList.add("completed");
+            step2Dot?.classList.add("active");
+        }
+        if (currentStep === 3) {
+            step1Dot?.classList.add("completed");
+            step2Dot?.classList.add("completed");
+            step3Dot?.classList.add("active");
+        }
+        if (currentStep === 4) {
+            step1Dot?.classList.add("completed");
+            step2Dot?.classList.add("completed");
+            step3Dot?.classList.add("completed");
+            step4Dot?.classList.add("active");
         }
     }
 
-
-    // Initialize Relationship Selection
+    // ========== RELATIONSHIP SELECTION (đã sửa logic needsAge) ==========
     function initRelationshipSelection() {
         if (!relationshipGrid) return;
         relationshipGrid.innerHTML = "";
@@ -312,19 +346,21 @@ document.addEventListener("DOMContentLoaded", function () {
                 selectedRelationshipId = relationship.id;
                 this.classList.add("selected");
 
-                if (relationship.id === "lovers") {
+                if (!relationship.needsAge) {
                     updateStepIndicator(4);
                     setTimeout(() => {
                         createHongbaos();
                         if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
-                        if (hongbaoSelection) hongbaoSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+                        if (ageSelection) ageSelection.classList.add("hidden");
+                        if (hongbaoSelection) hongbaoSelection.scrollIntoView({ behavior: "smooth" });
                     }, 300);
                 } else {
                     updateStepIndicator(3);
                     setTimeout(() => {
                         initAgeSelection();
                         if (ageSelection) ageSelection.classList.remove("hidden");
-                        if (ageSelection) ageSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+                        if (hongbaoSelection) hongbaoSelection.classList.add("hidden");
+                        if (ageSelection) ageSelection.scrollIntoView({ behavior: "smooth" });
                     }, 300);
                 }
             });
@@ -333,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Initialize Age Selection
+    // ========== AGE SELECTION (chỉ 4 nhóm) ==========
     function initAgeSelection() {
         if (!ageGrid) return;
         ageGrid.innerHTML = "";
@@ -363,7 +399,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 setTimeout(() => {
                     createHongbaos();
                     if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
-                    if (hongbaoSelection) hongbaoSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+                    if (hongbaoSelection) hongbaoSelection.scrollIntoView({ behavior: "smooth" });
                 }, 300);
             });
 
@@ -371,46 +407,27 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // Get Random Amount
+    // ========== RANDOM AMOUNT (dùng min-max) ==========
     function getRandomAmount() {
-        const maxLimit = (() => {
-            if (["grandparents", "parents"].includes(selectedRelationshipId)) {
-                return maxAmounts.grandparents || 200000;
-            }
-            if (selectedRelationshipId === "lovers") {
-                return maxAmounts.lovers || 200000;
-            }
-            return maxAmounts.others || 100000;
-        })();
-
-        // Tạo mảng các mức tiền có thể (có thể tùy chỉnh thêm)
-        const possibleAmounts = [
-            1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000
-        ].filter(n => n <= maxLimit);
-
-        if (possibleAmounts.length === 0) return 10000;
-
-        // Chọn ngẫu nhiên có trọng số (càng nhỏ càng dễ ra hơn)
-        const weights = possibleAmounts.map((_, i) => possibleAmounts.length - i);
-        const totalWeight = weights.reduce((a, b) => a + b, 0);
-        let random = Math.random() * totalWeight;
-
-        for (let i = 0; i < possibleAmounts.length; i++) {
-            random -= weights[i];
-            if (random <= 0) {
-                return possibleAmounts[i];
-            }
+        let range;
+        if (["grandparents", "parents"].includes(selectedRelationshipId)) {
+            range = amountRanges.grandparents;
+        } else if (selectedRelationshipId === "lovers") {
+            range = amountRanges.lovers;
+        } else {
+            range = amountRanges.others;
         }
 
-        return possibleAmounts[possibleAmounts.length - 1];
+        const min = range.min;
+        const max = range.max;
+        if (min >= max) return min;
+
+        let amount = min + Math.random() * (max - min);
+        amount = Math.round(amount / 5000) * 5000;
+        return Math.max(min, Math.min(max, amount));
     }
 
-    // Format Currency
-    function formatCurrency(amount) {
-        return amount.toLocaleString("vi-VN") + " ₫";
-    }
-
-    // Create 24 Hongbaos
+    // ========== CREATE HONGBAOS (giữ nguyên) ==========
     function createHongbaos() {
         if (!hongbaoGrid) return;
         hongbaoGrid.innerHTML = "";
@@ -471,7 +488,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ========== RESULT MODAL & DICE ==========
+    // ========== RESULT & DICE (giữ nguyên) ==========
     function showResultModal(selectedId) {
         if (diceSection) diceSection.classList.remove("hidden");
         if (letterScratchSection) letterScratchSection.classList.add("hidden");
@@ -553,7 +570,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initScratchCard();
     }
 
-    // ========== SCRATCH CARD ==========
+    // ========== SCRATCH CARD (giữ nguyên) ==========
     function initScratchCard() {
         const container = document.querySelector('.scratch-card-container');
         if (!container) return;
@@ -703,7 +720,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.fill();
     }
 
-    // ========== CLOSE MODAL ==========
+    // ========== CLOSE MODAL (đã sửa để không reset) ==========
     function closeModal() {
         if (resultModal) resultModal.classList.add("hidden");
         if (modalOverlay) modalOverlay.classList.add("hidden");
@@ -717,23 +734,6 @@ document.addEventListener("DOMContentLoaded", function () {
             selectedHongbao.classList.remove("selected");
             selectedHongbao = null;
         }
-
-        if (hongbaoSelection) hongbaoSelection.classList.add("hidden");
-        if (ageSelection) ageSelection.classList.add("hidden");
-        if (relationshipSelection) relationshipSelection.classList.add("hidden");
-        if (welcomeSection) welcomeSection.classList.remove("hidden");
-
-        if (selectedRelationship) {
-            selectedRelationship.classList.remove("selected");
-            selectedRelationship = null;
-        }
-        if (selectedAge) {
-            selectedAge.classList.remove("selected");
-            selectedAge = null;
-        }
-
-        updateStepIndicator(1);
-        if (relationshipGrid) relationshipGrid.innerHTML = "";
     }
 
     if (closeModalBtn) {
@@ -742,99 +742,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (modalOverlay) {
         modalOverlay.addEventListener("click", function (e) {
-            if (e.target === modalOverlay) {
-                if (!resultModal.classList.contains("hidden")) {
-                    closeModal();
-                }
+            if (e.target === modalOverlay && !resultModal.classList.contains("hidden")) {
+                closeModal();
             }
         });
     }
 
     document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") {
-            if (resultModal && !resultModal.classList.contains("hidden")) {
-                closeModal();
-            }
+        if (e.key === "Escape" && !resultModal.classList.contains("hidden")) {
+            closeModal();
         }
-    });
-
-    function formatDisplay(amount) {
-        return amount.toLocaleString('vi-VN') + ' ₫';
-    }
-
-    // Load saved settings
-    function loadMaxAmounts() {
-        const defaults = {
-            grandparents: 200000,
-            parents: 200000,
-            lovers: 200000,
-            others: 100000
-        };
-
-        try {
-            const saved = JSON.parse(localStorage.getItem('lixi_max_amounts') || '{}');
-            return { ...defaults, ...saved };
-        } catch (e) {
-            return defaults;
-        }
-    }
-
-    let maxAmounts = loadMaxAmounts();
-
-    // Cập nhật giao diện khi mở modal
-    function updateSettingsUI() {
-        maxGrandparentsInput.value = maxAmounts.grandparents;
-        maxParentsInput.value = maxAmounts.parents;
-        maxLoversInput.value = maxAmounts.lovers;
-        maxOthersInput.value = maxAmounts.others;
-
-        displayGrandparents.textContent = formatDisplay(maxAmounts.grandparents);
-        displayParents.textContent = formatDisplay(maxAmounts.parents);
-        displayLovers.textContent = formatDisplay(maxAmounts.lovers);
-        displayOthers.textContent = formatDisplay(maxAmounts.others);
-    }
-
-    // Cập nhật hiển thị realtime khi kéo slider
-    [maxGrandparentsInput, maxParentsInput, maxLoversInput, maxOthersInput].forEach(input => {
-        input.addEventListener('input', () => {
-            const id = input.id.replace('max-', '');
-            const display = document.getElementById(`display-${id}`);
-            if (display) {
-                display.textContent = formatDisplay(Number(input.value));
-            }
-        });
-    });
-
-    // Mở modal
-    settingsBtn?.addEventListener('click', () => {
-        updateSettingsUI();
-        settingsModal?.classList.remove('hidden');
-    });
-
-    // Đóng modal
-    closeSettings?.addEventListener('click', () => {
-        settingsModal?.classList.add('hidden');
-    });
-
-    settingsModal?.addEventListener('click', e => {
-        if (e.target === settingsModal) {
-            settingsModal.classList.add('hidden');
-        }
-    });
-
-    // Lưu cài đặt
-    saveSettingsBtn?.addEventListener('click', () => {
-        maxAmounts = {
-            grandparents: Number(maxGrandparentsInput.value),
-            parents: Number(maxParentsInput.value),
-            lovers: Number(maxLoversInput.value),
-            others: Number(maxOthersInput.value)
-        };
-
-        localStorage.setItem('lixi_max_amounts', JSON.stringify(maxAmounts));
-        settingsModal?.classList.add('hidden');
-
-        // Có thể thêm thông báo nhỏ (toast) nếu muốn
-        alert('Đã lưu cài đặt số tiền tối đa!');
     });
 });
