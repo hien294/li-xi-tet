@@ -1122,3 +1122,150 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 });
+
+/* ================================================
+   CÁNH ĐÀO RƠI — append cuối script.js
+   ================================================ */
+(function petalInit() {
+    const layer = document.getElementById('petal-layer');
+    if (!layer) return;
+
+    /*
+      6 biến thể SVG cánh đào thật:
+        • shape: 1 cánh sakura (rounded top, notch bottom)
+        • gradient: center trắng/hồng nhẹ → edge rose đậm
+        • gân chính + gân phụ (vein)  
+        • dot stamen ở đầu cánh
+      Gradient ID dùng suffix ngẫu nhiên → tránh conflict khi nhiều petal
+    */
+    function makePetalSVG(uid) {
+        // chọn màu ngẫu nhiên từ palette
+        const palettes = [
+            // A: hồng sữ nhẹ → rose
+            { c0: '#fff0f3', c1: '#f8c8d8', c2: '#f48fb1', c3: '#e91e63', stroke: '#e91e63' },
+            // B: kem → deep rose  
+            { c0: '#ffffff', c1: '#ffe0e8', c2: '#f06292', c3: '#c2185b', stroke: '#c2185b' },
+            // C: blush → magenta
+            { c0: '#fce4ec', c1: '#f8bbd0', c2: '#ec407a', c3: '#ad1457', stroke: '#ad1457' },
+            // D: ivory → pink
+            { c0: '#fff5f7', c1: '#ffd1dc', c2: '#f48fb1', c3: '#e91e63', stroke: '#e91e63' },
+            // E: pure white center → dark rose (mạnh nhất)
+            { c0: '#ffffff', c1: '#fce4ec', c2: '#ec407a', c3: '#880e4f', stroke: '#880e4f' },
+            // F: pink blush → soft rose  
+            { c0: '#ffe0e8', c1: '#f8bbd0', c2: '#f06292', c3: '#e91e63', stroke: '#e91e63' }
+        ];
+        const p = palettes[uid % palettes.length];
+        const id = 'g' + uid;
+
+        // chọn 1 trong 4 shape lệch khác nhau → tự nhiên hơn
+        const shapes = [
+            // shape 0: cánh đối xứng, to
+            `M20,50 C6,42 0,28 2,15 C3,5 10,0 20,2 C30,0 37,5 38,15 C40,28 34,42 20,50Z`,
+            // shape 1: bên trái phồng hơn  
+            `M18,52 C4,44 0,30 2,16 C3,5 9,0 18,2 C28,0 36,7 37,19 C38,33 28,44 18,52Z`,
+            // shape 2: hẹp, dài
+            `M16,54 C4,46 1,33 2,19 C3,7 9,0 16,1 C23,0 29,7 30,19 C31,33 28,46 16,54Z`,
+            // shape 3: tròn đầu, ngắn
+            `M22,44 C8,38 1,27 2,16 C3,6 11,0 22,1 C33,0 41,6 42,16 C43,27 36,38 22,44Z`
+        ];
+        const shapeIdx = uid % shapes.length;
+        const vbW = [40, 38, 32, 44][shapeIdx];
+        const vbH = [50, 52, 54, 44][shapeIdx];
+        // center x/y cho notch & vein  
+        const cx = [20, 18, 16, 22][shapeIdx];
+        const cy = [50, 52, 54, 44][shapeIdx];
+        const top = [2, 2, 1, 1][shapeIdx];
+
+        return `<svg viewBox="0 0 ${vbW} ${vbH}" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="${id}" cx="48%" cy="28%" r="72%">
+              <stop offset="0%"   stop-color="${p.c0}"/>
+              <stop offset="35%"  stop-color="${p.c1}"/>
+              <stop offset="65%"  stop-color="${p.c2}"/>
+              <stop offset="100%" stop-color="${p.c3}"/>
+            </radialGradient>
+          </defs>
+          <!-- cánh chính -->
+          <path d="${shapes[shapeIdx]}" fill="url(#${id})"/>
+          <!-- notch: rãnh đầu cánh (đặc trưng sakura) -->
+          <path d="M${cx},${cy} C${cx},${cy - 4} ${cx - 2},${cy - 6} ${cx - 3},${cy - 7}" fill="none" stroke="${p.stroke}55" stroke-width="0.85" stroke-linecap="round"/>
+          <path d="M${cx},${cy} C${cx},${cy - 4} ${cx + 2},${cy - 6} ${cx + 3},${cy - 7}" fill="none" stroke="${p.stroke}55" stroke-width="0.85" stroke-linecap="round"/>
+          <!-- gân chính: đầu cánh → notch -->
+          <path d="M${cx},${cy - 2} C${cx},${Math.round((cy + top) / 2)} ${cx},${Math.round(top + 4)} ${cx},${top + 1}" fill="none" stroke="${p.stroke}30" stroke-width="0.75" stroke-linecap="round"/>
+          <!-- gân phụ trái -->
+          <path d="M${cx},${Math.round(cy * 0.55)} C${Math.round(cx * 0.6)},${Math.round(cy * 0.47)} ${Math.round(cx * 0.25)},${Math.round(cy * 0.43)} 2,${Math.round(cy * 0.4)}" fill="none" stroke="${p.stroke}22" stroke-width="0.5"/>
+          <!-- gân phụ phải -->
+          <path d="M${cx},${Math.round(cy * 0.55)} C${Math.round(cx * 1.4)},${Math.round(cy * 0.47)} ${Math.round(vbW - cx * 0.25)},${Math.round(cy * 0.43)} ${vbW - 2},${Math.round(cy * 0.4)}" fill="none" stroke="${p.stroke}22" stroke-width="0.5"/>
+          <!-- gân phụ 2 trái (gần đầu) -->
+          <path d="M${cx},${Math.round(cy * 0.35)} C${Math.round(cx * 0.65)},${Math.round(cy * 0.3)} ${Math.round(cx * 0.3)},${Math.round(cy * 0.28)} 3,${Math.round(cy * 0.27)}" fill="none" stroke="${p.stroke}1a" stroke-width="0.4"/>
+          <!-- gân phụ 2 phải -->
+          <path d="M${cx},${Math.round(cy * 0.35)} C${Math.round(cx * 1.35)},${Math.round(cy * 0.3)} ${Math.round(vbW - cx * 0.3)},${Math.round(cy * 0.28)} ${vbW - 3},${Math.round(cy * 0.27)}" fill="none" stroke="${p.stroke}1a" stroke-width="0.4"/>
+          <!-- stamen dot: viên tim ở đầu cánh -->
+          <circle cx="${cx}" cy="${top + 1.5}" r="1.3" fill="#fff" opacity=".75"/>
+          <circle cx="${cx}" cy="${top + 1.5}" r="0.6" fill="${p.c2}" opacity=".6"/>
+        </svg>`;
+    }
+
+    /* ── random helpers ── */
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    function randInt(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+    let uid = 0; // unique id cho gradient
+    let wind = 0;
+    setInterval(() => {
+        wind = rand(-80, 80); // mỗi cơn gió
+    }, rand(3000, 6000));
+
+
+    function spawnPetal() {
+        uid++;
+        const vw = window.innerWidth;
+
+        const w = rand(15, 30);          // chiều rộng (px)
+        const x = rand(-35, vw + 15);    // start x
+        const dur = rand(14, 28);
+        const sway = rand(2.8, 5.5);        // chu kỳ lắc (s)
+        const delay = rand(0, 3.5);          // delay start (s)
+        const rot = rand(0, 360);          // rotation ban đầu
+        const z = rand(-420, 0);               // xa → gần
+        const drift = rand(-90, 90) + wind;   // gió + lệch tự nhiên
+        const scale = 0.75 + (z + 420) / 840; // scale theo chiều sâu
+
+        /* wrapper: rơi xuống */
+        const wrap = document.createElement('div');
+        wrap.className = 'petal-wrap';
+        wrap.style.cssText =
+            `left:${x}px;` +
+            `width:${w}px;` +
+            `height:${w * 1.38}px;` +
+            `animation-duration:${dur}s;` +
+            `animation-delay:${delay}s;` +
+            `--drift:${drift}px;` +
+            `--z:${z}px;` +
+            `transform:translateZ(${z}px) scale(${scale});` +
+            `opacity:${Math.min(1, 1 + z / 450)};`;
+
+        /* inner: sway + spin */
+        const spin = document.createElement('div');
+        spin.className = 'petal-spin';
+        spin.style.cssText =
+            `animation-duration:${sway}s;` +
+            `transform:rotate(${rot}deg);`;
+
+        spin.innerHTML = makePetalSVG(uid);
+
+        wrap.appendChild(spin);
+        layer.appendChild(wrap);
+
+        /* auto cleanup sau khi xong */
+        setTimeout(() => wrap.remove(), (dur + delay) * 1000 + 500);
+    }
+
+    /* ── spawn loop: 1-2 cánh mỗi 0.45–1s ── */
+    function loop() {
+        const n = randInt(1, 2);
+        for (let i = 0; i < n; i++) spawnPetal();
+        setTimeout(loop, rand(450, 1000));
+    }
+    setTimeout(loop, 150);
+})();
