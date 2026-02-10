@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ========== NAME & INITIALIZATION ==========
     const hasName = loadSavedName();
-    
+
     if (hasName) {
         nameExpanded.classList.add("hidden");
         nameMinimized.classList.remove("hidden");
@@ -943,8 +943,8 @@ document.addEventListener("DOMContentLoaded", function () {
         draw() {
             if (!fwCtx) return;
             fwCtx.beginPath();
-            fwCtx.moveTo(this.coordinates[this.coordinates.length - 1][0], 
-                         this.coordinates[this.coordinates.length - 1][1]);
+            fwCtx.moveTo(this.coordinates[this.coordinates.length - 1][0],
+                this.coordinates[this.coordinates.length - 1][1]);
             fwCtx.lineTo(this.x, this.y);
             fwCtx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness}%)`;
             fwCtx.stroke();
@@ -990,8 +990,8 @@ document.addEventListener("DOMContentLoaded", function () {
         draw() {
             if (!fwCtx) return;
             fwCtx.beginPath();
-            fwCtx.moveTo(this.coordinates[this.coordinates.length - 1][0], 
-                         this.coordinates[this.coordinates.length - 1][1]);
+            fwCtx.moveTo(this.coordinates[this.coordinates.length - 1][0],
+                this.coordinates[this.coordinates.length - 1][1]);
             fwCtx.lineTo(this.x, this.y);
             fwCtx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
             fwCtx.stroke();
@@ -1007,7 +1007,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function animateFireworks() {
         if (!fwCtx || !canvas) return;
-        
+
         animationId = requestAnimationFrame(animateFireworks);
         fwCtx.globalCompositeOperation = 'destination-out';
         fwCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
@@ -1042,7 +1042,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const tx = Math.random() * canvas.width;
         const ty = Math.random() * canvas.height / 2;
         fireworks.push(new Firework(sx, sy, tx, ty));
-        
+
         if (!animationId) {
             animateFireworks();
         }
@@ -1050,7 +1050,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function launchMultipleFireworks(count) {
         if (!canvas || !fwCtx) return;
-        
+
         let launched = 0;
         const interval = setInterval(() => {
             launchFirework();
@@ -1063,7 +1063,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function startBigFinale() {
         if (!canvas || !fwCtx) return;
-        
+
         const finaleCount = Math.floor(Math.random() * 21) + 30;
         let launched = 0;
         const interval = setInterval(() => {
@@ -1078,7 +1078,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function scheduleNextFireworkRound() {
         setTimeout(() => {
             fireworkRoundCount++;
-            
+
             if (fireworkRoundCount >= 5) {
                 startBigFinale();
                 fireworkRoundCount = 0;
@@ -1086,7 +1086,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const count = Math.floor(Math.random() * 3) + 3;
                 launchMultipleFireworks(count);
             }
-            
+
             scheduleNextFireworkRound();
         }, 30000);
     }
@@ -1105,19 +1105,16 @@ document.addEventListener("DOMContentLoaded", function () {
         function makePetalSVG(uid) {
             // Màu vàng hoa mai - gradient đẹp hơn
             const colors = [
-                { base: '#ffd700', light: '#fff4b3' },
-                { base: '#ffcc00', light: '#ffe680' },
-                { base: '#ffdb58', light: '#ffecb3' },
-                { base: '#ffe135', light: '#fff0a8' },
-                { base: '#ffc700', light: '#ffe066' },
-                { base: '#ffdf00', light: '#fff199' }
+                { base: '#ffd700', light: '#ebe1a8' },
+                { base: '#ffcc00', light: '#dfc86e' },
+                { base: '#ffdb58', light: '#e9d393' },
+                { base: '#ffe135', light: '#e4d486' },
+                { base: '#ffc700', light: '#ecd05f' },
+                { base: '#ffdf00', light: '#ecdd76' }
             ];
             const colorSet = colors[uid % colors.length];
 
             const shapes = [
-                // Hình cánh hoa mai 5 cánh
-                `M20,5 L22,12 L28,12 L23,16 L25,23 L20,18 L15,23 L17,16 L12,12 L18,12 Z`,
-                // Hình oval
                 `M12,5 Q20,10 20,20 Q12,15 5,20 Q5,10 12,5Z`,
                 // Hình elip
                 `M20,6 Q25,13 20,20 Q15,13 20,6Z`,
@@ -1148,71 +1145,74 @@ document.addEventListener("DOMContentLoaded", function () {
 
         function spawnPetal() {
             uid++;
+
             const vw = window.innerWidth;
             const vh = window.innerHeight;
 
             const w = rand(20, 32);
             const h = w * rand(0.75, 1.05);
-            
-            // QUAN TRỌNG: Spawn từ ĐÚNG vị trí 2 hình hoa mai
-            // Hình bên trái ở vị trí: 0-280px (w-72 = 288px / 4 = 72px)
-            // Hình bên phải ở vị trí: (100vw - 280px) đến 100vw
+            const START_OFFSET_Y = vh * 0.15;
             const fromLeft = Math.random() < 0.5;
             let x;
+
             if (fromLeft) {
-                // Rơi từ khu vực hình hoa mai TRÁI (0-280px)
+                // Khu vực cành TRÁI
                 x = rand(0, Math.min(280, vw * 0.25));
             } else {
-                // Rơi từ khu vực hình hoa mai PHẢI (vw-280 đến vw)
+                // Khu vực cành PHẢI
                 x = rand(Math.max(vw - 280, vw * 0.75), vw);
             }
-            
-            const y = rand(-100, -30);
-            
-            // Điểm drift - bay lắc lư
+
+            // Điểm bắt đầu rơi (đã tụt xuống)
+            const y = rand(-50, -5) + START_OFFSET_Y;
+
             const driftXEarly = rand(-70, 70);
             const driftXMid = rand(-100, 100);
             const driftXLate = rand(-90, 90);
             const driftXFinal = rand(-60, 60);
             const driftXEnd = rand(-50, 50);
             const driftXPull = rand(-35, 35);
-            
+
             const dur = rand(16, 26);
             const sway = rand(5, 8);
             const delay = rand(0, 2.5);
             const rotSpeed = rand(14, 24);
-            
+
             const wrap = document.createElement('div');
             wrap.className = 'petal-wrap';
             wrap.style.cssText =
-                `position: absolute;` +
+                `position:absolute;` +
                 `left:${x}px;` +
                 `top:${y}px;` +
                 `width:${w}px;` +
                 `height:${h}px;` +
-                `animation: petalFloatAndDrift ${dur}s ease-in-out forwards;` +
+                `opacity:0;` +
+                `filter:drop-shadow(0 4px 8px rgba(255,215,0,0.35));` +
+                `animation:petalFloatAndDrift ${dur}s ease-in-out forwards;` +
                 `animation-delay:${delay}s;` +
                 `--drift-x-early:${driftXEarly}px;` +
                 `--drift-x-mid:${driftXMid}px;` +
                 `--drift-x-late:${driftXLate}px;` +
                 `--drift-x-final:${driftXFinal}px;` +
                 `--drift-x-end:${driftXEnd}px;` +
-                `--drift-x-pull:${driftXPull}px;` +
-                `opacity: 0;` +
-                `filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.35));`;
+                `--drift-x-pull:${driftXPull}px;`;
 
             const spin = document.createElement('div');
             spin.className = 'petal-spin';
             spin.style.cssText =
-                `width: 100%;` +
-                `height: 100%;` +
-                `animation: petalGentleSway ${sway}s ease-in-out infinite, petalGentleRotate ${rotSpeed}s linear infinite;`;
+                `width:100%;` +
+                `height:100%;` +
+                `animation:` +
+                `petalGentleSway ${sway}s ease-in-out infinite,` +
+                `petalGentleRotate ${rotSpeed}s linear infinite;`;
 
             spin.innerHTML = makePetalSVG(uid);
             wrap.appendChild(spin);
             layer.appendChild(wrap);
 
-            setTimeout(() => wrap.remove(), (dur + delay) * 1000 + 1000);
+            setTimeout(() => {
+                wrap.remove();
+            }, (dur + delay) * 1000 + 1000);
         }
 
         function loop() {
@@ -1224,7 +1224,7 @@ document.addEventListener("DOMContentLoaded", function () {
             // Giảm thời gian xuống để rơi nhiều hơn
             setTimeout(loop, rand(1000, 1600));
         }
-        
+
         setTimeout(loop, 800);
     })();
 });
