@@ -56,7 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let selectedAgeId = "";
     let scratchPoints = [];
 
-    // Relationships (đã thêm needsAge)
+    // Relationships
     const relationships = [
         { id: "grandparents", name: "Ông Bà", icon: "fa-solid fa-person-cane", formal: "Kính gửi Ông Bà", needsAge: false },
         { id: "parents", name: "Bố Mẹ", icon: "fa-solid fa-house-user", formal: "Kính gửi Bố Mẹ", needsAge: false },
@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
         { id: "lovers", name: "Người Yêu", icon: "fa-solid fa-heart-circle-plus", formal: "Gửi người yêu dấu", needsAge: false }
     ];
 
-    // Age groups (chỉ giữ 4 nhóm)
+    // Age groups
     const ageGroups = [
         { id: "child", name: "Trẻ Em", range: "1-12 tuổi", icon: "fa-solid fa-child-reaching" },
         { id: "teen", name: "Thiếu Niên", range: "13-17 tuổi", icon: "fa-solid fa-graduation-cap" },
@@ -102,9 +102,8 @@ document.addEventListener("DOMContentLoaded", function () {
         lovers: "Yêu thương"
     };
 
-    // Letter Templates (giữ nguyên toàn bộ nội dung dài của bạn)
+    // Letter Templates
     const letterTemplates = {
-        // Ông Bà - trang trọng, kính trọng, ấm áp
         grandparents: [
             `Xuân mới lại về, mang theo sắc hoa rực rỡ, hơi ấm của đất trời và bao điều tốt lành.<br>
             Trong khoảnh khắc thiêng liêng của năm mới, cháu xin kính gửi đến Ông Bà những lời chúc yêu thương và trân trọng nhất.<br><br>
@@ -131,43 +130,9 @@ document.addEventListener("DOMContentLoaded", function () {
             Cháu luôn ghi nhớ và trân trọng những yêu thương, dạy bảo mà Ông Bà đã dành cho cháu suốt thời gian qua.<br>
             Được làm cháu của Ông Bà là niềm hạnh phúc và tự hào lớn nhất trong cuộc đời cháu.<br><br>
             Bước sang năm mới, cháu kính mong Ông Bà luôn mạnh khỏe, tinh thần minh mẫn,<br>
-            cuộc sống lúc nào cũng tràn đầy niềm vui, tiếng cười và sự yêu thương.`,
-
-            `Thưa Ông Bà,<br><br>
-            Xuân sang, đất trời đổi mới, lòng người cũng thêm rộn ràng và ấm áp.<br>
-            Nhân dịp năm mới, cháu xin kính chúc Ông Bà tuổi mới thêm xuân, sức khỏe dồi dào, phúc lộc đầy nhà, cuộc sống luôn an yên và thuận hòa.<br><br>
-            Mong rằng mỗi sớm mai thức dậy, Ông Bà đều cảm nhận được sự bình an trong tâm hồn,<br>
-            mỗi ngày trôi qua đều nhẹ nhàng, thư thái, tràn đầy niềm vui giản dị bên con cháu.<br><br>
-            Cháu mong Ông Bà luôn giữ được nụ cười hiền từ, ánh mắt ấm áp và sự minh mẫn như hiện tại,<br>
-            để mãi là chỗ dựa yêu thương, là bóng mát bình yên cho cả gia đình.`,
-
-
-            `Ông Bà yêu quý,<br><br>
-            Năm mới về trong không khí sum vầy và ấm áp, cháu xin gửi đến Ông Bà những lời chúc chân thành và yêu thương nhất.<br>
-            Cháu kính chúc Ông Bà thật nhiều phúc thọ, an khang, thịnh vượng, cuộc sống luôn đủ đầy và an vui mỗi ngày.<br><br>
-            Dù sau này cháu có đi xa đến đâu, bận rộn đến nhường nào,<br>
-            trái tim cháu vẫn luôn hướng về Ông Bà với tất cả sự kính trọng, biết ơn và yêu thương sâu sắc.<br><br>
-            Cháu cảm ơn Ông Bà vì đã luôn âm thầm hy sinh, chở che và dành cho cháu những điều tốt đẹp nhất trong cuộc đời.`,
-
-            `Kính gửi Ông Bà,<br><br>
-            Khi năm mới gõ cửa, cháu xin kính chúc Ông Bà sức khỏe dồi dào như suối nguồn không cạn,<br>
-            tinh thần luôn an nhiên, thư thái giữa những tháng ngày bình dị.<br><br>
-            Cháu cầu mong Ông Bà luôn có hạnh phúc viên mãn như trăng rằm tròn đầy,<br>
-            cuộc sống nhẹ nhàng, yên ấm và tuổi thọ trăm năm trong bình an, phúc lộc.<br><br>
-            Cháu mong sớm được trở về quây quần bên Ông Bà,<br>
-            cùng nhau đón những ngày Tết ấm áp, sum vầy, chan chứa tiếng cười yêu thương.`,
-
-            `Thưa Ông Bà kính mến,<br><br>
-            Nhân dịp năm mới, cháu xin kính chúc Ông Bà một năm tràn đầy sức sống,<br>
-            tinh thần luôn lạc quan, vui vẻ và an yên trong từng khoảnh khắc thường ngày.<br><br>
-            Mong rằng Ông Bà lúc nào cũng được con cháu vây quanh yêu thương,<br>
-            được quan tâm, chăm sóc và sẻ chia trong không khí gia đình đầm ấm.<br><br>
-            Đối với cháu, Ông Bà luôn là người thân yêu nhất,<br>
-            là nơi để cháu nhớ về, yêu thương và trân trọng suốt cuộc đời.<br><br>
-            Cháu yêu Ông Bà rất nhiều và luôn mong Ông Bà mạnh khỏe, hạnh phúc mỗi ngày ạ!`
+            cuộc sống lúc nào cũng tràn đầy niềm vui, tiếng cười và sự yêu thương.`
         ],
 
-        // Bố Mẹ - tình cảm, biết ơn, gần gũi
         parents: [
             `Gửi Bố Mẹ yêu quý,<br><br>
             Xuân mới lại về trong không khí ấm áp và sum vầy, con xin gửi đến Bố Mẹ những lời chúc tốt đẹp và chân thành nhất từ tận đáy lòng.<br>
@@ -179,40 +144,9 @@ document.addEventListener("DOMContentLoaded", function () {
             Năm mới đến rồi, con mong rằng mọi điều tốt đẹp nhất sẽ luôn ở bên Bố Mẹ trong suốt cả năm nay.<br>
             Con chúc Bố Mẹ luôn khỏe mạnh, công việc hanh thông, mọi dự định đều thuận lợi và suôn sẻ.<br><br>
             Gia đình mình lúc nào cũng ấm êm, tràn ngập tiếng cười và những khoảnh khắc yêu thương.<br>
-            Con hứa sẽ cố gắng học tập và làm việc thật tốt mỗi ngày để Bố Mẹ luôn yên tâm và tự hào về con.`,
-
-            `Kính gửi Bố Mẹ,<br><br>
-            Nhân dịp năm mới, con xin kính chúc Bố Mẹ một năm an khang, thịnh vượng, sức khỏe dồi dào và tinh thần luôn an nhiên.<br>
-            Mong rằng mỗi ngày trôi qua đều nhẹ nhàng, bớt lo toan và thêm thật nhiều niềm vui giản dị bên gia đình.<br><br>
-            Con cảm ơn Bố Mẹ vì tất cả những hy sinh thầm lặng, những vất vả và yêu thương mà Bố Mẹ đã dành cho con suốt cuộc đời.<br>
-            Con luôn ghi nhớ, biết ơn và yêu thương Bố Mẹ nhiều nhất trên đời.`,
-
-            `Bố Mẹ yêu quý,<br><br>
-            Con chúc Bố Mẹ năm mới thật nhiều niềm vui, nụ cười luôn nở trên môi và trong lòng lúc nào cũng nhẹ nhõm, bình yên.<br>
-            Mong rằng những muộn phiền, lo toan sẽ vơi bớt đi, để mỗi ngày của Bố Mẹ trôi qua đều dễ chịu và thoải mái hơn.<br><br>
-            Con chỉ mong Bố Mẹ luôn khỏe mạnh, sống vui và hạnh phúc bên con thật lâu,<br>
-            để gia đình mình mãi là nơi ấm áp nhất để con trở về.`,
-
-            `Bố Mẹ kính yêu,<br><br>
-            Năm mới con xin chúc Bố Mẹ sức khỏe dồi dào, tinh thần vui vẻ và cuộc sống luôn đủ đầy, sung túc.<br>
-            Mong rằng hạnh phúc sẽ luôn hiện hữu trong từng bữa cơm gia đình, từng câu chuyện nhỏ mỗi ngày.<br><br>
-            Con biết con còn phải cố gắng rất nhiều,<br>
-            nhưng con hứa sẽ nỗ lực từng ngày để sau này có thể chăm lo cho Bố Mẹ thật tốt, thật trọn vẹn ạ.`,
-
-            `Gửi hai người quan trọng nhất đời con,<br><br>
-            Nhân dịp năm mới, con xin chúc Bố Mẹ luôn bình an, mạnh khỏe và gặp thật nhiều điều may mắn trong cuộc sống.<br>
-            Mong rằng mỗi ngày trôi qua, Bố Mẹ đều cảm thấy yên tâm và tự hào về con.<br><br>
-            Dù con có nói bao nhiêu lời đi nữa cũng không thể diễn tả hết tình yêu và sự biết ơn trong lòng con dành cho Bố Mẹ.<br>
-            Con yêu Bố Mẹ rất nhiều, nhiều hơn tất cả những gì con có thể nói thành lời.`,
-
-            `Bố Mẹ ơi,<br><br>
-            Năm mới lại đến rồi, con chúc Bố Mẹ luôn ăn ngon, ngủ ngon, sức khỏe thật tốt và lúc nào cũng vui vẻ, thoải mái.<br>
-            Mong rằng mọi áp lực, mệt mỏi sẽ bớt đi, để Bố Mẹ có thật nhiều thời gian nghỉ ngơi và tận hưởng cuộc sống.<br><br>
-            Đối với con, Bố Mẹ luôn là người tuyệt vời nhất trên đời,<br>
-            và con sẽ luôn yêu thương, trân trọng Bố Mẹ bằng cả trái tim mình.`
+            Con hứa sẽ cố gắng học tập và làm việc thật tốt mỗi ngày để Bố Mẹ luôn yên tâm và tự hào về con.`
         ],
 
-        // Con cái - yêu thương, động viên, gần gũi
         children: [
             `Gửi các con yêu quý,<br><br>
             Năm mới đến trong niềm vui và sự háo hức, ba/mẹ xin gửi đến các con những lời chúc yêu thương nhất từ trái tim.<br>
@@ -224,239 +158,45 @@ document.addEventListener("DOMContentLoaded", function () {
             Năm mới lại về, ba/mẹ mong rằng năm nay sẽ mang đến cho các con thật nhiều may mắn và những điều tốt đẹp.<br>
             Chúc các con học giỏi hơn mỗi ngày, chơi vui nhưng vẫn biết ngoan ngoãn, lễ phép và yêu thương mọi người xung quanh.<br><br>
             Hãy luôn khỏe mạnh, hồn nhiên và lớn lên trong vòng tay yêu thương của gia đình nhé.<br>
-            Ba/mẹ yêu các con rất nhiều, nhiều hơn những gì có thể nói thành lời!`,
-
-            `Gửi các thiên thần nhỏ của ba/mẹ,<br><br>
-            Năm mới đến rồi, mang theo bao điều mới mẻ và tươi vui đang chờ các con phía trước.<br>
-            Ba/mẹ chúc các con lúc nào cũng cười thật tươi, luôn hồn nhiên, vui vẻ và tràn đầy năng lượng tích cực.<br><br>
-            Mong các con ăn ngoan, ngủ ngoan, học giỏi và biết yêu thương, chia sẻ với mọi người xung quanh.<br>
-            Các con chính là niềm hạnh phúc lớn nhất trong cuộc đời của ba/mẹ.`,
-
-            `Các con yêu,<br><br>
-            Ba/mẹ chúc các con một năm mới tràn đầy năng lượng, tinh thần luôn vui vẻ và khỏe mạnh mỗi ngày.<br>
-            Mong rằng việc học tập của các con luôn tiến bộ, ham học hỏi và không ngừng cố gắng.<br><br>
-            Gia đình mình sẽ luôn là nơi ấm áp nhất để các con trở về sau mỗi ngày dài.<br>
-            Ba/mẹ sẽ luôn đồng hành, động viên và yêu thương các con bằng tất cả những gì ba/mẹ có.`,
-
-            `Các bé cưng của ba/mẹ,<br><br>
-            Năm mới đến, ba/mẹ chúc các con ngày càng cao lớn, xinh xắn, thông minh và khỏe mạnh.<br>
-            Mong rằng các con luôn ngoan ngoãn, lễ phép, biết quan tâm và yêu thương mọi người xung quanh.<br><br>
-            Dù có chuyện gì xảy ra, ba/mẹ vẫn luôn ở bên lắng nghe, che chở và bảo vệ các con.<br>
-            Các con hãy cứ yên tâm lớn lên trong tình yêu thương của gia đình nhé!`,
-
-            `Gửi các con trai/con gái yêu dấu của ba/mẹ,<br><br>
-            Ba/mẹ chúc các con năm mới gặp thật nhiều điều tốt đẹp trong cuộc sống và trong học tập.<br>
-            Mong các con có những người bạn tốt, được thầy cô yêu thương và luôn giữ được nụ cười rạng rỡ trên môi.<br><br>
-            Hãy luôn tự tin là chính mình, sống tử tế và biết ơn những điều nhỏ bé xung quanh.<br>
-            Ba/mẹ luôn tin tưởng và tự hào về các con.`,
-
-            `Các con yêu dấu,<br><br>
-            Bước sang năm mới, ba/mẹ mong các con sẽ tự tin hơn, mạnh mẽ hơn và dũng cảm trước những điều mới mẻ.<br>
-            Mong rằng các con luôn nhớ rằng mình được yêu thương, trân trọng và chở che vô điều kiện.<br><br>
-            Dù mai này các con có lớn đến đâu, đi xa đến nhường nào,<br>
-            ba/mẹ vẫn luôn ở đây, yêu thương các con bằng cả trái tim mình.`
+            Ba/mẹ yêu các con rất nhiều, nhiều hơn những gì có thể nói thành lời!`
         ],
 
-        // Anh chị em - thân mật, gần gũi, có thể pha chút hài hước
         siblings: [
             `Gửi anh/chị/em thân yêu,<br><br>
             Xuân mới lại về, mang theo nhiều hy vọng và những khởi đầu tốt đẹp.<br>
             Anh/chị/em xin gửi đến mình lời chúc năm mới an khang, thịnh vượng, sức khỏe dồi dào và tinh thần luôn vững vàng.<br><br>
             Mong rằng trong năm mới, mọi dự định đều thuận lợi, mọi cố gắng đều được đền đáp xứng đáng.<br>
-            Dù cuộc sống có nhiều thay đổi, tình cảm anh em mình vẫn luôn bền chặt và đáng trân quý.`,
-
-            `Kính gửi anh/chị/em,<br><br>
-            Nhân dịp năm mới, anh/chị/em chúc mình luôn mạnh khỏe, bình an và gặp nhiều may mắn trong công việc cũng như cuộc sống.<br>
-            Mong rằng mỗi ngày trôi qua đều có thêm niềm vui, sự an tâm và những điều tích cực.<br><br>
-            Chúc cho con đường phía trước luôn hanh thông,<br>
-            và mọi ước mong tốt đẹp sớm trở thành hiện thực.`,
-
-            `Gửi anh/chị/em yêu quý,<br><br>
-            Năm mới sang trang, anh/chị/em chúc mình một năm thật rực rỡ và trọn vẹn.<br>
-            Công việc thuận lợi, sự nghiệp vững vàng, tinh thần luôn lạc quan và vui vẻ.<br><br>
-            Mong rằng dù mỗi người có những hướng đi riêng,<br>
-            chúng ta vẫn luôn dành cho nhau sự quan tâm, sẻ chia và yêu thương chân thành.`,
-
-            `Anh/chị/em thân mến,<br><br>
-            Nhân dịp đầu xuân năm mới, chúc em/anh/chị gặp nhiều điều tốt đẹp,<br>
-            cuộc sống đủ đầy, tâm an và lòng vững.<br><br>
-            Mong rằng những khó khăn của năm cũ sẽ ở lại phía sau,<br>
-            để năm mới mở ra nhiều cơ hội, niềm vui và sự bình yên hơn.`,
-
-            `Gửi anh/chị/em trong gia đình,<br><br>
-            Năm mới, anh/chị/em xin chúc mình luôn khỏe mạnh, tinh thần minh mẫn và cuộc sống ngày càng ổn định.<br>
-            Mong rằng mỗi ngày đều trôi qua nhẹ nhàng, bớt lo toan và thêm nhiều khoảnh khắc đáng quý.<br><br>
-            Được là anh em trong cùng một gia đình là điều rất đáng trân trọng,<br>
-            và anh/chị/em luôn mong chúng ta sẽ giữ gìn điều đó thật lâu.`,
-
-            `Anh/chị/em yêu quý,<br><br>
-            Xuân về mang theo sự sum vầy và hơi ấm gia đình.<br>
-            Anh/chị/em chúc mình năm mới bình an, vững vàng trước mọi thử thách và luôn có người thân ở bên khi cần.<br><br>
-            Mong rằng tình cảm anh em sẽ luôn là chỗ dựa tinh thần,<br>
-            cùng nhau chia sẻ niềm vui, động viên nhau khi khó khăn.`,
-
-            `Gửi anh/chị/em thân thương,<br><br>
-            Năm mới đến, chúc mình một năm sống trọn vẹn và ý nghĩa hơn.<br>
-            Công việc ổn định, tài chính vững vàng, tinh thần an yên và nụ cười luôn nở.<br><br>
-            Dù tương lai có thay đổi ra sao,<br>
-            mong rằng tình anh em trong gia đình mình sẽ luôn được gìn giữ và trân trọng.`
+            Dù cuộc sống có nhiều thay đổi, tình cảm anh em mình vẫn luôn bền chặt và đáng trân quý.`
         ],
 
-        // Bạn bè - thoải mái, vui vẻ, hiện đại, hài hước
         friends: [
             `Gửi bạn thân yêu,<br><br>
             Năm mới lại đến, mang theo những khởi đầu mới và nhiều hy vọng tốt đẹp.<br>
             Mình chúc bạn một năm thật nhiều sức khỏe, công việc thuận lợi, mọi dự định đều suôn sẻ và đạt được kết quả như mong muốn.<br><br>
             Cảm ơn bạn vì đã luôn đồng hành, chia sẻ và ở bên trong những chặng đường vừa qua.<br>
-            Tình bạn của chúng ta là điều rất đáng trân trọng, và mình mong sẽ còn cùng nhau đi thật xa nữa.`,
-
-            `Gửi bạn yêu quý,<br><br>
-            Nhân dịp năm mới, mình xin chúc bạn luôn mạnh khỏe, tinh thần tích cực và cuộc sống ngày càng ổn định, đủ đầy.<br>
-            Mong rằng những nỗ lực của bạn sẽ được đền đáp xứng đáng, và mỗi ngày trôi qua đều mang lại niềm vui nhỏ bé nhưng ý nghĩa.<br><br>
-            Cảm ơn vì bạn luôn là một người bạn chân thành và đáng tin cậy.`,
-
-            `Bạn thân mến,<br><br>
-            Năm mới sang trang, mình chúc bạn một năm thật nhiều niềm vui và năng lượng tích cực.<br>
-            Công việc thuận buồm xuôi gió, sức khỏe dồi dào và lúc nào cũng giữ được nụ cười tươi tắn như hiện tại.<br><br>
-            Mong rằng dù bận rộn đến đâu, chúng ta vẫn luôn giữ được sự gắn bó và thấu hiểu như bây giờ.`,
-
-            `Gửi người bạn đặc biệt,<br><br>
-            Nhân dịp năm mới, mình chúc bạn gặp thật nhiều may mắn, thành công và những cơ hội tốt đẹp trong cuộc sống.<br>
-            Mong rằng mọi dự định bạn ấp ủ đều dần trở thành hiện thực, và con đường phía trước luôn rộng mở.<br><br>
-            Cảm ơn bạn vì đã mang đến nhiều niềm vui và sự tích cực trong cuộc sống của mình.`,
-
-            `Gửi bạn thân,<br><br>
-            Năm mới đến, mình chúc bạn một năm bình an, sức khỏe tốt và tinh thần luôn vững vàng.<br>
-            Mong rằng cuộc sống sẽ nhẹ nhàng hơn, áp lực ít đi và niềm vui thì nhiều thêm mỗi ngày.<br><br>
-            Hy vọng chúng ta vẫn luôn đồng hành, sẻ chia và trân trọng tình bạn quý giá này.`,
-
-            `Gửi người bạn tuyệt vời,<br><br>
-            Nhân dịp đầu năm mới, mình chúc bạn một năm sống thật trọn vẹn và ý nghĩa.<br>
-            Công việc ổn định, tài chính vững vàng, tinh thần an yên và luôn có những người bạn tốt bên cạnh.<br><br>
-            Cảm ơn bạn vì đã luôn lắng nghe, thấu hiểu và ở bên mình trong suốt thời gian qua.`,
-
-            `Bạn thân yêu,<br><br>
-            Năm mới là dịp để nhìn lại và hướng về phía trước với nhiều hy vọng hơn.<br>
-            Mình chúc bạn luôn giữ được sự chân thành, lạc quan và niềm tin vào những điều tốt đẹp.<br><br>
-            Mong rằng tình bạn của chúng ta sẽ luôn được gìn giữ,<br>
-            và trở thành một phần ký ức đẹp trong hành trình cuộc sống của cả hai.`,
-
-            `Gửi bạn quý mến,<br><br>
-            Nhân dịp năm mới, chúc bạn mọi điều tốt đẹp sẽ đến một cách nhẹ nhàng và bền vững.<br>
-            Sức khỏe đủ đầy, công việc hanh thông và cuộc sống luôn có những khoảnh khắc đáng nhớ.<br><br>
-            Cảm ơn vì bạn đã là một người bạn tuyệt vời,<br>
-            và mong rằng chúng ta sẽ còn đồng hành cùng nhau thật lâu nữa.`
+            Tình bạn của chúng ta là điều rất đáng trân trọng, và mình mong sẽ còn cùng nhau đi thật xa nữa.`
         ],
 
-        // Đồng nghiệp - lịch sự, chuyên nghiệp, tích cực
         colleagues: [
             `Gửi anh/chị/bạn đồng nghiệp thân mến,<br><br>
             Nhân dịp năm mới, xin gửi đến anh/chị/bạn những lời chúc tốt đẹp và chân thành nhất.<br>
             Chúc anh/chị/bạn luôn dồi dào sức khỏe, tinh thần tích cực, công việc thuận lợi và đạt được nhiều kết quả tốt trong năm mới.<br><br>
             Mong rằng năm mới sẽ mang đến nhiều cơ hội phát triển, thành công trong sự nghiệp và hạnh phúc trong cuộc sống gia đình.<br>
-            Chúc mừng năm mới!`,
-
-            `Chào anh/chị/bạn đồng nghiệp,<br><br>
-            Năm mới đến, xin chúc anh/chị/bạn một năm làm việc hiệu quả, mọi kế hoạch và dự định đều diễn ra suôn sẻ.<br>
-            Mong rằng công việc ngày càng ổn định, thu nhập cải thiện và môi trường làm việc luôn tích cực, thoải mái.<br><br>
-            Chúc anh/chị/bạn một năm mới an khang, vui vẻ và nhiều động lực để tiếp tục chinh phục những mục tiêu phía trước.`,
-
-            `Gửi đồng nghiệp quý mến,<br><br>
-            Nhân dịp đầu xuân năm mới, xin chúc bạn sức khỏe tốt, tinh thần vững vàng và luôn giữ được sự lạc quan trong công việc.<br>
-            Mong rằng mọi thử thách đều được giải quyết thuận lợi, các dự án triển khai đúng kế hoạch và đạt kết quả như mong đợi.<br><br>
-            Chúc bạn một năm mới làm việc hiệu quả và nhiều niềm vui.`,
-
-            `Kính gửi anh/chị/bạn,<br><br>
-            Năm mới là dịp để nhìn lại chặng đường đã qua và hướng đến những mục tiêu mới.<br>
-            Xin chúc anh/chị/bạn công việc hanh thông, thu nhập ổn định, từng bước đạt được những mục tiêu đã đề ra.<br><br>
-            Rất mong sẽ tiếp tục được đồng hành và hợp tác cùng anh/chị/bạn trong năm mới với nhiều thành công hơn nữa.`,
-
-            `Gửi anh/chị/bạn đồng đội thân thiết,<br><br>
-            Nhân dịp năm mới, xin chúc bạn luôn tràn đầy năng lượng, tinh thần sáng tạo và sự kiên định trong công việc.<br>
-            Mong rằng những nỗ lực của bạn sẽ được ghi nhận xứng đáng và mang lại nhiều thành quả tích cực trong sự nghiệp.<br><br>
-            Chúc bạn một năm mới thành công và nhiều động lực phát triển.`,
-
-            `Kính chúc anh/chị/bạn,<br><br>
-            Một năm mới với nhiều dự án thuận lợi, cơ hội phát triển rõ ràng và những bước tiến vững chắc trong công việc.<br>
-            Mong rằng năm mới sẽ mang đến sự cân bằng giữa công việc và cuộc sống, để mỗi ngày làm việc đều hiệu quả và ý nghĩa hơn.<br><br>
-            Chúc anh/chị/bạn năm mới an khang và thành công.`,
-
-            `Gửi người đồng nghiệp đáng quý,<br><br>
-            Nhân dịp năm mới, xin chúc bạn luôn mạnh khỏe, tinh thần tích cực và công việc tiến triển thuận lợi như mong đợi.<br>
-            Mong rằng năm mới sẽ mở ra nhiều cơ hội tốt, giúp bạn phát triển bản thân và đạt được những thành tựu đáng tự hào.<br><br>
-            Chúc bạn một năm mới bình an, hiệu quả và nhiều niềm vui trong công việc.`
+            Chúc mừng năm mới!`
         ],
 
-
-        // Cô Dì Chú Bác - kính trọng, gần gũi vừa phải
         aunt_uncle: [
             `Kính gửi Cô/Dì/Chú/Bác,<br><br>
             Nhân dịp xuân về năm mới, cháu xin kính chúc Cô/Dì/Chú/Bác luôn dồi dào sức khỏe, tinh thần an vui và cuộc sống bình an.<br>
             Mong rằng năm mới sẽ mang đến nhiều niềm vui, may mắn và hạnh phúc cho Cô/Dì/Chú/Bác cùng gia đình.<br><br>
-            Cháu kính chúc Cô/Dì/Chú/Bác một năm mới an khang, vạn sự như ý.`,
-
-            `Kính gửi Cô/Dì/Chú/Bác kính mến,<br><br>
-            Năm mới đến, cháu xin gửi lời chúc tốt đẹp và chân thành nhất đến Cô/Dì/Chú/Bác.<br>
-            Kính chúc Cô/Dì/Chú/Bác sức khỏe bền lâu, tinh thần thoải mái, gia đình êm ấm và luôn gặp nhiều điều tốt lành trong cuộc sống.<br><br>
-            Cháu xin cảm ơn Cô/Dì/Chú/Bác vì luôn dành cho cháu sự quan tâm và yêu thương.`,
-
-            `Thưa Cô/Dì/Chú/Bác,<br><br>
-            Nhân dịp đầu xuân năm mới, cháu xin kính chúc Cô/Dì/Chú/Bác phúc lộc đầy nhà, sức khỏe dồi dào và cuộc sống luôn an nhiên, vui vẻ.<br>
-            Mong rằng mỗi ngày trôi qua đều là những ngày bình an, ấm áp bên gia đình và con cháu.<br><br>
-            Cháu kính chúc Cô/Dì/Chú/Bác một năm mới nhiều niềm vui và hạnh phúc.`,
-
-            `Kính gửi Cô/Dì/Chú/Bác yêu quý,<br><br>
-            Năm mới là dịp sum vầy và gửi gắm những lời chúc tốt đẹp.<br>
-            Cháu xin kính chúc Cô/Dì/Chú/Bác luôn mạnh khỏe, an khang, gia đình hòa thuận và tràn đầy tiếng cười.<br><br>
-            Mong rằng năm mới sẽ mang đến nhiều điều may mắn và bình an cho Cô/Dì/Chú/Bác cùng gia đình.`,
-
-            `Kính thưa Cô/Dì/Chú/Bác,<br><br>
-            Nhân dịp năm mới, cháu xin kính chúc Cô/Dì/Chú/Bác thật nhiều sức khỏe, tinh thần vui vẻ và cuộc sống viên mãn.<br>
-            Mong rằng Cô/Dì/Chú/Bác luôn an yên, hạnh phúc và mãi là chỗ dựa tinh thần ấm áp cho con cháu trong gia đình.<br><br>
-            Cháu kính chúc Cô/Dì/Chú/Bác năm mới bình an và hạnh phúc.`
+            Cháu kính chúc Cô/Dì/Chú/Bác một năm mới an khang, vạn sự như ý.`
         ],
 
-        // Người yêu - lãng mạn, ngọt ngào, tình cảm
         lovers: [
             `Gửi người thương yêu,<br><br>
             Một mùa xuân mới lại về, anh/em muốn gửi đến em/anh những lời chúc xuất phát từ tận đáy lòng.<br>
             Chúc em/anh một năm mới thật nhiều sức khỏe, bình an và luôn mỉm cười hạnh phúc.<br><br>
-            Cảm ơn em/anh vì đã ở bên anh/em, cùng anh/em đi qua những khoảnh khắc giản dị nhưng đầy yêu thương. Mong rằng năm mới này, chúng ta vẫn sẽ nắm tay nhau thật chặt.`,
-
-            `Em/Anh yêu dấu,<br><br>
-            Năm mới đến, anh/em không mong gì hơn ngoài việc được tiếp tục đồng hành cùng em/anh trên chặng đường phía trước.<br>
-            Chúc em/anh luôn an yên trong tâm hồn, vững vàng trong cuộc sống và luôn cảm nhận được tình yêu chân thành từ anh/em.<br><br>
-            Mong rằng mỗi ngày của năm mới đều có chúng ta bên nhau.`,
-
-            `Người anh/em thương nhất,<br><br>
-            Nhân dịp đầu năm, anh/em xin chúc em/anh thật nhiều niềm vui, sức khỏe dồi dào và mọi điều tốt đẹp sẽ nhẹ nhàng tìm đến.<br>
-            Cảm ơn em/anh vì đã bước vào cuộc đời anh/em và khiến những ngày bình thường trở nên ý nghĩa hơn.<br><br>
-            Anh/em mong rằng tình yêu của chúng ta sẽ ngày càng bền chặt theo thời gian.`,
-
-            `Gửi người đồng hành của anh/em,<br><br>
-            Năm mới là dịp để nhìn lại và trân trọng những điều quý giá đang có.<br>
-            Với anh/em, điều quý giá nhất chính là em/anh – người luôn lắng nghe, thấu hiểu và yêu thương anh/em bằng tất cả sự chân thành.<br><br>
-            Chúc em/anh một năm mới an yên, và mong rằng chúng ta sẽ tiếp tục cùng nhau xây dựng thật nhiều kỷ niệm đẹp.`,
-
-            `Em/Anh thân yêu,<br><br>
-            Trong khoảnh khắc giao mùa này, anh/em chỉ muốn nói rằng: có em/anh bên cạnh là điều may mắn lớn nhất trong cuộc đời anh/em.<br>
-            Chúc em/anh năm mới nhiều sức khỏe, nhiều niềm vui và luôn cảm nhận được sự ấm áp khi có anh/em ở bên.<br><br>
-            Mong rằng chúng ta sẽ luôn chọn nhau, hôm nay và cả những ngày sau.`,
-
-            `Người quan trọng nhất của anh/em,<br><br>
-            Năm mới đến, anh/em không cầu mong điều gì quá lớn lao, chỉ mong em/anh luôn bình an và hạnh phúc.<br>
-            Dù cuộc sống có đổi thay thế nào, anh/em hy vọng chúng ta vẫn sẽ cùng nhau đi tiếp bằng sự yêu thương và thấu hiểu.<br><br>
-            Cảm ơn em/anh vì đã là một phần không thể thiếu trong cuộc đời anh/em.`,
-
-            `Gửi người anh/em yêu thương,<br><br>
-            Xuân mới mang theo hy vọng và những khởi đầu tốt đẹp.<br>
-            Anh/em mong rằng năm mới này sẽ là một năm đầy ắp tiếng cười, sự sẻ chia và những khoảnh khắc bình yên của riêng chúng ta.<br><br>
-            Chúc em/anh luôn mạnh mẽ, dịu dàng và mãi ở đây cùng anh/em.`,
-
-            `Em/Anh yêu quý,<br><br>
-            Một năm mới lại bắt đầu, và anh/em thật hạnh phúc khi vẫn có em/anh ở bên cạnh.<br>
-            Chúc cho tình yêu của chúng ta luôn được nuôi dưỡng bằng sự chân thành, kiên nhẫn và bao dung.<br><br>
-            Anh/em tin rằng, chỉ cần có nhau, mọi năm mới đều trở nên ý nghĩa hơn rất nhiều.`
+            Cảm ơn em/anh vì đã ở bên anh/em, cùng anh/em đi qua những khoảnh khắc giản dị nhưng đầy yêu thương. Mong rằng năm mới này, chúng ta vẫn sẽ nắm tay nhau thật chặt.`
         ]
     };
 
@@ -503,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return amount.toLocaleString("vi-VN") + " ₫";
     }
 
-    // ========== SETTINGS LOGIC (min & max) ==========
+    // ========== SETTINGS LOGIC ==========
     function updateSettingsUI() {
         ['grandparents', 'parents', 'lovers', 'others'].forEach(group => {
             const minInput = document.getElementById(`min-${group}`);
@@ -511,10 +251,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const minDisplay = document.getElementById(`display-min-${group}`);
             const maxDisplay = document.getElementById(`display-${group}`);
 
-            minInput.value = amountRanges[group].min;
-            maxInput.value = amountRanges[group].max;
-            minDisplay.textContent = formatCurrency(amountRanges[group].min);
-            maxDisplay.textContent = formatCurrency(amountRanges[group].max);
+            if (minInput && maxInput && minDisplay && maxDisplay) {
+                minInput.value = amountRanges[group].min;
+                maxInput.value = amountRanges[group].max;
+                minDisplay.textContent = formatCurrency(amountRanges[group].min);
+                maxDisplay.textContent = formatCurrency(amountRanges[group].max);
+            }
         });
     }
 
@@ -523,6 +265,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const maxInput = document.getElementById(`max-${group}`);
         const minDisplay = document.getElementById(`display-min-${group}`);
         const maxDisplay = document.getElementById(`display-${group}`);
+
+        if (!minInput || !maxInput || !minDisplay || !maxDisplay) return;
 
         let minVal = Number(minInput.value);
         let maxVal = Number(maxInput.value);
@@ -543,8 +287,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     document.querySelectorAll('#settings-modal input[type="range"]').forEach(slider => {
         slider.addEventListener('input', () => {
-            const [type, group] = slider.id.split('-');
-
+            const parts = slider.id.split('-');
+            const type = parts[0];
+            const group = parts.slice(1).join('-');
             syncMinMax(group, type);
         });
     });
@@ -564,26 +309,29 @@ document.addEventListener("DOMContentLoaded", function () {
             const minInput = document.getElementById(`min-${group}`);
             const maxInput = document.getElementById(`max-${group}`);
 
-            let minVal = Number(minInput.value);
-            let maxVal = Number(maxInput.value);
+            if (minInput && maxInput) {
+                let minVal = Number(minInput.value);
+                let maxVal = Number(maxInput.value);
 
-            if (minVal > maxVal) {
-                maxVal = minVal;
-                maxInput.value = maxVal;
+                if (minVal > maxVal) {
+                    maxVal = minVal;
+                    maxInput.value = maxVal;
+                }
+
+                amountRanges[group] = {
+                    min: minVal,
+                    max: maxVal
+                };
             }
-
-            amountRanges[group] = {
-                min: minVal,
-                max: maxVal
-            };
         });
 
         localStorage.setItem('lixi_amount_ranges', JSON.stringify(amountRanges));
         settingsModal?.classList.add('hidden');
     });
 
-    // ========== NAME & INITIALIZATION (giữ nguyên) ==========
+    // ========== NAME & INITIALIZATION ==========
     const hasName = loadSavedName();
+    
     if (hasName) {
         nameExpanded.classList.add("hidden");
         nameMinimized.classList.remove("hidden");
@@ -599,7 +347,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 500);
     }
 
-    // Các event name (giữ nguyên)
     if (senderNameInput) {
         senderNameInput.addEventListener("input", function () {
             if (confirmNameBtn) confirmNameBtn.disabled = this.value.trim().length === 0;
@@ -651,10 +398,10 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 300);
     }
 
-    // Step Indicator (giữ nguyên)
+    // Step Indicator
     function updateStepIndicator(currentStep) {
         [step1Dot, step2Dot, step3Dot, step4Dot].forEach(dot => {
-            dot.classList.remove("completed", "active");
+            dot?.classList.remove("completed", "active");
         });
 
         if (currentStep === 1) step1Dot?.classList.add("active");
@@ -675,7 +422,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ========== RELATIONSHIP SELECTION (đã sửa logic needsAge) ==========
+    // ========== RELATIONSHIP SELECTION ==========
     function initRelationshipSelection() {
         if (!relationshipGrid) return;
         relationshipGrid.innerHTML = "";
@@ -724,7 +471,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ========== AGE SELECTION (chỉ 4 nhóm) ==========
+    // ========== AGE SELECTION ==========
     function initAgeSelection() {
         if (!ageGrid) return;
         ageGrid.innerHTML = "";
@@ -762,7 +509,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // ========== RANDOM AMOUNT (dùng min-max) ==========
+    // ========== RANDOM AMOUNT ==========
     function getRandomAmount() {
         let range;
         if (["grandparents", "parents"].includes(selectedRelationshipId)) {
@@ -787,7 +534,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return possibleAmounts[randomIndex];
     }
 
-    // ========== CREATE HONGBAOS (giữ nguyên) ==========
+    // ========== CREATE HONGBAOS ==========
     function createHongbaos() {
         if (!hongbaoGrid) return;
         hongbaoGrid.innerHTML = "";
@@ -806,9 +553,7 @@ document.addEventListener("DOMContentLoaded", function () {
             "from-amber-800 to-red-900", "from-red-700 to-amber-800", "from-amber-900 to-red-800",
             "from-red-800 to-amber-700", "from-amber-800 to-red-950", "from-red-950 to-amber-800",
             "from-amber-900 to-red-700", "from-red-900 to-amber-950", "from-red-600 to-amber-700",
-            "from-amber-700 to-red-800", "from-red-800 to-amber-800", "from-amber-800 to-red-700",
-            "from-red-700 to-amber-900", "from-amber-900 to-red-600", "from-red-900 to-amber-700",
-            "from-amber-700 to-red-900", "from-red-600 to-amber-800", "from-amber-800 to-red-600"
+            "from-amber-700 to-red-800"
         ];
 
         for (let i = 1; i <= 40; i++) {
@@ -856,7 +601,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ========== RESULT & DICE (giữ nguyên) ==========
+    // ========== RESULT & DICE ==========
     function showResultModal(selectedId) {
         if (diceSection) diceSection.classList.remove("hidden");
         if (letterScratchSection) letterScratchSection.classList.add("hidden");
@@ -938,7 +683,7 @@ document.addEventListener("DOMContentLoaded", function () {
         initScratchCard();
     }
 
-    // ========== SCRATCH CARD (giữ nguyên) ==========
+    // ========== SCRATCH CARD ==========
     function initScratchCard() {
         const container = document.querySelector('.scratch-card-container');
         if (!container) return;
@@ -1088,7 +833,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ctx.fill();
     }
 
-    // ========== CLOSE MODAL (đã sửa để không reset) ==========
+    // ========== CLOSE MODAL ==========
     function closeModal() {
         if (resultModal) resultModal.classList.add("hidden");
         if (modalOverlay) modalOverlay.classList.add("hidden");
@@ -1121,151 +866,365 @@ document.addEventListener("DOMContentLoaded", function () {
             closeModal();
         }
     });
+
+    /* ================================================
+       PHÁO HOA - Auto Fireworks System
+       ================================================ */
+    const canvas = document.getElementById('fireworks-canvas');
+    const fwCtx = canvas ? canvas.getContext('2d') : null;
+    let fireworks = [];
+    let particles = [];
+    let animationId = null;
+    let fireworkRoundCount = 0;
+
+    function resizeFireworksCanvas() {
+        if (!canvas) return;
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    if (canvas) {
+        resizeFireworksCanvas();
+        window.addEventListener('resize', resizeFireworksCanvas);
+    }
+
+    class Firework {
+        constructor(sx, sy, tx, ty) {
+            this.x = sx;
+            this.y = sy;
+            this.sx = sx;
+            this.sy = sy;
+            this.tx = tx;
+            this.ty = ty;
+            this.distanceToTarget = this.calculateDistance(sx, sy, tx, ty);
+            this.distanceTraveled = 0;
+            this.coordinates = [];
+            this.coordinateCount = 3;
+            while (this.coordinateCount--) {
+                this.coordinates.push([this.x, this.y]);
+            }
+            this.angle = Math.atan2(ty - sy, tx - sx);
+            this.speed = 2;
+            this.acceleration = 1.05;
+            this.brightness = Math.random() * 50 + 50;
+            this.targetRadius = 1;
+        }
+
+        calculateDistance(sx, sy, tx, ty) {
+            const xDistance = sx - tx;
+            const yDistance = sy - ty;
+            return Math.sqrt(xDistance ** 2 + yDistance ** 2);
+        }
+
+        update(index) {
+            this.coordinates.pop();
+            this.coordinates.unshift([this.x, this.y]);
+
+            if (this.targetRadius < 8) {
+                this.targetRadius += 0.3;
+            } else {
+                this.targetRadius = 1;
+            }
+
+            this.speed *= this.acceleration;
+            const vx = Math.cos(this.angle) * this.speed;
+            const vy = Math.sin(this.angle) * this.speed;
+            this.distanceTraveled = this.calculateDistance(this.sx, this.sy, this.x + vx, this.y + vy);
+
+            if (this.distanceTraveled >= this.distanceToTarget) {
+                createParticles(this.tx, this.ty);
+                fireworks.splice(index, 1);
+            } else {
+                this.x += vx;
+                this.y += vy;
+            }
+        }
+
+        draw() {
+            if (!fwCtx) return;
+            fwCtx.beginPath();
+            fwCtx.moveTo(this.coordinates[this.coordinates.length - 1][0], 
+                         this.coordinates[this.coordinates.length - 1][1]);
+            fwCtx.lineTo(this.x, this.y);
+            fwCtx.strokeStyle = `hsl(${Math.random() * 360}, 100%, ${this.brightness}%)`;
+            fwCtx.stroke();
+
+            fwCtx.beginPath();
+            fwCtx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2);
+            fwCtx.stroke();
+        }
+    }
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.coordinates = [];
+            this.coordinateCount = 5;
+            while (this.coordinateCount--) {
+                this.coordinates.push([this.x, this.y]);
+            }
+            this.angle = Math.random() * Math.PI * 2;
+            this.speed = Math.random() * 10 + 1;
+            this.friction = 0.96;
+            this.gravity = 0.8;
+            this.hue = Math.random() * 360;
+            this.brightness = Math.random() * 80 + 50;
+            this.alpha = 1;
+            this.decay = Math.random() * 0.02 + 0.01;
+        }
+
+        update(index) {
+            this.coordinates.pop();
+            this.coordinates.unshift([this.x, this.y]);
+            this.speed *= this.friction;
+            this.x += Math.cos(this.angle) * this.speed;
+            this.y += Math.sin(this.angle) * this.speed + this.gravity;
+            this.alpha -= this.decay;
+
+            if (this.alpha <= this.decay) {
+                particles.splice(index, 1);
+            }
+        }
+
+        draw() {
+            if (!fwCtx) return;
+            fwCtx.beginPath();
+            fwCtx.moveTo(this.coordinates[this.coordinates.length - 1][0], 
+                         this.coordinates[this.coordinates.length - 1][1]);
+            fwCtx.lineTo(this.x, this.y);
+            fwCtx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
+            fwCtx.stroke();
+        }
+    }
+
+    function createParticles(x, y) {
+        let particleCount = 120;
+        while (particleCount--) {
+            particles.push(new Particle(x, y));
+        }
+    }
+
+    function animateFireworks() {
+        if (!fwCtx || !canvas) return;
+        
+        animationId = requestAnimationFrame(animateFireworks);
+        fwCtx.globalCompositeOperation = 'destination-out';
+        fwCtx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        fwCtx.fillRect(0, 0, canvas.width, canvas.height);
+        fwCtx.globalCompositeOperation = 'lighter';
+
+        let i = fireworks.length;
+        while (i--) {
+            fireworks[i].draw();
+            fireworks[i].update(i);
+        }
+
+        i = particles.length;
+        while (i--) {
+            particles[i].draw();
+            particles[i].update(i);
+        }
+
+        if (fireworks.length === 0 && particles.length === 0) {
+            cancelAnimationFrame(animationId);
+            animationId = null;
+            if (fwCtx && canvas) {
+                fwCtx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+        }
+    }
+
+    function launchFirework() {
+        if (!canvas) return;
+        const sx = canvas.width / 2;
+        const sy = canvas.height;
+        const tx = Math.random() * canvas.width;
+        const ty = Math.random() * canvas.height / 2;
+        fireworks.push(new Firework(sx, sy, tx, ty));
+        
+        if (!animationId) {
+            animateFireworks();
+        }
+    }
+
+    function launchMultipleFireworks(count) {
+        if (!canvas || !fwCtx) return;
+        
+        let launched = 0;
+        const interval = setInterval(() => {
+            launchFirework();
+            launched++;
+            if (launched >= count) {
+                clearInterval(interval);
+            }
+        }, 150);
+    }
+
+    function startBigFinale() {
+        if (!canvas || !fwCtx) return;
+        
+        const finaleCount = Math.floor(Math.random() * 21) + 30;
+        let launched = 0;
+        const interval = setInterval(() => {
+            launchFirework();
+            launched++;
+            if (launched >= finaleCount) {
+                clearInterval(interval);
+            }
+        }, 100);
+    }
+
+    function scheduleNextFireworkRound() {
+        setTimeout(() => {
+            fireworkRoundCount++;
+            
+            if (fireworkRoundCount >= 5) {
+                startBigFinale();
+                fireworkRoundCount = 0;
+            } else {
+                const count = Math.floor(Math.random() * 3) + 3;
+                launchMultipleFireworks(count);
+            }
+            
+            scheduleNextFireworkRound();
+        }, 30000);
+    }
+
+    setTimeout(() => {
+        scheduleNextFireworkRound();
+    }, 5000);
+
+    /* ================================================
+       CÁNH HOA MAI RƠI — Màu vàng, từ ĐÚNG vị trí 2 góc, nhiều hơn
+       ================================================ */
+    (function petalInit() {
+        const layer = document.getElementById('petal-layer');
+        if (!layer) return;
+
+        function makePetalSVG(uid) {
+            // Màu vàng hoa mai - gradient đẹp hơn
+            const colors = [
+                { base: '#ffd700', light: '#fff4b3' },
+                { base: '#ffcc00', light: '#ffe680' },
+                { base: '#ffdb58', light: '#ffecb3' },
+                { base: '#ffe135', light: '#fff0a8' },
+                { base: '#ffc700', light: '#ffe066' },
+                { base: '#ffdf00', light: '#fff199' }
+            ];
+            const colorSet = colors[uid % colors.length];
+
+            const shapes = [
+                // Hình cánh hoa mai 5 cánh
+                `M20,5 L22,12 L28,12 L23,16 L25,23 L20,18 L15,23 L17,16 L12,12 L18,12 Z`,
+                // Hình oval
+                `M12,5 Q20,10 20,20 Q12,15 5,20 Q5,10 12,5Z`,
+                // Hình elip
+                `M20,6 Q25,13 20,20 Q15,13 20,6Z`,
+                // Hình tròn nhỏ
+                `M20,8 Q23,13 20,18 Q17,13 20,8Z`,
+                // Hình bầu dục
+                `M12,3 Q20,12 12,22 Q5,12 12,3Z`
+            ];
+
+            const shape = shapes[uid % shapes.length];
+
+            return `<svg viewBox="0 0 40 25" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="petalGrad${uid}" cx="50%" cy="50%">
+                  <stop offset="0%" stop-color="${colorSet.light}" stop-opacity="0.95"/>
+                  <stop offset="100%" stop-color="${colorSet.base}" stop-opacity="0.9"/>
+                </radialGradient>
+              </defs>
+              <path d="${shape}" fill="url(#petalGrad${uid})" opacity="0.92" stroke="${colorSet.base}" stroke-width="0.5"/>
+              <path d="${shape}" fill="white" opacity="0.35" stroke="none"/>
+            </svg>`;
+        }
+
+        function rand(a, b) { return a + Math.random() * (b - a); }
+        function randInt(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
+
+        let uid = 0;
+
+        function spawnPetal() {
+            uid++;
+            const vw = window.innerWidth;
+            const vh = window.innerHeight;
+
+            const w = rand(20, 32);
+            const h = w * rand(0.75, 1.05);
+            
+            // QUAN TRỌNG: Spawn từ ĐÚNG vị trí 2 hình hoa mai
+            // Hình bên trái ở vị trí: 0-280px (w-72 = 288px / 4 = 72px)
+            // Hình bên phải ở vị trí: (100vw - 280px) đến 100vw
+            const fromLeft = Math.random() < 0.5;
+            let x;
+            if (fromLeft) {
+                // Rơi từ khu vực hình hoa mai TRÁI (0-280px)
+                x = rand(0, Math.min(280, vw * 0.25));
+            } else {
+                // Rơi từ khu vực hình hoa mai PHẢI (vw-280 đến vw)
+                x = rand(Math.max(vw - 280, vw * 0.75), vw);
+            }
+            
+            const y = rand(-100, -30);
+            
+            // Điểm drift - bay lắc lư
+            const driftXEarly = rand(-70, 70);
+            const driftXMid = rand(-100, 100);
+            const driftXLate = rand(-90, 90);
+            const driftXFinal = rand(-60, 60);
+            const driftXEnd = rand(-50, 50);
+            const driftXPull = rand(-35, 35);
+            
+            const dur = rand(16, 26);
+            const sway = rand(5, 8);
+            const delay = rand(0, 2.5);
+            const rotSpeed = rand(14, 24);
+            
+            const wrap = document.createElement('div');
+            wrap.className = 'petal-wrap';
+            wrap.style.cssText =
+                `position: absolute;` +
+                `left:${x}px;` +
+                `top:${y}px;` +
+                `width:${w}px;` +
+                `height:${h}px;` +
+                `animation: petalFloatAndDrift ${dur}s ease-in-out forwards;` +
+                `animation-delay:${delay}s;` +
+                `--drift-x-early:${driftXEarly}px;` +
+                `--drift-x-mid:${driftXMid}px;` +
+                `--drift-x-late:${driftXLate}px;` +
+                `--drift-x-final:${driftXFinal}px;` +
+                `--drift-x-end:${driftXEnd}px;` +
+                `--drift-x-pull:${driftXPull}px;` +
+                `opacity: 0;` +
+                `filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.35));`;
+
+            const spin = document.createElement('div');
+            spin.className = 'petal-spin';
+            spin.style.cssText =
+                `width: 100%;` +
+                `height: 100%;` +
+                `animation: petalGentleSway ${sway}s ease-in-out infinite, petalGentleRotate ${rotSpeed}s linear infinite;`;
+
+            spin.innerHTML = makePetalSVG(uid);
+            wrap.appendChild(spin);
+            layer.appendChild(wrap);
+
+            setTimeout(() => wrap.remove(), (dur + delay) * 1000 + 1000);
+        }
+
+        function loop() {
+            // Tăng lên: spawn 2-3 cánh mỗi lần (đủ nhiều nhưng không quá)
+            const n = randInt(2, 3);
+            for (let i = 0; i < n; i++) {
+                setTimeout(() => spawnPetal(), i * 250);
+            }
+            // Giảm thời gian xuống để rơi nhiều hơn
+            setTimeout(loop, rand(1000, 1600));
+        }
+        
+        setTimeout(loop, 800);
+    })();
 });
-
-/* ================================================
-   CÁNH ĐÀO RƠI — append cuối script.js
-   ================================================ */
-(function petalInit() {
-    const layer = document.getElementById('petal-layer');
-    if (!layer) return;
-
-    /*
-      6 biến thể SVG cánh đào thật:
-        • shape: 1 cánh sakura (rounded top, notch bottom)
-        • gradient: center trắng/hồng nhẹ → edge rose đậm
-        • gân chính + gân phụ (vein)  
-        • dot stamen ở đầu cánh
-      Gradient ID dùng suffix ngẫu nhiên → tránh conflict khi nhiều petal
-    */
-    function makePetalSVG(uid) {
-        // chọn màu ngẫu nhiên từ palette
-        const palettes = [
-            // A: hồng sữ nhẹ → rose
-            { c0: '#fff0f3', c1: '#f8c8d8', c2: '#f48fb1', c3: '#e91e63', stroke: '#e91e63' },
-            // B: kem → deep rose  
-            { c0: '#ffffff', c1: '#ffe0e8', c2: '#f06292', c3: '#c2185b', stroke: '#c2185b' },
-            // C: blush → magenta
-            { c0: '#fce4ec', c1: '#f8bbd0', c2: '#ec407a', c3: '#ad1457', stroke: '#ad1457' },
-            // D: ivory → pink
-            { c0: '#fff5f7', c1: '#ffd1dc', c2: '#f48fb1', c3: '#e91e63', stroke: '#e91e63' },
-            // E: pure white center → dark rose (mạnh nhất)
-            { c0: '#ffffff', c1: '#fce4ec', c2: '#ec407a', c3: '#880e4f', stroke: '#880e4f' },
-            // F: pink blush → soft rose  
-            { c0: '#ffe0e8', c1: '#f8bbd0', c2: '#f06292', c3: '#e91e63', stroke: '#e91e63' }
-        ];
-        const p = palettes[uid % palettes.length];
-        const id = 'g' + uid;
-
-        // chọn 1 trong 4 shape lệch khác nhau → tự nhiên hơn
-        const shapes = [
-            // shape 0: cánh đối xứng, to
-            `M20,50 C6,42 0,28 2,15 C3,5 10,0 20,2 C30,0 37,5 38,15 C40,28 34,42 20,50Z`,
-            // shape 1: bên trái phồng hơn  
-            `M18,52 C4,44 0,30 2,16 C3,5 9,0 18,2 C28,0 36,7 37,19 C38,33 28,44 18,52Z`,
-            // shape 2: hẹp, dài
-            `M16,54 C4,46 1,33 2,19 C3,7 9,0 16,1 C23,0 29,7 30,19 C31,33 28,46 16,54Z`,
-            // shape 3: tròn đầu, ngắn
-            `M22,44 C8,38 1,27 2,16 C3,6 11,0 22,1 C33,0 41,6 42,16 C43,27 36,38 22,44Z`
-        ];
-        const shapeIdx = uid % shapes.length;
-        const vbW = [40, 38, 32, 44][shapeIdx];
-        const vbH = [50, 52, 54, 44][shapeIdx];
-        // center x/y cho notch & vein  
-        const cx = [20, 18, 16, 22][shapeIdx];
-        const cy = [50, 52, 54, 44][shapeIdx];
-        const top = [2, 2, 1, 1][shapeIdx];
-
-        return `<svg viewBox="0 0 ${vbW} ${vbH}" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <radialGradient id="${id}" cx="48%" cy="28%" r="72%">
-              <stop offset="0%"   stop-color="${p.c0}"/>
-              <stop offset="35%"  stop-color="${p.c1}"/>
-              <stop offset="65%"  stop-color="${p.c2}"/>
-              <stop offset="100%" stop-color="${p.c3}"/>
-            </radialGradient>
-          </defs>
-          <!-- cánh chính -->
-          <path d="${shapes[shapeIdx]}" fill="url(#${id})"/>
-          <!-- notch: rãnh đầu cánh (đặc trưng sakura) -->
-          <path d="M${cx},${cy} C${cx},${cy - 4} ${cx - 2},${cy - 6} ${cx - 3},${cy - 7}" fill="none" stroke="${p.stroke}55" stroke-width="0.85" stroke-linecap="round"/>
-          <path d="M${cx},${cy} C${cx},${cy - 4} ${cx + 2},${cy - 6} ${cx + 3},${cy - 7}" fill="none" stroke="${p.stroke}55" stroke-width="0.85" stroke-linecap="round"/>
-          <!-- gân chính: đầu cánh → notch -->
-          <path d="M${cx},${cy - 2} C${cx},${Math.round((cy + top) / 2)} ${cx},${Math.round(top + 4)} ${cx},${top + 1}" fill="none" stroke="${p.stroke}30" stroke-width="0.75" stroke-linecap="round"/>
-          <!-- gân phụ trái -->
-          <path d="M${cx},${Math.round(cy * 0.55)} C${Math.round(cx * 0.6)},${Math.round(cy * 0.47)} ${Math.round(cx * 0.25)},${Math.round(cy * 0.43)} 2,${Math.round(cy * 0.4)}" fill="none" stroke="${p.stroke}22" stroke-width="0.5"/>
-          <!-- gân phụ phải -->
-          <path d="M${cx},${Math.round(cy * 0.55)} C${Math.round(cx * 1.4)},${Math.round(cy * 0.47)} ${Math.round(vbW - cx * 0.25)},${Math.round(cy * 0.43)} ${vbW - 2},${Math.round(cy * 0.4)}" fill="none" stroke="${p.stroke}22" stroke-width="0.5"/>
-          <!-- gân phụ 2 trái (gần đầu) -->
-          <path d="M${cx},${Math.round(cy * 0.35)} C${Math.round(cx * 0.65)},${Math.round(cy * 0.3)} ${Math.round(cx * 0.3)},${Math.round(cy * 0.28)} 3,${Math.round(cy * 0.27)}" fill="none" stroke="${p.stroke}1a" stroke-width="0.4"/>
-          <!-- gân phụ 2 phải -->
-          <path d="M${cx},${Math.round(cy * 0.35)} C${Math.round(cx * 1.35)},${Math.round(cy * 0.3)} ${Math.round(vbW - cx * 0.3)},${Math.round(cy * 0.28)} ${vbW - 3},${Math.round(cy * 0.27)}" fill="none" stroke="${p.stroke}1a" stroke-width="0.4"/>
-          <!-- stamen dot: viên tim ở đầu cánh -->
-          <circle cx="${cx}" cy="${top + 1.5}" r="1.3" fill="#fff" opacity=".75"/>
-          <circle cx="${cx}" cy="${top + 1.5}" r="0.6" fill="${p.c2}" opacity=".6"/>
-        </svg>`;
-    }
-
-    /* ── random helpers ── */
-    function rand(a, b) { return a + Math.random() * (b - a); }
-    function randInt(a, b) { return a + Math.floor(Math.random() * (b - a + 1)); }
-
-    let uid = 0; // unique id cho gradient
-    let wind = 0;
-    setInterval(() => {
-        wind = rand(-80, 80); // mỗi cơn gió
-    }, rand(3000, 6000));
-
-
-    function spawnPetal() {
-        uid++;
-        const vw = window.innerWidth;
-
-        const w = rand(15, 30);          // chiều rộng (px)
-        const x = rand(-35, vw + 15);    // start x
-        const dur = rand(14, 28);
-        const sway = rand(2.8, 5.5);        // chu kỳ lắc (s)
-        const delay = rand(0, 3.5);          // delay start (s)
-        const rot = rand(0, 360);          // rotation ban đầu
-        const z = rand(-420, 0);               // xa → gần
-        const drift = rand(-90, 90) + wind;   // gió + lệch tự nhiên
-        const scale = 0.75 + (z + 420) / 840; // scale theo chiều sâu
-
-        /* wrapper: rơi xuống */
-        const wrap = document.createElement('div');
-        wrap.className = 'petal-wrap';
-        wrap.style.cssText =
-            `left:${x}px;` +
-            `width:${w}px;` +
-            `height:${w * 1.38}px;` +
-            `animation-duration:${dur}s;` +
-            `animation-delay:${delay}s;` +
-            `--drift:${drift}px;` +
-            `--z:${z}px;` +
-            `transform:translateZ(${z}px) scale(${scale});` +
-            `opacity:${Math.min(1, 1 + z / 450)};`;
-
-        /* inner: sway + spin */
-        const spin = document.createElement('div');
-        spin.className = 'petal-spin';
-        spin.style.cssText =
-            `animation-duration:${sway}s;` +
-            `transform:rotate(${rot}deg);`;
-
-        spin.innerHTML = makePetalSVG(uid);
-
-        wrap.appendChild(spin);
-        layer.appendChild(wrap);
-
-        /* auto cleanup sau khi xong */
-        setTimeout(() => wrap.remove(), (dur + delay) * 1000 + 500);
-    }
-
-    /* ── spawn loop: 1-2 cánh mỗi 0.45–1s ── */
-    function loop() {
-        const n = randInt(1, 2);
-        for (let i = 0; i < n; i++) spawnPetal();
-        setTimeout(loop, rand(450, 1000));
-    }
-    setTimeout(loop, 150);
-})();
