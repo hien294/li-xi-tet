@@ -18,12 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const resultModal = document.getElementById("result-modal");
     const modalOverlay = document.getElementById("modal-overlay");
-    const diceSection = document.getElementById("dice-section");
+    const diceLoadingModal = document.getElementById("dice-loading-modal");
     const letterScratchSection = document.getElementById("letter-scratch-section");
 
-    const dice1 = document.getElementById("dice1");
-    const dice2 = document.getElementById("dice2");
-    const dice3 = document.getElementById("dice3");
+    const dice1Loading = document.getElementById("dice1-loading");
+    const dice2Loading = document.getElementById("dice2-loading");
+    const dice3Loading = document.getElementById("dice3-loading");
 
     const letterDate = document.getElementById("letter-date");
     const letterContent = document.getElementById("letter-content");
@@ -593,7 +593,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 this.classList.add("selected");
 
                 setTimeout(() => {
-                    showResultModal(i);
+                    showDiceLoadingModal(i);
                 }, 500);
             });
 
@@ -601,21 +601,21 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ========== RESULT & DICE ==========
-    function showResultModal(selectedId) {
-        if (diceSection) diceSection.classList.remove("hidden");
-        if (letterScratchSection) letterScratchSection.classList.add("hidden");
-        if (resultModal) resultModal.classList.remove("hidden");
+    // ========== DICE LOADING & RESULT ==========
+    function showDiceLoadingModal(selectedId) {
+        // Show fullscreen dice loading
+        if (diceLoadingModal) diceLoadingModal.classList.remove("hidden");
         if (modalOverlay) modalOverlay.classList.remove("hidden");
         document.body.style.overflow = "hidden";
+
         startDiceRolling(selectedId);
     }
 
     function startDiceRolling(selectedId) {
         isRolling = true;
-        if (dice1) dice1.classList.add("rolling");
-        if (dice2) dice2.classList.add("rolling");
-        if (dice3) dice3.classList.add("rolling");
+        if (dice1Loading) dice1Loading.classList.add("rolling");
+        if (dice2Loading) dice2Loading.classList.add("rolling");
+        if (dice3Loading) dice3Loading.classList.add("rolling");
 
         currentAmount = getRandomAmount();
         const letter = generateLetter();
@@ -624,7 +624,10 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
             stopDiceRolling();
             isRolling = false;
+
+            // Hide dice loading and show result modal
             setTimeout(() => {
+                if (diceLoadingModal) diceLoadingModal.classList.add("hidden");
                 showLetterAndScratch(letter, currentAmount, message);
             }, 1000);
         }, 3000);
@@ -651,9 +654,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function stopDiceRolling() {
-        if (dice1) dice1.classList.remove("rolling");
-        if (dice2) dice2.classList.remove("rolling");
-        if (dice3) dice3.classList.remove("rolling");
+        if (dice1Loading) dice1Loading.classList.remove("rolling");
+        if (dice2Loading) dice2Loading.classList.remove("rolling");
+        if (dice3Loading) dice3Loading.classList.remove("rolling");
 
         const diceValues = [
             Math.floor(Math.random() * 6) + 1,
@@ -667,14 +670,13 @@ document.addEventListener("DOMContentLoaded", function () {
             { x: diceValues[2] * 60, y: diceValues[2] * 60 }
         ];
 
-        if (dice1) dice1.style.transform = `rotateX(${rotations[0].x}deg) rotateY(${rotations[0].y}deg)`;
-        if (dice2) dice2.style.transform = `rotateX(${rotations[1].x}deg) rotateY(${rotations[1].y}deg)`;
-        if (dice3) dice3.style.transform = `rotateX(${rotations[2].x}deg) rotateY(${rotations[2].y}deg)`;
+        if (dice1Loading) dice1Loading.style.transform = `rotateX(${rotations[0].x}deg) rotateY(${rotations[0].y}deg)`;
+        if (dice2Loading) dice2Loading.style.transform = `rotateX(${rotations[1].x}deg) rotateY(${rotations[1].y}deg)`;
+        if (dice3Loading) dice3Loading.style.transform = `rotateX(${rotations[2].x}deg) rotateY(${rotations[2].y}deg)`;
     }
 
     function showLetterAndScratch(letter, amount, message) {
-        if (diceSection) diceSection.classList.add("hidden");
-        if (letterScratchSection) letterScratchSection.classList.remove("hidden");
+        if (resultModal) resultModal.classList.remove("hidden");
         if (letterDate) letterDate.textContent = letter.date;
         if (letterContent) letterContent.innerHTML = letter.content;
         if (letterClosing) letterClosing.textContent = letter.closing;
@@ -836,12 +838,13 @@ document.addEventListener("DOMContentLoaded", function () {
     // ========== CLOSE MODAL ==========
     function closeModal() {
         if (resultModal) resultModal.classList.add("hidden");
+        if (diceLoadingModal) diceLoadingModal.classList.add("hidden");
         if (modalOverlay) modalOverlay.classList.add("hidden");
         document.body.style.overflow = "auto";
 
-        if (dice1) dice1.style.transform = "";
-        if (dice2) dice2.style.transform = "";
-        if (dice3) dice3.style.transform = "";
+        if (dice1Loading) dice1Loading.style.transform = "";
+        if (dice2Loading) dice2Loading.style.transform = "";
+        if (dice3Loading) dice3Loading.style.transform = "";
 
         if (selectedHongbao) {
             selectedHongbao.classList.remove("selected");
@@ -855,14 +858,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (modalOverlay) {
         modalOverlay.addEventListener("click", function (e) {
-            if (e.target === modalOverlay && !resultModal.classList.contains("hidden")) {
+            if (e.target === modalOverlay && (!resultModal.classList.contains("hidden") || !diceLoadingModal.classList.contains("hidden"))) {
                 closeModal();
             }
         });
     }
 
     document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && !resultModal.classList.contains("hidden")) {
+        if (e.key === "Escape" && (!resultModal.classList.contains("hidden") || !diceLoadingModal.classList.contains("hidden"))) {
             closeModal();
         }
     });
