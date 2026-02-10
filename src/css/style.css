@@ -284,14 +284,14 @@ body {
     }
 }
 
-/* Dice */
+/* Dice - Larger for loading screen */
 .dice-container {
     perspective: 1000px;
 }
 
 .dice {
-    width: 55px;
-    height: 55px;
+    width: 70px;
+    height: 70px;
     position: relative;
     transform-style: preserve-3d;
     transition: transform 1s;
@@ -299,10 +299,21 @@ body {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
 }
 
+/* Dice in loading modal - bigger size */
+#dice-loading-modal .dice {
+    width: 90px;
+    height: 90px;
+}
+
 @media (max-width: 640px) {
     .dice {
-        width: 45px;
-        height: 45px;
+        width: 55px;
+        height: 55px;
+    }
+
+    #dice-loading-modal .dice {
+        width: 70px;
+        height: 70px;
     }
 }
 
@@ -328,7 +339,7 @@ body {
     }
 
     50% {
-        box-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+        box-shadow: 0 0 30px rgba(255, 215, 0, 0.8), 0 0 60px rgba(255, 215, 0, 0.5);
     }
 }
 
@@ -346,52 +357,101 @@ body {
 }
 
 .dice-face:nth-child(1) {
-    transform: translateZ(27.5px);
+    transform: translateZ(35px);
 }
 
 .dice-face:nth-child(2) {
-    transform: rotateY(90deg) translateZ(27.5px);
+    transform: rotateY(90deg) translateZ(35px);
 }
 
 .dice-face:nth-child(3) {
-    transform: rotateY(180deg) translateZ(27.5px);
+    transform: rotateY(180deg) translateZ(35px);
 }
 
 .dice-face:nth-child(4) {
-    transform: rotateY(-90deg) translateZ(27.5px);
+    transform: rotateY(-90deg) translateZ(35px);
 }
 
 .dice-face:nth-child(5) {
-    transform: rotateX(90deg) translateZ(27.5px);
+    transform: rotateX(90deg) translateZ(35px);
 }
 
 .dice-face:nth-child(6) {
-    transform: rotateX(-90deg) translateZ(27.5px);
+    transform: rotateX(-90deg) translateZ(35px);
+}
+
+/* Dice in loading modal */
+#dice-loading-modal .dice-face:nth-child(1) {
+    transform: translateZ(45px);
+}
+
+#dice-loading-modal .dice-face:nth-child(2) {
+    transform: rotateY(90deg) translateZ(45px);
+}
+
+#dice-loading-modal .dice-face:nth-child(3) {
+    transform: rotateY(180deg) translateZ(45px);
+}
+
+#dice-loading-modal .dice-face:nth-child(4) {
+    transform: rotateY(-90deg) translateZ(45px);
+}
+
+#dice-loading-modal .dice-face:nth-child(5) {
+    transform: rotateX(90deg) translateZ(45px);
+}
+
+#dice-loading-modal .dice-face:nth-child(6) {
+    transform: rotateX(-90deg) translateZ(45px);
 }
 
 @media (max-width: 640px) {
     .dice-face:nth-child(1) {
-        transform: translateZ(22.5px);
+        transform: translateZ(27.5px);
     }
 
     .dice-face:nth-child(2) {
-        transform: rotateY(90deg) translateZ(22.5px);
+        transform: rotateY(90deg) translateZ(27.5px);
     }
 
     .dice-face:nth-child(3) {
-        transform: rotateY(180deg) translateZ(22.5px);
+        transform: rotateY(180deg) translateZ(27.5px);
     }
 
     .dice-face:nth-child(4) {
-        transform: rotateY(-90deg) translateZ(22.5px);
+        transform: rotateY(-90deg) translateZ(27.5px);
     }
 
     .dice-face:nth-child(5) {
-        transform: rotateX(90deg) translateZ(22.5px);
+        transform: rotateX(90deg) translateZ(27.5px);
     }
 
     .dice-face:nth-child(6) {
-        transform: rotateX(-90deg) translateZ(22.5px);
+        transform: rotateX(-90deg) translateZ(27.5px);
+    }
+
+    #dice-loading-modal .dice-face:nth-child(1) {
+        transform: translateZ(35px);
+    }
+
+    #dice-loading-modal .dice-face:nth-child(2) {
+        transform: rotateY(90deg) translateZ(35px);
+    }
+
+    #dice-loading-modal .dice-face:nth-child(3) {
+        transform: rotateY(180deg) translateZ(35px);
+    }
+
+    #dice-loading-modal .dice-face:nth-child(4) {
+        transform: rotateY(-90deg) translateZ(35px);
+    }
+
+    #dice-loading-modal .dice-face:nth-child(5) {
+        transform: rotateX(90deg) translateZ(35px);
+    }
+
+    #dice-loading-modal .dice-face:nth-child(6) {
+        transform: rotateX(-90deg) translateZ(35px);
     }
 }
 
@@ -414,10 +474,20 @@ body {
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3), 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
+#dice-loading-modal .dot {
+    width: 12px;
+    height: 12px;
+}
+
 @media (max-width: 640px) {
     .dot {
         width: 7px;
         height: 7px;
+    }
+
+    #dice-loading-modal .dot {
+        width: 9px;
+        height: 9px;
     }
 }
 
