@@ -887,3 +887,34 @@ input[type="range"] {
         font-size: 1rem !important;
     }
 }
+
+/* Đảm bảo fonts được load đầy đủ khi capture */
+@media print {
+  #letter-to-share {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
+/* Style cho nút khi disabled */
+#download-letter-btn:disabled,
+#share-letter-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+/* Responsive cho mobile */
+@media (max-width: 640px) {
+  #letter-to-share {
+    font-size: 14px;
+  }
+  
+  #letter-to-share .text-2xl {
+    font-size: 1.5rem;
+  }
+  
+  #letter-to-share .text-3xl {
+    font-size: 1.75rem;
+  }
+}
