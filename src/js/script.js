@@ -218,10 +218,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     function loadAmountRanges() {
         const defaults = {
-            grandparents: { min: 50000, max: 500000 },
-            parents: { min: 50000, max: 500000 },
-            lovers: { min: 50000, max: 500000 },
-            others: { min: 10000, max: 500000 }
+            grandparents: { min: 100000, max: 200000 },
+            parents: { min: 100000, max: 200000 },
+            lovers: { min: 100000, max: 200000 },
+            others: { min: 10000, max: 50000 }
         };
         try {
             const saved = JSON.parse(localStorage.getItem('lixi_amount_ranges') || '{}');
@@ -537,6 +537,8 @@ document.addEventListener("DOMContentLoaded", function () {
     // ========== CREATE HONGBAOS ==========
     function createHongbaos() {
         if (!hongbaoGrid) return;
+
+        // Clear existing hongbaos
         hongbaoGrid.innerHTML = "";
 
         const colorVariants = [
@@ -556,6 +558,8 @@ document.addEventListener("DOMContentLoaded", function () {
             "from-amber-700 to-red-800"
         ];
 
+        const fragment = document.createDocumentFragment();
+
         for (let i = 1; i <= 40; i++) {
             const colorClass = colorVariants[i - 1];
             const hongbaoItem = document.createElement("div");
@@ -564,7 +568,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
             hongbaoItem.innerHTML = `
                 <div class="hongbao-top h-8 md:h-10 rounded-t-lg flex items-center justify-center relative overflow-hidden">
-                    <div class="text-red-900 font-bold text-sm md:text-base tracking-wider relative z-10">LỘC</div>
+                    <div class="hidden md:block text-red-900 font-bold text-sm md:text-base tracking-wider relative z-10">
+                        LỘC
+                    </div>
                 </div>
                 <div class="flex-grow bg-gradient-to-br ${colorClass} rounded-b-lg p-3 flex flex-col items-center justify-center relative">
                     <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 hongbao-number w-8 h-8 rounded-full flex items-center justify-center text-sm shadow-lg">${i}</div>
@@ -582,26 +588,32 @@ document.addEventListener("DOMContentLoaded", function () {
                 </div>
             `;
 
-            hongbaoItem.addEventListener("click", function () {
+            hongbaoItem.addEventListener("click", function (e) {
                 if (selectedHongbao === this || isRolling) return;
+                e.stopPropagation();
 
-                document.querySelectorAll(".hongbao-card").forEach((item) => {
-                    item.classList.remove("selected");
+                requestAnimationFrame(() => {
+                    document.querySelectorAll(".hongbao-card").forEach((item) => {
+                        item.classList.remove("selected");
+                    });
+
+                    selectedHongbao = this;
+                    this.classList.add("selected");
+
+                    setTimeout(() => {
+                        showDiceLoadingModal(i);
+                    }, 300);
                 });
-
-                selectedHongbao = this;
-                this.classList.add("selected");
-
-                setTimeout(() => {
-                    showDiceLoadingModal(i);
-                }, 500);
             });
 
-            hongbaoGrid.appendChild(hongbaoItem);
+            fragment.appendChild(hongbaoItem);
         }
+
+        requestAnimationFrame(() => {
+            hongbaoGrid.appendChild(fragment);
+        });
     }
 
-    // ========== DICE LOADING & RESULT ==========
     function showDiceLoadingModal(selectedId) {
         // Show fullscreen dice loading
         if (diceLoadingModal) diceLoadingModal.classList.remove("hidden");
@@ -702,30 +714,46 @@ document.addEventListener("DOMContentLoaded", function () {
         scratchCanvas.height = container.offsetHeight;
         ctx = scratchCanvas.getContext("2d", { willReadFrequently: true });
 
-        ctx.fillStyle = "#E0E0E0";
+        // Base silver gradient background
+        const silverGradient = ctx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
+        silverGradient.addColorStop(0, "#E8E8E8");
+        silverGradient.addColorStop(0.3, "#D0D0D0");
+        silverGradient.addColorStop(0.5, "#C0C0C0");
+        silverGradient.addColorStop(0.7, "#D0D0D0");
+        silverGradient.addColorStop(1, "#E8E8E8");
+        ctx.fillStyle = silverGradient;
         ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-        ctx.fillStyle = "#FFFFFF";
-        for (let x = 10; x < scratchCanvas.width; x += 25) {
-            for (let y = 10; y < scratchCanvas.height; y += 25) {
+        // Add decorative dots pattern
+        ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
+        for (let x = 15; x < scratchCanvas.width; x += 20) {
+            for (let y = 15; y < scratchCanvas.height; y += 20) {
                 ctx.beginPath();
-                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.arc(x, y, 2, 0, Math.PI * 2);
                 ctx.fill();
             }
         }
 
-        const gradient = ctx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
-        gradient.addColorStop(0, "rgba(255, 255, 255, 0.2)");
-        gradient.addColorStop(0.5, "rgba(255, 255, 255, 0.1)");
-        gradient.addColorStop(1, "rgba(255, 255, 255, 0.2)");
-        ctx.fillStyle = gradient;
+        // Add shine effect
+        const shineGradient = ctx.createLinearGradient(0, 0, scratchCanvas.width, scratchCanvas.height);
+        shineGradient.addColorStop(0, "rgba(255, 255, 255, 0.3)");
+        shineGradient.addColorStop(0.4, "rgba(255, 255, 255, 0.05)");
+        shineGradient.addColorStop(0.6, "rgba(255, 255, 255, 0.05)");
+        shineGradient.addColorStop(1, "rgba(255, 255, 255, 0.2)");
+        ctx.fillStyle = shineGradient;
         ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
+        // Add text with better styling
         ctx.fillStyle = "#8B4513";
-        ctx.font = "bold 18px 'Noto Serif', serif";
+        ctx.font = "bold 16px 'Noto Serif', serif";
         ctx.textAlign = "center";
         ctx.textBaseline = "middle";
+        ctx.shadowColor = "rgba(255, 255, 255, 0.5)";
+        ctx.shadowBlur = 2;
+        ctx.shadowOffsetX = 1;
+        ctx.shadowOffsetY = 1;
         ctx.fillText("Đón nhận may mắn đầu năm.", scratchCanvas.width / 2, scratchCanvas.height / 2);
+        ctx.shadowColor = "transparent";
 
         scratchCanvas.addEventListener("mousedown", handleMouseDown);
         scratchCanvas.addEventListener("mousemove", handleMouseMove);
@@ -1219,13 +1247,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         function loop() {
-            // Tăng lên: spawn 2-3 cánh mỗi lần (đủ nhiều nhưng không quá)
-            const n = randInt(2, 3);
+            // Giảm xuống: spawn 1-2 cánh mỗi lần để giảm tải CPU
+            const n = randInt(1, 2);
             for (let i = 0; i < n; i++) {
-                setTimeout(() => spawnPetal(), i * 250);
+                setTimeout(() => spawnPetal(), i * 300);
             }
-            // Giảm thời gian xuống để rơi nhiều hơn
-            setTimeout(loop, rand(1000, 1600));
+            // Tăng thời gian để giảm tần suất spawn
+            setTimeout(loop, rand(1800, 2400));
         }
 
         setTimeout(loop, 800);
