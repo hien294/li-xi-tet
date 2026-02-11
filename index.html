@@ -45,7 +45,7 @@
       </div>
 
       <!-- Settings button only -->
-      <div class="absolute right-4 md:right-8 top-4 z-[9999]">
+      <div class="absolute right-4 md:right-8 top-4 z-[50]">
         <button id="settings-btn" class="text-amber-400 hover:text-amber-300 
                  transition-all hover:scale-110 active:scale-95 text-4xl" title="Cài đặt">
           <i class="fas fa-cog"></i>
@@ -440,107 +440,177 @@
   </div>
 
   <!-- Settings Modal -->
-  <div id="settings-modal" class="fixed inset-0 bg-black/70 flex items-center justify-center z-[200] hidden">
-    <div class="bg-gradient-to-br from-gray-900 to-black rounded-2xl 
-              w-full max-w-md mx-4 sm:max-w-lg 
-              border border-amber-500/30 shadow-2xl overflow-hidden
-              max-h-[90vh] sm:max-h-[85vh]">
+  <div id="settings-modal" class="fixed inset-0 z-[200] hidden
+         bg-black/80
+         flex items-center justify-center">
 
-      <div class="bg-gradient-to-r from-amber-800 to-red-800 px-5 py-4 text-center relative">
-        <h3 class="text-xl sm:text-2xl font-playfair font-bold text-white">Cài đặt</h3>
-        <button id="close-settings"
-          class="absolute top-1/2 -translate-y-1/2 right-4 text-white hover:text-amber-200 text-2xl p-2">
-          <i class="fas fa-times"></i>
+    <div class="bg-gradient-to-br from-gray-900 to-black
+              w-full h-screen
+              sm:h-auto sm:max-w-lg sm:max-h-[85vh]
+              sm:rounded-2xl
+              flex flex-col overflow-hidden
+              border border-amber-500/30 shadow-2xl">
+
+      <!-- HEADER -->
+      <div class="bg-gradient-to-r from-amber-800 to-red-800
+                px-4 py-3
+                text-center relative flex-shrink-0">
+
+        <h3 class="text-lg sm:text-2xl font-bold text-white">
+          Cài đặt
+        </h3>
+
+        <button id="close-settings" class="absolute right-3 top-1/2 -translate-y-1/2
+               text-white text-xl p-2 hover:text-amber-200">
+          ✕
         </button>
       </div>
 
-      <div
-        class="p-5 sm:p-6 space-y-6 sm:space-y-8 overflow-y-auto max-h-[calc(90vh-140px)] sm:max-h-[calc(85vh-140px)]">
+      <!-- SCROLL CONTENT -->
+      <div class="flex-1 overflow-y-auto
+                px-4 py-4 space-y-5
+                scrollbar-hide">
 
-        <div class="space-y-3">
-          <label class="block text-amber-300 font-medium text-base sm:text-lg">Ông Bà</label>
-          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
+        <!-- ÔNG BÀ -->
+        <div class="space-y-2">
+          <label class="text-amber-300 font-medium">Ông Bà</label>
+
+          <div class="space-y-3">
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-grandparents" min="50000" max="200000" step="10000" value="100000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-grandparents">100.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-min-grandparents" class="text-right text-amber-200 text-sm">
+                100.000 ₫
+              </div>
             </div>
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối đa</div>
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-grandparents" min="100000" max="500000" step="10000" value="200000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-grandparents">200.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-grandparents" class="text-right text-amber-200 text-sm">
+                200.000 ₫
+              </div>
             </div>
+
           </div>
         </div>
 
-        <div class="space-y-3">
-          <label class="block text-amber-300 font-medium text-base sm:text-lg">Bố Mẹ</label>
-          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
+        <!-- BỐ MẸ -->
+        <div class="space-y-2">
+          <label class="text-amber-300 font-medium">Bố Mẹ</label>
+
+          <div class="space-y-3">
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-parents" min="50000" max="200000" step="10000" value="100000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-parents">100.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-min-parents" class="text-right text-amber-200 text-sm">
+                100.000 ₫
+              </div>
             </div>
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối đa</div>
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-parents" min="100000" max="500000" step="10000" value="200000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-parents">200.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-parents" class="text-right text-amber-200 text-sm">
+                200.000 ₫
+              </div>
             </div>
+
           </div>
         </div>
 
-        <div class="space-y-3">
-          <label class="block text-amber-300 font-medium text-base sm:text-lg">Người yêu</label>
-          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
+        <!-- NGƯỜI YÊU -->
+        <div class="space-y-2">
+          <label class="text-amber-300 font-medium">Người yêu</label>
+
+          <div class="space-y-3">
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-lovers" min="50000" max="200000" step="10000" value="100000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-lovers">100.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-min-lovers" class="text-right text-amber-200 text-sm">
+                100.000 ₫
+              </div>
             </div>
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối đa</div>
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-lovers" min="100000" max="500000" step="10000" value="200000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-lovers">200.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-lovers" class="text-right text-amber-200 text-sm">
+                200.000 ₫
+              </div>
             </div>
+
           </div>
         </div>
 
-        <div class="space-y-3">
-          <label class="block text-amber-300 font-medium text-base sm:text-lg">Các mối quan hệ khác</label>
-          <div class="flex flex-col sm:flex-row gap-4 sm:gap-6">
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối thiểu</div>
+        <!-- KHÁC -->
+        <div class="space-y-2">
+          <label class="text-amber-300 font-medium">
+            Các mối quan hệ khác
+          </label>
+
+          <div class="space-y-3">
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối thiểu</div>
               <input type="range" id="min-others" min="5000" max="50000" step="5000" value="10000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-min-others">10.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-min-others" class="text-right text-amber-200 text-sm">
+                10.000 ₫
+              </div>
             </div>
-            <div class="flex-1">
-              <div class="text-sm text-amber-400 mb-1">Tối đa</div>
+
+            <div>
+              <div class="text-xs text-amber-400 mb-1">Tối đa</div>
               <input type="range" id="max-others" min="10000" max="100000" step="5000" value="50000"
-                class="w-full accent-amber-500 h-2 rounded-lg">
-              <div class="text-right text-amber-200 text-sm mt-1" id="display-others">50.000 ₫</div>
+                class="w-full accent-amber-500 h-2">
+
+              <div id="display-others" class="text-right text-amber-200 text-sm">
+                50.000 ₫
+              </div>
             </div>
+
           </div>
         </div>
+
       </div>
 
-      <div class="p-5 bg-black/40 text-center border-t border-amber-900/30">
-        <button id="save-settings" class="w-full sm:w-auto bg-gradient-to-r from-amber-500 to-amber-700 
-                     hover:from-amber-600 hover:to-amber-800 
-                     text-white font-bold py-3 px-10 rounded-xl 
-                     transition-all shadow-lg text-base sm:text-lg
-                     active:scale-95">
+      <!-- FOOTER -->
+      <div class="p-4 bg-black/50
+                border-t border-amber-900/30
+                flex-shrink-0">
+
+        <button id="save-settings" class="w-full
+               bg-gradient-to-r from-amber-500 to-amber-700
+               hover:from-amber-600 hover:to-amber-800
+               text-white font-bold
+               py-3 rounded-xl
+               active:scale-95">
+
           Lưu cài đặt
         </button>
+
       </div>
+
     </div>
   </div>
+
 
   <div id="modal-overlay" class="fixed inset-0 bg-black/80 z-40 hidden"></div>
   <script src="src/js/script.js"></script>
