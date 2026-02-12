@@ -44,6 +44,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const settingsModal = document.getElementById("settings-modal");
   const closeSettings = document.getElementById("close-settings");
   const saveSettingsBtn = document.getElementById("save-settings");
+  
+  const scrollToTopBtn = document.getElementById("scroll-to-top");
 
   // Variables
   let senderName = "";
@@ -411,6 +413,16 @@ document.addEventListener("DOMContentLoaded", function () {
     e.stopPropagation();
   });
 
+  // FIX: Click vào document để đóng name modal khi expanded
+  document.addEventListener("click", (e) => {
+    // Chỉ đóng khi name expanded đang hiện và click không phải vào name modal
+    if (!nameExpanded.classList.contains("hidden") && 
+        !nameExpanded.contains(e.target) && 
+        !nameMinimized.contains(e.target)) {
+      minimizeNameBtn.click();
+    }
+  });
+
   // FIX: Chỉ click vào nút minimized mới mở modal
   minimizeNameBtn?.addEventListener("click", (e) => {
     e.stopPropagation();
@@ -582,32 +594,14 @@ document.addEventListener("DOMContentLoaded", function () {
       "from-amber-800 to-red-700",
       "from-red-700 to-amber-900",
       "from-amber-900 to-red-600",
-      "from-red-900 to-amber-700",
-      "from-amber-700 to-red-900",
-      "from-red-600 to-amber-800",
-      "from-amber-800 to-red-600",
-      "from-red-600 to-red-800",
-      "from-red-700 to-red-900",
-      "from-amber-600 to-amber-800",
-      "from-red-800 to-red-950",
-      "from-amber-700 to-amber-900",
-      "from-red-900 to-amber-900",
-      "from-amber-800 to-red-900",
-      "from-red-700 to-amber-800",
-      "from-amber-900 to-red-800",
-      "from-red-800 to-amber-700",
-      "from-amber-800 to-red-950",
-      "from-red-950 to-amber-800",
-      "from-amber-900 to-red-700",
-      "from-red-900 to-amber-950",
-      "from-red-600 to-amber-700",
-      "from-amber-700 to-red-800",
     ];
 
     const fragment = document.createDocumentFragment();
 
-    for (let i = 1; i <= 40; i++) {
-      const colorClass = colorVariants[i - 1];
+    // FIX: Tăng từ 40 lên 100 lì xì
+    for (let i = 1; i <= 100; i++) {
+      // Sử dụng modulo để lặp lại màu sắc
+      const colorClass = colorVariants[(i - 1) % colorVariants.length];
       const hongbaoItem = document.createElement("div");
       hongbaoItem.className = `hongbao-card rounded-lg flex flex-col cursor-pointer h-40 md:h-48`;
       hongbaoItem.dataset.id = i;
@@ -664,6 +658,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (diceLoadingModal) diceLoadingModal.classList.remove("hidden");
     if (modalOverlay) modalOverlay.classList.remove("hidden");
     document.body.style.overflow = "hidden";
+    
+    // FIX: Ẩn name modal và scroll-to-top button khi modal mở
+    if (nameModal) {
+      nameModal.style.visibility = "hidden";
+      nameModal.style.pointerEvents = "none";
+    }
+    const scrollBtn = document.getElementById("scroll-to-top");
+    if (scrollBtn) {
+      scrollBtn.style.visibility = "hidden";
+      scrollBtn.style.pointerEvents = "none";
+    }
 
     startDiceRolling(selectedId);
   }
@@ -747,9 +752,6 @@ document.addEventListener("DOMContentLoaded", function () {
     if (signatureName) signatureName.textContent = senderName;
     if (moneyAmount) moneyAmount.textContent = formatCurrency(amount);
     initScratchCard();
-    
-    // FIX: Ngăn click propagation khi modal đang mở
-    document.body.style.pointerEvents = "auto";
   }
 
   // ========== SCRATCH CARD ==========
@@ -945,6 +947,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (diceLoadingModal) diceLoadingModal.classList.add("hidden");
     if (modalOverlay) modalOverlay.classList.add("hidden");
     document.body.style.overflow = "auto";
+    
+    // FIX: Hiện lại name modal và scroll-to-top button khi đóng modal
+    if (nameModal) {
+      nameModal.style.visibility = "";
+      nameModal.style.pointerEvents = "";
+    }
+    const scrollBtn = document.getElementById("scroll-to-top");
+    if (scrollBtn) {
+      scrollBtn.style.visibility = "";
+      scrollBtn.style.pointerEvents = "";
+    }
 
     if (dice1Loading) dice1Loading.style.transform = "";
     if (dice2Loading) dice2Loading.style.transform = "";
@@ -960,31 +973,44 @@ document.addEventListener("DOMContentLoaded", function () {
     closeModalBtn.addEventListener("click", closeModal);
   }
 
+  // FIX: Click ra ngoài modal sẽ đóng modal
   if (modalOverlay) {
     modalOverlay.addEventListener("click", function (e) {
-      // FIX: Ngăn event propagation để không bật modal đổi tên
-      e.stopPropagation();
-      
-      if (
-        e.target === modalOverlay &&
-        (!resultModal.classList.contains("hidden") ||
-          !diceLoadingModal.classList.contains("hidden"))
-      ) {
+      if (e.target === modalOverlay) {
+        e.stopPropagation();
         closeModal();
       }
     });
   }
   
-  // FIX: Ngăn modal result bật modal đổi tên khi click
+  // FIX: Click vào vùng padding của result modal (không phải nội dung bên trong) sẽ đóng
   if (resultModal) {
     resultModal.addEventListener("click", function (e) {
-      e.stopPropagation();
+      if (e.target === resultModal) {
+        e.stopPropagation();
+        closeModal();
+      } else {
+        e.stopPropagation();
+      }
     });
+    
+    // Ngăn click vào nội dung modal không đóng modal
+    const modalContent = resultModal.querySelector('.bg-gradient-to-br');
+    if (modalContent) {
+      modalContent.addEventListener("click", function (e) {
+        e.stopPropagation();
+      });
+    }
   }
   
   if (diceLoadingModal) {
     diceLoadingModal.addEventListener("click", function (e) {
-      e.stopPropagation();
+      if (e.target === diceLoadingModal) {
+        e.stopPropagation();
+        closeModal();
+      } else {
+        e.stopPropagation();
+      }
     });
   }
 
@@ -1236,7 +1262,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 5000);
 
   /* ================================================
-       CÁNH HOA MAI RƠI
+       CÁNH HOA MAI RƠI - FIX: Bắt đầu ngay lập tức
        ================================================ */
   (function petalInit() {
     const layer = document.getElementById("petal-layer");
@@ -1363,11 +1389,17 @@ document.addEventListener("DOMContentLoaded", function () {
       setTimeout(loop, rand(1800, 2400));
     }
 
+    // FIX: Bắt đầu ngay lập tức thay vì đợi 800ms
+    // Spawn vài cánh hoa ngay lập tức
+    for (let i = 0; i < 3; i++) {
+      setTimeout(() => spawnPetal(), i * 200);
+    }
+    
+    // Rồi mới bắt đầu loop bình thường
     setTimeout(loop, 800);
   })();
 
   // ===== EXPORT & SHARE FUNCTIONALITY =====
-  // FIX: Lưu ảnh với kích thước tối ưu, bớt khoảng trống
   async function convertLetterToImage() {
     const letterElement = document.getElementById("letter-to-share");
 
@@ -1383,7 +1415,6 @@ document.addEventListener("DOMContentLoaded", function () {
     shareBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
 
     try {
-      // FIX: Kích thước canvas tối ưu - bớt khoảng trống dưới
       const canvas = await html2canvas(letterElement, {
         scale: 2.5,
         backgroundColor: "#f8f4e8",
@@ -1401,7 +1432,6 @@ document.addEventListener("DOMContentLoaded", function () {
             clonedElement.style.width = "700px";
             clonedElement.style.padding = "2rem";
             
-            // Bớt padding bottom để giảm khoảng trống
             const signatureBox = clonedElement.querySelector(".signature-box");
             if (signatureBox) {
               signatureBox.style.marginBottom = "0";
@@ -1490,25 +1520,22 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", shareLetterImage);
 
   // ========== SCROLL TO TOP BUTTON ==========
-  // FIX: Thêm nút scroll to top
-  const scrollToTopBtn = document.createElement("button");
-  scrollToTopBtn.id = "scroll-to-top";
-  scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
-  scrollToTopBtn.className = "scroll-to-top-btn hidden";
-  scrollToTopBtn.title = "Về đầu trang";
-  document.body.appendChild(scrollToTopBtn);
+  const scrollBtn = document.createElement("button");
+  scrollBtn.id = "scroll-to-top";
+  scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+  scrollBtn.className = "scroll-to-top-btn hidden";
+  scrollBtn.title = "Về đầu trang";
+  document.body.appendChild(scrollBtn);
 
-  // Show/hide scroll button
   window.addEventListener("scroll", () => {
     if (window.pageYOffset > 300) {
-      scrollToTopBtn.classList.remove("hidden");
+      scrollBtn.classList.remove("hidden");
     } else {
-      scrollToTopBtn.classList.add("hidden");
+      scrollBtn.classList.add("hidden");
     }
   });
 
-  // Scroll to top on click
-  scrollToTopBtn.addEventListener("click", () => {
+  scrollBtn.addEventListener("click", () => {
     window.scrollTo({
       top: 0,
       behavior: "smooth"
