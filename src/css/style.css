@@ -49,6 +49,56 @@ body {
 }
 
 /* ================================================
+   SCROLL TO TOP BUTTON - NEW
+   ================================================ */
+.scroll-to-top-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: linear-gradient(135deg, #d4af37, #ffd700);
+    border: 2px solid #b8860b;
+    border-radius: 50%;
+    color: #8b0000;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 1000;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scroll-to-top-btn:hover {
+    transform: translateY(-5px) scale(1.1);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.6);
+    background: linear-gradient(135deg, #ffd700, #d4af37);
+}
+
+.scroll-to-top-btn:active {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.scroll-to-top-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(20px);
+}
+
+/* Mobile responsive for scroll button */
+@media (max-width: 768px) {
+    .scroll-to-top-btn {
+        width: 45px;
+        height: 45px;
+        bottom: 20px;
+        right: 20px;
+        font-size: 18px;
+    }
+}
+
+/* ================================================
    PHÁO HOA CANVAS
    ================================================ */
 #fireworks-canvas {
@@ -94,6 +144,16 @@ body {
     animation: slideOutLeft 0.3s ease-out forwards;
 }
 
+/* FIX: Name modal - không bị click outside */
+#name-modal {
+    pointer-events: none;
+}
+
+#name-modal #name-expanded,
+#name-modal #name-minimized {
+    pointer-events: auto;
+}
+
 /* Mobile Responsive for Name Modal */
 @media (max-width: 768px) {
     #name-modal {
@@ -118,7 +178,6 @@ body {
     border: 2px solid #d4af37;
     box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
     border-radius: 8px;
-    /* GIẢM từ 12px xuống 8px */
     will-change: transform;
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -179,7 +238,6 @@ body {
     .hongbao-card {
         height: 8rem !important;
         border-radius: 6px !important;
-        /* GIẢM trên mobile */
     }
 
     .hongbao-card .text-2xl,
@@ -218,7 +276,6 @@ body {
     transform-style: preserve-3d;
     transition: transform 1s;
     border-radius: 8px;
-    /* GIẢM từ 10px */
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
 }
 
@@ -275,7 +332,6 @@ body {
     justify-content: center;
     align-items: center;
     border-radius: 8px;
-    /* GIẢM từ 10px */
     box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3), 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
@@ -482,12 +538,10 @@ body {
     overflow: hidden;
     cursor: crosshair;
     border-radius: 10px;
-    /* GIẢM từ 16px */
     background: linear-gradient(135deg, #ffd700 0%, #f4c430 50%, #d4af37 100%);
     user-select: none;
     touch-action: none;
     border: 2.5px solid #b8860b;
-    /* GIẢM từ 3px */
     box-shadow:
         0 6px 16px rgba(212, 175, 55, 0.5),
         inset 0 3px 6px rgba(255, 255, 255, 0.4),
@@ -503,7 +557,6 @@ body {
     z-index: 30;
     touch-action: none;
     border-radius: 8px;
-    /* GIẢM từ 13px */
 }
 
 .scratch-content {
@@ -532,6 +585,16 @@ body {
     max-width: 900px;
 }
 
+/* FIX: Modal overlay phải che name modal */
+#modal-overlay {
+    z-index: 99 !important;
+}
+
+#result-modal,
+#dice-loading-modal {
+    z-index: 250 !important;
+}
+
 @media (max-width: 768px) {
     .modal-center {
         width: 95%;
@@ -549,7 +612,6 @@ body {
     background: linear-gradient(135deg, rgba(178, 34, 34, 0.7) 0%, rgba(139, 0, 0, 0.7) 100%);
     border: 2px solid rgba(212, 175, 55, 0.5);
     border-radius: 10px;
-    /* GIẢM từ 12px */
     min-height: 100px;
     will-change: transform;
     transform: translateZ(0);
@@ -611,7 +673,6 @@ body {
     position: relative;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    /* GIẢM từ 12px */
     overflow: hidden;
 }
 
@@ -910,4 +971,20 @@ input[type="range"] {
     #letter-to-share .text-3xl {
         font-size: 1.75rem;
     }
+}
+
+/* FIX: Bớt khoảng trống khi export ảnh */
+#letter-to-share .signature-box {
+    margin-bottom: 0;
+    padding-bottom: 1rem;
+}
+
+/* Scrollbar hide for settings modal */
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
 }

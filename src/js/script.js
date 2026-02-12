@@ -78,14 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
       name: "Con Cái",
       icon: "fa-solid fa-children",
       formal: "Gửi các con yêu",
-      needsAge: false, // CHANGED: không cần chọn độ tuổi nữa
+      needsAge: false,
     },
     {
       id: "siblings",
       name: "Anh Chị Em",
       icon: "fa-solid fa-people-group",
       formal: "Gửi anh/chị/em",
-      needsAge: false, // CHANGED
+      needsAge: false,
     },
     {
       id: "aunt_uncle",
@@ -99,14 +99,14 @@ document.addEventListener("DOMContentLoaded", function () {
       name: "Bạn Bè",
       icon: "fa-solid fa-user-group",
       formal: "Gửi bạn thân",
-      needsAge: false, // CHANGED
+      needsAge: false,
     },
     {
       id: "colleagues",
       name: "Đồng Nghiệp",
       icon: "fa-solid fa-handshake",
       formal: "Gửi đồng nghiệp",
-      needsAge: false, // CHANGED
+      needsAge: false,
     },
     {
       id: "lovers",
@@ -406,12 +406,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  minimizeNameBtn?.addEventListener("click", () => {
+  // FIX: Click outside name modal để đóng
+  nameExpanded?.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+
+  // FIX: Chỉ click vào nút minimized mới mở modal
+  minimizeNameBtn?.addEventListener("click", (e) => {
+    e.stopPropagation();
     nameExpanded.classList.add("hidden");
     nameMinimized.classList.remove("hidden");
   });
 
-  nameMinimized?.addEventListener("click", () => {
+  nameMinimized?.addEventListener("click", (e) => {
+    e.stopPropagation();
     senderNameInput.value = senderName;
     nameExpanded.classList.remove("hidden");
     nameMinimized.classList.add("hidden");
@@ -447,7 +455,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);
   }
 
-  // Step Indicator - UPDATED: chỉ còn 3 bước
+  // Step Indicator
   function updateStepIndicator(currentStep) {
     [step1Dot, step2Dot, step3Dot].forEach((dot) => {
       dot?.classList.remove("completed", "active");
@@ -494,13 +502,25 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedRelationshipId = relationship.id;
         this.classList.add("selected");
 
-        // CHANGED: Luôn chuyển thẳng đến hongbao, không cần kiểm tra needsAge
+        // FIX: Auto scroll xuống phần chọn phong bao
         updateStepIndicator(3);
         setTimeout(() => {
           createHongbaos();
           if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
-          if (hongbaoSelection)
-            hongbaoSelection.scrollIntoView({ behavior: "smooth", block: "start" });
+          
+          // Scroll đến giữa phần hongbao selection
+          setTimeout(() => {
+            if (hongbaoSelection) {
+              const headerHeight = 100; // Chiều cao header + padding
+              const elementPosition = hongbaoSelection.getBoundingClientRect().top;
+              const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
+              
+              window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+              });
+            }
+          }, 100);
         }, 300);
       });
 
@@ -727,6 +747,9 @@ document.addEventListener("DOMContentLoaded", function () {
     if (signatureName) signatureName.textContent = senderName;
     if (moneyAmount) moneyAmount.textContent = formatCurrency(amount);
     initScratchCard();
+    
+    // FIX: Ngăn click propagation khi modal đang mở
+    document.body.style.pointerEvents = "auto";
   }
 
   // ========== SCRATCH CARD ==========
@@ -939,6 +962,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (modalOverlay) {
     modalOverlay.addEventListener("click", function (e) {
+      // FIX: Ngăn event propagation để không bật modal đổi tên
+      e.stopPropagation();
+      
       if (
         e.target === modalOverlay &&
         (!resultModal.classList.contains("hidden") ||
@@ -946,6 +972,19 @@ document.addEventListener("DOMContentLoaded", function () {
       ) {
         closeModal();
       }
+    });
+  }
+  
+  // FIX: Ngăn modal result bật modal đổi tên khi click
+  if (resultModal) {
+    resultModal.addEventListener("click", function (e) {
+      e.stopPropagation();
+    });
+  }
+  
+  if (diceLoadingModal) {
+    diceLoadingModal.addEventListener("click", function (e) {
+      e.stopPropagation();
     });
   }
 
@@ -1328,7 +1367,7 @@ document.addEventListener("DOMContentLoaded", function () {
   })();
 
   // ===== EXPORT & SHARE FUNCTIONALITY =====
-  // FIXED: Lưu ảnh với khung cố định
+  // FIX: Lưu ảnh với kích thước tối ưu, bớt khoảng trống
   async function convertLetterToImage() {
     const letterElement = document.getElementById("letter-to-share");
 
@@ -1344,16 +1383,14 @@ document.addEventListener("DOMContentLoaded", function () {
     shareBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
 
     try {
-      // FIXED: Khung cố định - không theo màn hình
+      // FIX: Kích thước canvas tối ưu - bớt khoảng trống dưới
       const canvas = await html2canvas(letterElement, {
-        scale: 3,
+        scale: 2.5,
         backgroundColor: "#f8f4e8",
         useCORS: true,
         logging: false,
-        width: 800,  // FIXED WIDTH
-        height: 1000, // FIXED HEIGHT
-        windowWidth: 800,
-        windowHeight: 1000,
+        width: 700,
+        windowWidth: 700,
         scrollY: 0,
         scrollX: 0,
         onclone: (clonedDoc) => {
@@ -1361,8 +1398,15 @@ document.addEventListener("DOMContentLoaded", function () {
           if (clonedElement) {
             clonedElement.style.maxHeight = "none";
             clonedElement.style.overflow = "visible";
-            clonedElement.style.width = "800px";
-            clonedElement.style.minHeight = "1000px";
+            clonedElement.style.width = "700px";
+            clonedElement.style.padding = "2rem";
+            
+            // Bớt padding bottom để giảm khoảng trống
+            const signatureBox = clonedElement.querySelector(".signature-box");
+            if (signatureBox) {
+              signatureBox.style.marginBottom = "0";
+              signatureBox.style.paddingBottom = "0";
+            }
           }
         },
       });
@@ -1444,4 +1488,30 @@ document.addEventListener("DOMContentLoaded", function () {
   document
     .getElementById("share-letter-btn")
     .addEventListener("click", shareLetterImage);
+
+  // ========== SCROLL TO TOP BUTTON ==========
+  // FIX: Thêm nút scroll to top
+  const scrollToTopBtn = document.createElement("button");
+  scrollToTopBtn.id = "scroll-to-top";
+  scrollToTopBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+  scrollToTopBtn.className = "scroll-to-top-btn hidden";
+  scrollToTopBtn.title = "Về đầu trang";
+  document.body.appendChild(scrollToTopBtn);
+
+  // Show/hide scroll button
+  window.addEventListener("scroll", () => {
+    if (window.pageYOffset > 300) {
+      scrollToTopBtn.classList.remove("hidden");
+    } else {
+      scrollToTopBtn.classList.add("hidden");
+    }
+  });
+
+  // Scroll to top on click
+  scrollToTopBtn.addEventListener("click", () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  });
 });
