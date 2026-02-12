@@ -149,31 +149,55 @@ document.addEventListener("DOMContentLoaded", function () {
   const letterTemplates = {
     grandparents: [
       `Xuân mới lại về, mang theo sắc hoa rực rỡ, hơi ấm của đất trời và bao điều tốt lành.<br>
-            Trong khoảnh khắc thiêng liêng của năm mới, cháu xin kính gửi đến Ông Bà những lời chúc yêu thương và trân trọng nhất.<br><br>
-            Cháu kính chúc Ông Bà luôn dồi dào sức khỏe, thân tâm an lạc, tinh thần minh mẫn và lúc nào cũng vui vẻ, an nhiên.<br>
-            Mong rằng mỗi ngày trôi qua đều nhẹ nhàng, bình yên, tràn đầy tiếng cười và sự ấm áp bên con cháu trong gia đình.<br><br>
-            Cháu cầu chúc năm mới sẽ mang đến cho Ông Bà thật nhiều may mắn, an khang và thịnh vượng.<br>
-            Mọi điều trong cuộc sống đều hanh thông, suôn sẻ, niềm vui luôn đầy ắp trong từng khoảnh khắc thường ngày.<br><br>
-            Xuân này và thật nhiều mùa xuân về sau nữa,<br>
-            mong Ông Bà luôn mạnh khỏe, sống lâu, sống vui,<br>
-            là chỗ dựa yêu thương và là niềm tự hào lớn nhất của con cháu trong gia đình.`,
+          Trong khoảnh khắc thiêng liêng của năm mới, cháu xin kính gửi đến Ông Bà những lời chúc yêu thương và trân trọng nhất.<br><br>
+          Cháu kính chúc Ông Bà luôn dồi dào sức khỏe, thân tâm an lạc, tinh thần minh mẫn và lúc nào cũng vui vẻ, an nhiên.<br>
+          Mong rằng mỗi ngày trôi qua đều nhẹ nhàng, bình yên, tràn đầy tiếng cười và sự ấm áp bên con cháu trong gia đình.<br><br>
+          Cháu cầu chúc năm mới sẽ mang đến cho Ông Bà thật nhiều may mắn, an khang và thịnh vượng.<br>
+          Mọi điều trong cuộc sống đều hanh thông, suôn sẻ, niềm vui luôn đầy ắp trong từng khoảnh khắc thường ngày.<br><br>
+          Xuân này và thật nhiều mùa xuân về sau nữa,<br>
+          mong Ông Bà luôn mạnh khỏe, sống lâu, sống vui,<br>
+          là chỗ dựa yêu thương và là niềm tự hào lớn nhất của con cháu trong gia đình.`,
 
       `Kính gửi Ông Bà kính yêu,<br><br>
-            Năm mới lại đến, mang theo niềm vui sum vầy và bao điều tốt đẹp.<br>
-            Nhân dịp đầu xuân năm mới, cháu xin kính chúc Ông Bà luôn dồi dào sức khỏe, ăn ngon miệng, ngủ ngon giấc, tinh thần luôn thoải mái và vui vẻ mỗi ngày.<br><br>
-            Cháu xin chân thành cảm ơn Ông Bà vì suốt những năm tháng qua đã luôn yêu thương, che chở và hy sinh thầm lặng cho cháu.<br>
-            Những lời dạy bảo ân cần, những tình cảm giản dị mà sâu sắc của Ông Bà chính là hành trang quý giá nhất theo cháu suốt cuộc đời.<br><br>
-            Bước sang năm mới, cháu mong Ông Bà luôn an yên, mạnh khỏe và hạnh phúc,<br>
-            luôn được quây quần bên con cháu trong không khí ấm áp, yêu thương của gia đình.<br>
-            Cháu kính chúc Ông Bà một năm mới an khang, vạn sự như ý và thật nhiều niềm vui.`,
+          Năm mới lại đến, mang theo niềm vui sum vầy và bao điều tốt đẹp.<br>
+          Nhân dịp đầu xuân năm mới, cháu xin kính chúc Ông Bà luôn dồi dào sức khỏe, ăn ngon miệng, ngủ ngon giấc, tinh thần luôn thoải mái và vui vẻ mỗi ngày.<br><br>
+          Cháu xin chân thành cảm ơn Ông Bà vì suốt những năm tháng qua đã luôn yêu thương, che chở và hy sinh thầm lặng cho cháu.<br>
+          Những lời dạy bảo ân cần, những tình cảm giản dị mà sâu sắc của Ông Bà chính là hành trang quý giá nhất theo cháu suốt cuộc đời.<br><br>
+          Bước sang năm mới, cháu mong Ông Bà luôn an yên, mạnh khỏe và hạnh phúc,<br>
+          luôn được quây quần bên con cháu trong không khí ấm áp, yêu thương của gia đình.<br>
+          Cháu kính chúc Ông Bà một năm mới an khang, vạn sự như ý và thật nhiều niềm vui.`,
 
       `Thưa Ông Bà,<br><br>
-            Nhân dịp năm mới, cháu xin kính chúc Ông Bà luôn được bình an, dồi dào sức khỏe và vạn sự như ý.<br>
-            Mong rằng từng ngày trôi qua đều nhẹ nhàng, an nhiên, để Ông Bà được tận hưởng trọn vẹn những niềm vui giản dị, ấm áp bên gia đình và con cháu.<br><br>
-            Cháu luôn ghi nhớ và trân trọng những yêu thương, dạy bảo mà Ông Bà đã dành cho cháu suốt thời gian qua.<br>
-            Được làm cháu của Ông Bà là niềm hạnh phúc và tự hào lớn nhất trong cuộc đời cháu.<br><br>
-            Bước sang năm mới, cháu kính mong Ông Bà luôn mạnh khỏe, tinh thần minh mẫn,<br>
-            cuộc sống lúc nào cũng tràn đầy niềm vui, tiếng cười và sự yêu thương.`,
+          Nhân dịp năm mới, cháu xin kính chúc Ông Bà luôn được bình an, dồi dào sức khỏe và vạn sự như ý.<br>
+          Mong rằng từng ngày trôi qua đều nhẹ nhàng, an nhiên, để Ông Bà được tận hưởng trọn vẹn những niềm vui giản dị, ấm áp bên gia đình và con cháu.<br><br>
+          Cháu luôn ghi nhớ và trân trọng những yêu thương, dạy bảo mà Ông Bà đã dành cho cháu suốt thời gian qua.<br>
+          Được làm cháu của Ông Bà là niềm hạnh phúc và tự hào lớn nhất trong cuộc đời cháu.<br><br>
+          Bước sang năm mới, cháu kính mong Ông Bà luôn mạnh khỏe, tinh thần minh mẫn,<br>
+          cuộc sống lúc nào cũng tràn đầy niềm vui, tiếng cười và sự yêu thương.`,
+
+      `Ông Bà yêu quý,<br><br>
+          Năm mới về trong không khí sum vầy và ấm áp, cháu xin gửi đến Ông Bà những lời chúc chân thành và yêu thương nhất.<br>
+          Cháu kính chúc Ông Bà thật nhiều phúc thọ, an khang, thịnh vượng, cuộc sống luôn đủ đầy và an vui mỗi ngày.<br><br>
+          Dù sau này cháu có đi xa đến đâu, bận rộn đến nhường nào,<br>
+          trái tim cháu vẫn luôn hướng về Ông Bà với tất cả sự kính trọng, biết ơn và yêu thương sâu sắc.<br><br>
+          Cháu cảm ơn Ông Bà vì đã luôn âm thầm hy sinh, chở che và dành cho cháu những điều tốt đẹp nhất trong cuộc đời.`,
+
+      `Kính gửi Ông Bà,<br><br>
+          Khi năm mới gõ cửa, cháu xin kính chúc Ông Bà sức khỏe dồi dào như suối nguồn không cạn,<br>
+          tinh thần luôn an nhiên, thư thái giữa những tháng ngày bình dị.<br><br>
+          Cháu cầu mong Ông Bà luôn có hạnh phúc viên mãn như trăng rằm tròn đầy,<br>
+          cuộc sống nhẹ nhàng, yên ấm và tuổi thọ trăm năm trong bình an, phúc lộc.<br><br>
+          Cháu mong sớm được trở về quây quần bên Ông Bà,<br>
+          cùng nhau đón những ngày Tết ấm áp, sum vầy, chan chứa tiếng cười yêu thương.`,
+
+      `Thưa Ông Bà kính mến,<br><br>
+          Nhân dịp năm mới, cháu xin kính chúc Ông Bà một năm tràn đầy sức sống,<br>
+          tinh thần luôn lạc quan, vui vẻ và an yên trong từng khoảnh khắc thường ngày.<br><br>
+          Mong rằng Ông Bà lúc nào cũng được con cháu vây quanh yêu thương,<br>
+          được quan tâm, chăm sóc và sẻ chia trong không khí gia đình đầm ấm.<br><br>
+          Đối với cháu, Ông Bà luôn là người thân yêu nhất,<br>
+          là nơi để cháu nhớ về, yêu thương và trân trọng suốt cuộc đời.<br><br>
+          Cháu yêu Ông Bà rất nhiều và luôn mong Ông Bà mạnh khỏe, hạnh phúc mỗi ngày ạ!`
     ],
 
     parents: [
@@ -188,6 +212,35 @@ document.addEventListener("DOMContentLoaded", function () {
             Con chúc Bố Mẹ luôn khỏe mạnh, công việc hanh thông, mọi dự định đều thuận lợi và suôn sẻ.<br><br>
             Gia đình mình lúc nào cũng ấm êm, tràn ngập tiếng cười và những khoảnh khắc yêu thương.<br>
             Con hứa sẽ cố gắng học tập và làm việc thật tốt mỗi ngày để Bố Mẹ luôn yên tâm và tự hào về con.`,
+      `Kính gửi Bố Mẹ,<br><br>
+            Nhân dịp năm mới, con xin kính chúc Bố Mẹ một năm an khang, thịnh vượng, sức khỏe dồi dào và tinh thần luôn an nhiên.<br>
+            Mong rằng mỗi ngày trôi qua đều nhẹ nhàng, bớt lo toan và thêm thật nhiều niềm vui giản dị bên gia đình.<br><br>
+            Con cảm ơn Bố Mẹ vì tất cả những hy sinh thầm lặng, những vất vả và yêu thương mà Bố Mẹ đã dành cho con suốt cuộc đời.<br>
+            Con luôn ghi nhớ, biết ơn và yêu thương Bố Mẹ nhiều nhất trên đời.`,
+
+      `Bố Mẹ yêu quý,<br><br>
+            Con chúc Bố Mẹ năm mới thật nhiều niềm vui, nụ cười luôn nở trên môi và trong lòng lúc nào cũng nhẹ nhõm, bình yên.<br>
+            Mong rằng những muộn phiền, lo toan sẽ vơi bớt đi, để mỗi ngày của Bố Mẹ trôi qua đều dễ chịu và thoải mái hơn.<br><br>
+            Con chỉ mong Bố Mẹ luôn khỏe mạnh, sống vui và hạnh phúc bên con thật lâu,<br>
+            để gia đình mình mãi là nơi ấm áp nhất để con trở về.`,
+
+      `Bố Mẹ kính yêu,<br><br>
+            Năm mới con xin chúc Bố Mẹ sức khỏe dồi dào, tinh thần vui vẻ và cuộc sống luôn đủ đầy, sung túc.<br>
+            Mong rằng hạnh phúc sẽ luôn hiện hữu trong từng bữa cơm gia đình, từng câu chuyện nhỏ mỗi ngày.<br><br>
+            Con biết con còn phải cố gắng rất nhiều,<br>
+            nhưng con hứa sẽ nỗ lực từng ngày để sau này có thể chăm lo cho Bố Mẹ thật tốt, thật trọn vẹn ạ.`,
+
+      `Gửi hai người quan trọng nhất đời con,<br><br>
+            Nhân dịp năm mới, con xin chúc Bố Mẹ luôn bình an, mạnh khỏe và gặp thật nhiều điều may mắn trong cuộc sống.<br>
+            Mong rằng mỗi ngày trôi qua, Bố Mẹ đều cảm thấy yên tâm và tự hào về con.<br><br>
+            Dù con có nói bao nhiêu lời đi nữa cũng không thể diễn tả hết tình yêu và sự biết ơn trong lòng con dành cho Bố Mẹ.<br>
+            Con yêu Bố Mẹ rất nhiều, nhiều hơn tất cả những gì con có thể nói thành lời.`,
+
+      `Bố Mẹ ơi,<br><br>
+            Năm mới lại đến rồi, con chúc Bố Mẹ luôn ăn ngon, ngủ ngon, sức khỏe thật tốt và lúc nào cũng vui vẻ, thoải mái.<br>
+            Mong rằng mọi áp lực, mệt mỏi sẽ bớt đi, để Bố Mẹ có thật nhiều thời gian nghỉ ngơi và tận hưởng cuộc sống.<br><br>
+            Đối với con, Bố Mẹ luôn là người tuyệt vời nhất trên đời,<br>
+            và con sẽ luôn yêu thương, trân trọng Bố Mẹ bằng cả trái tim mình.`
     ],
 
     children: [
@@ -202,6 +255,35 @@ document.addEventListener("DOMContentLoaded", function () {
             Chúc các con học giỏi hơn mỗi ngày, chơi vui nhưng vẫn biết ngoan ngoãn, lễ phép và yêu thương mọi người xung quanh.<br><br>
             Hãy luôn khỏe mạnh, hồn nhiên và lớn lên trong vòng tay yêu thương của gia đình nhé.<br>
             Ba/mẹ yêu các con rất nhiều, nhiều hơn những gì có thể nói thành lời!`,
+      `Gửi các thiên thần nhỏ của ba/mẹ,<br><br>
+            Năm mới đến rồi, mang theo bao điều mới mẻ và tươi vui đang chờ các con phía trước.<br>
+            Ba/mẹ chúc các con lúc nào cũng cười thật tươi, luôn hồn nhiên, vui vẻ và tràn đầy năng lượng tích cực.<br><br>
+            Mong các con ăn ngoan, ngủ ngoan, học giỏi và biết yêu thương, chia sẻ với mọi người xung quanh.<br>
+            Các con chính là niềm hạnh phúc lớn nhất trong cuộc đời của ba/mẹ.`,
+
+      `Các con yêu,<br><br>
+            Ba/mẹ chúc các con một năm mới tràn đầy năng lượng, tinh thần luôn vui vẻ và khỏe mạnh mỗi ngày.<br>
+            Mong rằng việc học tập của các con luôn tiến bộ, ham học hỏi và không ngừng cố gắng.<br><br>
+            Gia đình mình sẽ luôn là nơi ấm áp nhất để các con trở về sau mỗi ngày dài.<br>
+            Ba/mẹ sẽ luôn đồng hành, động viên và yêu thương các con bằng tất cả những gì ba/mẹ có.`,
+
+      `Các bé cưng của ba/mẹ,<br><br>
+            Năm mới đến, ba/mẹ chúc các con ngày càng cao lớn, xinh xắn, thông minh và khỏe mạnh.<br>
+            Mong rằng các con luôn ngoan ngoãn, lễ phép, biết quan tâm và yêu thương mọi người xung quanh.<br><br>
+            Dù có chuyện gì xảy ra, ba/mẹ vẫn luôn ở bên lắng nghe, che chở và bảo vệ các con.<br>
+            Các con hãy cứ yên tâm lớn lên trong tình yêu thương của gia đình nhé!`,
+
+      `Gửi các con trai/con gái yêu dấu của ba/mẹ,<br><br>
+            Ba/mẹ chúc các con năm mới gặp thật nhiều điều tốt đẹp trong cuộc sống và trong học tập.<br>
+            Mong các con có những người bạn tốt, được thầy cô yêu thương và luôn giữ được nụ cười rạng rỡ trên môi.<br><br>
+            Hãy luôn tự tin là chính mình, sống tử tế và biết ơn những điều nhỏ bé xung quanh.<br>
+            Ba/mẹ luôn tin tưởng và tự hào về các con.`,
+
+      `Các con yêu dấu,<br><br>
+            Bước sang năm mới, ba/mẹ mong các con sẽ tự tin hơn, mạnh mẽ hơn và dũng cảm trước những điều mới mẻ.<br>
+            Mong rằng các con luôn nhớ rằng mình được yêu thương, trân trọng và chở che vô điều kiện.<br><br>
+            Dù mai này các con có lớn đến đâu, đi xa đến nhường nào,<br>
+            ba/mẹ vẫn luôn ở đây, yêu thương các con bằng cả trái tim mình.`
     ],
 
     siblings: [
@@ -210,6 +292,41 @@ document.addEventListener("DOMContentLoaded", function () {
             Anh/chị/em xin gửi đến mình lời chúc năm mới an khang, thịnh vượng, sức khỏe dồi dào và tinh thần luôn vững vàng.<br><br>
             Mong rằng trong năm mới, mọi dự định đều thuận lợi, mọi cố gắng đều được đền đáp xứng đáng.<br>
             Dù cuộc sống có nhiều thay đổi, tình cảm anh em mình vẫn luôn bền chặt và đáng trân quý.`,
+      `Kính gửi anh/chị/em,<br><br>
+            Nhân dịp năm mới, anh/chị/em chúc mình luôn mạnh khỏe, bình an và gặp nhiều may mắn trong công việc cũng như cuộc sống.<br>
+            Mong rằng mỗi ngày trôi qua đều có thêm niềm vui, sự an tâm và những điều tích cực.<br><br>
+            Chúc cho con đường phía trước luôn hanh thông,<br>
+            và mọi ước mong tốt đẹp sớm trở thành hiện thực.`,
+
+      `Gửi anh/chị/em yêu quý,<br><br>
+            Năm mới sang trang, anh/chị/em chúc mình một năm thật rực rỡ và trọn vẹn.<br>
+            Công việc thuận lợi, sự nghiệp vững vàng, tinh thần luôn lạc quan và vui vẻ.<br><br>
+            Mong rằng dù mỗi người có những hướng đi riêng,<br>
+            chúng ta vẫn luôn dành cho nhau sự quan tâm, sẻ chia và yêu thương chân thành.`,
+
+      `Anh/chị/em thân mến,<br><br>
+            Nhân dịp đầu xuân năm mới, chúc em/anh/chị gặp nhiều điều tốt đẹp,<br>
+            cuộc sống đủ đầy, tâm an và lòng vững.<br><br>
+            Mong rằng những khó khăn của năm cũ sẽ ở lại phía sau,<br>
+            để năm mới mở ra nhiều cơ hội, niềm vui và sự bình yên hơn.`,
+
+      `Gửi anh/chị/em trong gia đình,<br><br>
+            Năm mới, anh/chị/em xin chúc mình luôn khỏe mạnh, tinh thần minh mẫn và cuộc sống ngày càng ổn định.<br>
+            Mong rằng mỗi ngày đều trôi qua nhẹ nhàng, bớt lo toan và thêm nhiều khoảnh khắc đáng quý.<br><br>
+            Được là anh em trong cùng một gia đình là điều rất đáng trân trọng,<br>
+            và anh/chị/em luôn mong chúng ta sẽ giữ gìn điều đó thật lâu.`,
+
+      `Anh/chị/em yêu quý,<br><br>
+            Xuân về mang theo sự sum vầy và hơi ấm gia đình.<br>
+            Anh/chị/em chúc mình năm mới bình an, vững vàng trước mọi thử thách và luôn có người thân ở bên khi cần.<br><br>
+            Mong rằng tình cảm anh em sẽ luôn là chỗ dựa tinh thần,<br>
+            cùng nhau chia sẻ niềm vui, động viên nhau khi khó khăn.`,
+
+      `Gửi anh/chị/em thân thương,<br><br>
+            Năm mới đến, chúc mình một năm sống trọn vẹn và ý nghĩa hơn.<br>
+            Công việc ổn định, tài chính vững vàng, tinh thần an yên và nụ cười luôn nở.<br><br>
+            Dù tương lai có thay đổi ra sao,<br>
+            mong rằng tình anh em trong gia đình mình sẽ luôn được gìn giữ và trân trọng.`
     ],
 
     friends: [
@@ -218,6 +335,43 @@ document.addEventListener("DOMContentLoaded", function () {
             Mình chúc bạn một năm thật nhiều sức khỏe, công việc thuận lợi, mọi dự định đều suôn sẻ và đạt được kết quả như mong muốn.<br><br>
             Cảm ơn bạn vì đã luôn đồng hành, chia sẻ và ở bên trong những chặng đường vừa qua.<br>
             Tình bạn của chúng ta là điều rất đáng trân trọng, và mình mong sẽ còn cùng nhau đi thật xa nữa.`,
+
+      `Gửi bạn yêu quý,<br><br>
+            Nhân dịp năm mới, mình xin chúc bạn luôn mạnh khỏe, tinh thần tích cực và cuộc sống ngày càng ổn định, đủ đầy.<br>
+            Mong rằng những nỗ lực của bạn sẽ được đền đáp xứng đáng, và mỗi ngày trôi qua đều mang lại niềm vui nhỏ bé nhưng ý nghĩa.<br><br>
+            Cảm ơn vì bạn luôn là một người bạn chân thành và đáng tin cậy.`,
+
+      `Bạn thân mến,<br><br>
+            Năm mới sang trang, mình chúc bạn một năm thật nhiều niềm vui và năng lượng tích cực.<br>
+            Công việc thuận buồm xuôi gió, sức khỏe dồi dào và lúc nào cũng giữ được nụ cười tươi tắn như hiện tại.<br><br>
+            Mong rằng dù bận rộn đến đâu, chúng ta vẫn luôn giữ được sự gắn bó và thấu hiểu như bây giờ.`,
+
+      `Gửi người bạn đặc biệt,<br><br>
+            Nhân dịp năm mới, mình chúc bạn gặp thật nhiều may mắn, thành công và những cơ hội tốt đẹp trong cuộc sống.<br>
+            Mong rằng mọi dự định bạn ấp ủ đều dần trở thành hiện thực, và con đường phía trước luôn rộng mở.<br><br>
+            Cảm ơn bạn vì đã mang đến nhiều niềm vui và sự tích cực trong cuộc sống của mình.`,
+
+      `Gửi bạn thân,<br><br>
+            Năm mới đến, mình chúc bạn một năm bình an, sức khỏe tốt và tinh thần luôn vững vàng.<br>
+            Mong rằng cuộc sống sẽ nhẹ nhàng hơn, áp lực ít đi và niềm vui thì nhiều thêm mỗi ngày.<br><br>
+            Hy vọng chúng ta vẫn luôn đồng hành, sẻ chia và trân trọng tình bạn quý giá này.`,
+
+      `Gửi người bạn tuyệt vời,<br><br>
+            Nhân dịp đầu năm mới, mình chúc bạn một năm sống thật trọn vẹn và ý nghĩa.<br>
+            Công việc ổn định, tài chính vững vàng, tinh thần an yên và luôn có những người bạn tốt bên cạnh.<br><br>
+            Cảm ơn bạn vì đã luôn lắng nghe, thấu hiểu và ở bên mình trong suốt thời gian qua.`,
+
+      `Bạn thân yêu,<br><br>
+            Năm mới là dịp để nhìn lại và hướng về phía trước với nhiều hy vọng hơn.<br>
+            Mình chúc bạn luôn giữ được sự chân thành, lạc quan và niềm tin vào những điều tốt đẹp.<br><br>
+            Mong rằng tình bạn của chúng ta sẽ luôn được gìn giữ,<br>
+            và trở thành một phần ký ức đẹp trong hành trình cuộc sống của cả hai.`,
+
+      `Gửi bạn quý mến,<br><br>
+            Nhân dịp năm mới, chúc bạn mọi điều tốt đẹp sẽ đến một cách nhẹ nhàng và bền vững.<br>
+            Sức khỏe đủ đầy, công việc hanh thông và cuộc sống luôn có những khoảnh khắc đáng nhớ.<br><br>
+            Cảm ơn vì bạn đã là một người bạn tuyệt vời,<br>
+            và mong rằng chúng ta sẽ còn đồng hành cùng nhau thật lâu nữa.`
     ],
 
     colleagues: [
@@ -226,6 +380,35 @@ document.addEventListener("DOMContentLoaded", function () {
             Chúc anh/chị/bạn luôn dồi dào sức khỏe, tinh thần tích cực, công việc thuận lợi và đạt được nhiều kết quả tốt trong năm mới.<br><br>
             Mong rằng năm mới sẽ mang đến nhiều cơ hội phát triển, thành công trong sự nghiệp và hạnh phúc trong cuộc sống gia đình.<br>
             Chúc mừng năm mới!`,
+      `Chào anh/chị/bạn đồng nghiệp,<br><br>
+            Năm mới đến, xin chúc anh/chị/bạn một năm làm việc hiệu quả, mọi kế hoạch và dự định đều diễn ra suôn sẻ.<br>
+            Mong rằng công việc ngày càng ổn định, thu nhập cải thiện và môi trường làm việc luôn tích cực, thoải mái.<br><br>
+            Chúc anh/chị/bạn một năm mới an khang, vui vẻ và nhiều động lực để tiếp tục chinh phục những mục tiêu phía trước.`,
+
+      `Gửi đồng nghiệp quý mến,<br><br>
+            Nhân dịp đầu xuân năm mới, xin chúc bạn sức khỏe tốt, tinh thần vững vàng và luôn giữ được sự lạc quan trong công việc.<br>
+            Mong rằng mọi thử thách đều được giải quyết thuận lợi, các dự án triển khai đúng kế hoạch và đạt kết quả như mong đợi.<br><br>
+            Chúc bạn một năm mới làm việc hiệu quả và nhiều niềm vui.`,
+
+      `Kính gửi anh/chị/bạn,<br><br>
+            Năm mới là dịp để nhìn lại chặng đường đã qua và hướng đến những mục tiêu mới.<br>
+            Xin chúc anh/chị/bạn công việc hanh thông, thu nhập ổn định, từng bước đạt được những mục tiêu đã đề ra.<br><br>
+            Rất mong sẽ tiếp tục được đồng hành và hợp tác cùng anh/chị/bạn trong năm mới với nhiều thành công hơn nữa.`,
+
+      `Gửi anh/chị/bạn đồng đội thân thiết,<br><br>
+            Nhân dịp năm mới, xin chúc bạn luôn tràn đầy năng lượng, tinh thần sáng tạo và sự kiên định trong công việc.<br>
+            Mong rằng những nỗ lực của bạn sẽ được ghi nhận xứng đáng và mang lại nhiều thành quả tích cực trong sự nghiệp.<br><br>
+            Chúc bạn một năm mới thành công và nhiều động lực phát triển.`,
+
+      `Kính chúc anh/chị/bạn,<br><br>
+            Một năm mới với nhiều dự án thuận lợi, cơ hội phát triển rõ ràng và những bước tiến vững chắc trong công việc.<br>
+            Mong rằng năm mới sẽ mang đến sự cân bằng giữa công việc và cuộc sống, để mỗi ngày làm việc đều hiệu quả và ý nghĩa hơn.<br><br>
+            Chúc anh/chị/bạn năm mới an khang và thành công.`,
+
+      `Gửi người đồng nghiệp đáng quý,<br><br>
+            Nhân dịp năm mới, xin chúc bạn luôn mạnh khỏe, tinh thần tích cực và công việc tiến triển thuận lợi như mong đợi.<br>
+            Mong rằng năm mới sẽ mở ra nhiều cơ hội tốt, giúp bạn phát triển bản thân và đạt được những thành tựu đáng tự hào.<br><br>
+            Chúc bạn một năm mới bình an, hiệu quả và nhiều niềm vui trong công việc.`
     ],
 
     aunt_uncle: [
@@ -233,6 +416,26 @@ document.addEventListener("DOMContentLoaded", function () {
             Nhân dịp xuân về năm mới, cháu xin kính chúc Cô/Dì/Chú/Bác luôn dồi dào sức khỏe, tinh thần an vui và cuộc sống bình an.<br>
             Mong rằng năm mới sẽ mang đến nhiều niềm vui, may mắn và hạnh phúc cho Cô/Dì/Chú/Bác cùng gia đình.<br><br>
             Cháu kính chúc Cô/Dì/Chú/Bác một năm mới an khang, vạn sự như ý.`,
+
+      `Kính gửi Cô/Dì/Chú/Bác kính mến,<br><br>
+            Năm mới đến, cháu xin gửi lời chúc tốt đẹp và chân thành nhất đến Cô/Dì/Chú/Bác.<br>
+            Kính chúc Cô/Dì/Chú/Bác sức khỏe bền lâu, tinh thần thoải mái, gia đình êm ấm và luôn gặp nhiều điều tốt lành trong cuộc sống.<br><br>
+            Cháu xin cảm ơn Cô/Dì/Chú/Bác vì luôn dành cho cháu sự quan tâm và yêu thương.`,
+
+      `Thưa Cô/Dì/Chú/Bác,<br><br>
+            Nhân dịp đầu xuân năm mới, cháu xin kính chúc Cô/Dì/Chú/Bác phúc lộc đầy nhà, sức khỏe dồi dào và cuộc sống luôn an nhiên, vui vẻ.<br>
+            Mong rằng mỗi ngày trôi qua đều là những ngày bình an, ấm áp bên gia đình và con cháu.<br><br>
+            Cháu kính chúc Cô/Dì/Chú/Bác một năm mới nhiều niềm vui và hạnh phúc.`,
+
+      `Kính gửi Cô/Dì/Chú/Bác yêu quý,<br><br>
+            Năm mới là dịp sum vầy và gửi gắm những lời chúc tốt đẹp.<br>
+            Cháu xin kính chúc Cô/Dì/Chú/Bác luôn mạnh khỏe, an khang, gia đình hòa thuận và tràn đầy tiếng cười.<br><br>
+            Mong rằng năm mới sẽ mang đến nhiều điều may mắn và bình an cho Cô/Dì/Chú/Bác cùng gia đình.`,
+
+      `Kính thưa Cô/Dì/Chú/Bác,<br><br>
+            Nhân dịp năm mới, cháu xin kính chúc Cô/Dì/Chú/Bác thật nhiều sức khỏe, tinh thần vui vẻ và cuộc sống viên mãn.<br>
+            Mong rằng Cô/Dì/Chú/Bác luôn an yên, hạnh phúc và mãi là chỗ dựa tinh thần ấm áp cho con cháu trong gia đình.<br><br>
+            Cháu kính chúc Cô/Dì/Chú/Bác năm mới bình an và hạnh phúc.`
     ],
 
     lovers: [
@@ -240,6 +443,41 @@ document.addEventListener("DOMContentLoaded", function () {
             Một mùa xuân mới lại về, anh/em muốn gửi đến em/anh những lời chúc xuất phát từ tận đáy lòng.<br>
             Chúc em/anh một năm mới thật nhiều sức khỏe, bình an và luôn mỉm cười hạnh phúc.<br><br>
             Cảm ơn em/anh vì đã ở bên anh/em, cùng anh/em đi qua những khoảnh khắc giản dị nhưng đầy yêu thương. Mong rằng năm mới này, chúng ta vẫn sẽ nắm tay nhau thật chặt.`,
+
+      `Em/Anh yêu dấu,<br><br>
+            Năm mới đến, anh/em không mong gì hơn ngoài việc được tiếp tục đồng hành cùng em/anh trên chặng đường phía trước.<br>
+            Chúc em/anh luôn an yên trong tâm hồn, vững vàng trong cuộc sống và luôn cảm nhận được tình yêu chân thành từ anh/em.<br><br>
+            Mong rằng mỗi ngày của năm mới đều có chúng ta bên nhau.`,
+
+      `Người anh/em thương nhất,<br><br>
+            Nhân dịp đầu năm, anh/em xin chúc em/anh thật nhiều niềm vui, sức khỏe dồi dào và mọi điều tốt đẹp sẽ nhẹ nhàng tìm đến.<br>
+            Cảm ơn em/anh vì đã bước vào cuộc đời anh/em và khiến những ngày bình thường trở nên ý nghĩa hơn.<br><br>
+            Anh/em mong rằng tình yêu của chúng ta sẽ ngày càng bền chặt theo thời gian.`,
+
+      `Gửi người đồng hành của anh/em,<br><br>
+            Năm mới là dịp để nhìn lại và trân trọng những điều quý giá đang có.<br>
+            Với anh/em, điều quý giá nhất chính là em/anh – người luôn lắng nghe, thấu hiểu và yêu thương anh/em bằng tất cả sự chân thành.<br><br>
+            Chúc em/anh một năm mới an yên, và mong rằng chúng ta sẽ tiếp tục cùng nhau xây dựng thật nhiều kỷ niệm đẹp.`,
+
+      `Em/Anh thân yêu,<br><br>
+            Trong khoảnh khắc giao mùa này, anh/em chỉ muốn nói rằng: có em/anh bên cạnh là điều may mắn lớn nhất trong cuộc đời anh/em.<br>
+            Chúc em/anh năm mới nhiều sức khỏe, nhiều niềm vui và luôn cảm nhận được sự ấm áp khi có anh/em ở bên.<br><br>
+            Mong rằng chúng ta sẽ luôn chọn nhau, hôm nay và cả những ngày sau.`,
+
+      `Người quan trọng nhất của anh/em,<br><br>
+            Năm mới đến, anh/em không cầu mong điều gì quá lớn lao, chỉ mong em/anh luôn bình an và hạnh phúc.<br>
+            Dù cuộc sống có đổi thay thế nào, anh/em hy vọng chúng ta vẫn sẽ cùng nhau đi tiếp bằng sự yêu thương và thấu hiểu.<br><br>
+            Cảm ơn em/anh vì đã là một phần không thể thiếu trong cuộc đời anh/em.`,
+
+      `Gửi người anh/em yêu thương,<br><br>
+            Xuân mới mang theo hy vọng và những khởi đầu tốt đẹp.<br>
+            Anh/em mong rằng năm mới này sẽ là một năm đầy ắp tiếng cười, sự sẻ chia và những khoảnh khắc bình yên của riêng chúng ta.<br><br>
+            Chúc em/anh luôn mạnh mẽ, dịu dàng và mãi ở đây cùng anh/em.`,
+
+      `Em/Anh yêu quý,<br><br>
+            Một năm mới lại bắt đầu, và anh/em thật hạnh phúc khi vẫn có em/anh ở bên cạnh.<br>
+            Chúc cho tình yêu của chúng ta luôn được nuôi dưỡng bằng sự chân thành, kiên nhẫn và bao dung.<br><br>
+            Anh/em tin rằng, chỉ cần có nhau, mọi năm mới đều trở nên ý nghĩa hơn rất nhiều.`
     ],
   };
 
