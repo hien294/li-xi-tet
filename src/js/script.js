@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
     "relationship-selection",
   );
   const relationshipGrid = relationshipSelection?.querySelector(".grid");
-  const ageSelection = document.getElementById("age-selection");
-  const ageGrid = ageSelection?.querySelector(".grid");
   const hongbaoSelection = document.getElementById("hongbao-selection");
   const hongbaoGrid = document.getElementById("hongbao-grid");
 
@@ -41,7 +39,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const step1Dot = document.getElementById("step1-dot");
   const step2Dot = document.getElementById("step2-dot");
   const step3Dot = document.getElementById("step3-dot");
-  const step4Dot = document.getElementById("step4-dot");
 
   const settingsBtn = document.getElementById("settings-btn");
   const settingsModal = document.getElementById("settings-modal");
@@ -51,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Variables
   let senderName = "";
   let selectedRelationship = null;
-  let selectedAge = null;
   let selectedHongbao = null;
   let isRolling = false;
   let isScratching = false;
@@ -59,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let scratchCanvas = null;
   let currentAmount = 0;
   let selectedRelationshipId = "";
-  let selectedAgeId = "";
   let scratchPoints = [];
 
   // Relationships
@@ -83,14 +78,14 @@ document.addEventListener("DOMContentLoaded", function () {
       name: "Con Cái",
       icon: "fa-solid fa-children",
       formal: "Gửi các con yêu",
-      needsAge: true,
+      needsAge: false, // CHANGED: không cần chọn độ tuổi nữa
     },
     {
       id: "siblings",
       name: "Anh Chị Em",
       icon: "fa-solid fa-people-group",
       formal: "Gửi anh/chị/em",
-      needsAge: true,
+      needsAge: false, // CHANGED
     },
     {
       id: "aunt_uncle",
@@ -104,14 +99,14 @@ document.addEventListener("DOMContentLoaded", function () {
       name: "Bạn Bè",
       icon: "fa-solid fa-user-group",
       formal: "Gửi bạn thân",
-      needsAge: true,
+      needsAge: false, // CHANGED
     },
     {
       id: "colleagues",
       name: "Đồng Nghiệp",
       icon: "fa-solid fa-handshake",
       formal: "Gửi đồng nghiệp",
-      needsAge: true,
+      needsAge: false, // CHANGED
     },
     {
       id: "lovers",
@@ -119,34 +114,6 @@ document.addEventListener("DOMContentLoaded", function () {
       icon: "fa-solid fa-heart-circle-plus",
       formal: "Gửi người yêu dấu",
       needsAge: false,
-    },
-  ];
-
-  // Age groups
-  const ageGroups = [
-    {
-      id: "child",
-      name: "Trẻ Em",
-      range: "1-12 tuổi",
-      icon: "fa-solid fa-child-reaching",
-    },
-    {
-      id: "teen",
-      name: "Thiếu Niên",
-      range: "13-17 tuổi",
-      icon: "fa-solid fa-graduation-cap",
-    },
-    {
-      id: "young_adult",
-      name: "Thanh Niên",
-      range: "18-25 tuổi",
-      icon: "fa-solid fa-person-running",
-    },
-    {
-      id: "adult",
-      name: "Trưởng Thành",
-      range: "26-40 tuổi",
-      icon: "fa-solid fa-user-tie",
     },
   ];
 
@@ -480,9 +447,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 300);
   }
 
-  // Step Indicator
+  // Step Indicator - UPDATED: chỉ còn 3 bước
   function updateStepIndicator(currentStep) {
-    [step1Dot, step2Dot, step3Dot, step4Dot].forEach((dot) => {
+    [step1Dot, step2Dot, step3Dot].forEach((dot) => {
       dot?.classList.remove("completed", "active");
     });
 
@@ -495,12 +462,6 @@ document.addEventListener("DOMContentLoaded", function () {
       step1Dot?.classList.add("completed");
       step2Dot?.classList.add("completed");
       step3Dot?.classList.add("active");
-    }
-    if (currentStep === 4) {
-      step1Dot?.classList.add("completed");
-      step2Dot?.classList.add("completed");
-      step3Dot?.classList.add("completed");
-      step4Dot?.classList.add("active");
     }
   }
 
@@ -533,70 +494,17 @@ document.addEventListener("DOMContentLoaded", function () {
         selectedRelationshipId = relationship.id;
         this.classList.add("selected");
 
-        if (!relationship.needsAge) {
-          updateStepIndicator(4);
-          setTimeout(() => {
-            createHongbaos();
-            if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
-            if (ageSelection) ageSelection.classList.add("hidden");
-            if (hongbaoSelection)
-              hongbaoSelection.scrollIntoView({ behavior: "smooth" });
-          }, 300);
-        } else {
-          updateStepIndicator(3);
-          setTimeout(() => {
-            initAgeSelection();
-            if (ageSelection) ageSelection.classList.remove("hidden");
-            if (hongbaoSelection) hongbaoSelection.classList.add("hidden");
-            if (ageSelection)
-              ageSelection.scrollIntoView({ behavior: "smooth" });
-          }, 300);
-        }
-      });
-
-      relationshipGrid.appendChild(card);
-    });
-  }
-
-  // ========== AGE SELECTION ==========
-  function initAgeSelection() {
-    if (!ageGrid) return;
-    ageGrid.innerHTML = "";
-
-    ageGroups.forEach((age) => {
-      const card = document.createElement("div");
-      card.className =
-        "selection-card rounded-xl p-4 text-center cursor-pointer h-full";
-      card.dataset.age = age.id;
-      card.innerHTML = `
-                <div class="text-3xl text-amber-300 mb-3"><i class="${age.icon}"></i></div>
-                <div class="text-lg font-bold text-white mb-1">${age.name}</div>
-                <div class="text-amber-200 text-sm">${age.range}</div>
-            `;
-
-      card.addEventListener("click", function () {
-        if (selectedAge === this) return;
-
-        document
-          .querySelectorAll("#age-selection .selection-card")
-          .forEach((c) => {
-            c.classList.remove("selected");
-          });
-
-        selectedAge = this;
-        selectedAgeId = age.id;
-        this.classList.add("selected");
-
-        updateStepIndicator(4);
+        // CHANGED: Luôn chuyển thẳng đến hongbao, không cần kiểm tra needsAge
+        updateStepIndicator(3);
         setTimeout(() => {
           createHongbaos();
           if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
           if (hongbaoSelection)
-            hongbaoSelection.scrollIntoView({ behavior: "smooth" });
+            hongbaoSelection.scrollIntoView({ behavior: "smooth", block: "start" });
         }, 300);
       });
 
-      ageGrid.appendChild(card);
+      relationshipGrid.appendChild(card);
     });
   }
 
@@ -631,7 +539,6 @@ document.addEventListener("DOMContentLoaded", function () {
   function createHongbaos() {
     if (!hongbaoGrid) return;
 
-    // Clear existing hongbaos
     hongbaoGrid.innerHTML = "";
 
     const colorVariants = [
@@ -734,7 +641,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function showDiceLoadingModal(selectedId) {
-    // Show fullscreen dice loading
     if (diceLoadingModal) diceLoadingModal.classList.remove("hidden");
     if (modalOverlay) modalOverlay.classList.remove("hidden");
     document.body.style.overflow = "hidden";
@@ -757,7 +663,6 @@ document.addEventListener("DOMContentLoaded", function () {
       stopDiceRolling();
       isRolling = false;
 
-      // Hide dice loading and show result modal
       setTimeout(() => {
         if (diceLoadingModal) diceLoadingModal.classList.add("hidden");
         showLetterAndScratch(letter, currentAmount, message);
@@ -841,7 +746,6 @@ document.addEventListener("DOMContentLoaded", function () {
     scratchCanvas.height = container.offsetHeight;
     ctx = scratchCanvas.getContext("2d", { willReadFrequently: true });
 
-    // Base silver gradient background
     const silverGradient = ctx.createLinearGradient(
       0,
       0,
@@ -856,7 +760,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.fillStyle = silverGradient;
     ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-    // Add decorative dots pattern
     ctx.fillStyle = "rgba(255, 255, 255, 0.4)";
     for (let x = 15; x < scratchCanvas.width; x += 20) {
       for (let y = 15; y < scratchCanvas.height; y += 20) {
@@ -866,7 +769,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
 
-    // Add shine effect
     const shineGradient = ctx.createLinearGradient(
       0,
       0,
@@ -880,7 +782,6 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.fillStyle = shineGradient;
     ctx.fillRect(0, 0, scratchCanvas.width, scratchCanvas.height);
 
-    // Add text with better styling
     ctx.fillStyle = "#8B4513";
     ctx.font = "bold 16px 'Noto Serif', serif";
     ctx.textAlign = "center";
@@ -1296,14 +1197,13 @@ document.addEventListener("DOMContentLoaded", function () {
   }, 5000);
 
   /* ================================================
-       CÁNH HOA MAI RƠI — Màu vàng, từ ĐÚNG vị trí 2 góc, nhiều hơn
+       CÁNH HOA MAI RƠI
        ================================================ */
   (function petalInit() {
     const layer = document.getElementById("petal-layer");
     if (!layer) return;
 
     function makePetalSVG(uid) {
-      // Màu vàng hoa mai - gradient đẹp hơn
       const colors = [
         { base: "#ffd700", light: "#ebe1a8" },
         { base: "#ffcc00", light: "#dfc86e" },
@@ -1316,11 +1216,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const shapes = [
         `M12,5 Q20,10 20,20 Q12,15 5,20 Q5,10 12,5Z`,
-        // Hình elip
         `M20,6 Q25,13 20,20 Q15,13 20,6Z`,
-        // Hình tròn nhỏ
         `M20,8 Q23,13 20,18 Q17,13 20,8Z`,
-        // Hình bầu dục
         `M12,3 Q20,12 12,22 Q5,12 12,3Z`,
       ];
 
@@ -1360,14 +1257,11 @@ document.addEventListener("DOMContentLoaded", function () {
       let x;
 
       if (fromLeft) {
-        // Khu vực cành TRÁI
         x = rand(0, Math.min(280, vw * 0.25));
       } else {
-        // Khu vực cành PHẢI
         x = rand(Math.max(vw - 280, vw * 0.75), vw);
       }
 
-      // Điểm bắt đầu rơi (đã tụt xuống)
       const y = rand(-50, -5) + START_OFFSET_Y;
 
       const driftXEarly = rand(-70, 70);
@@ -1423,27 +1317,21 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     function loop() {
-      // Giảm xuống: spawn 1-2 cánh mỗi lần để giảm tải CPU
       const n = randInt(1, 2);
       for (let i = 0; i < n; i++) {
         setTimeout(() => spawnPetal(), i * 300);
       }
-      // Tăng thời gian để giảm tần suất spawn
       setTimeout(loop, rand(1800, 2400));
     }
 
     setTimeout(loop, 800);
   })();
 
-  // xuất ảnh
-
   // ===== EXPORT & SHARE FUNCTIONALITY =====
-
-  // Hàm chuyển đổi HTML thành Canvas với độ phân giải cao
+  // FIXED: Lưu ảnh với khung cố định
   async function convertLetterToImage() {
     const letterElement = document.getElementById("letter-to-share");
 
-    // Tạo loading indicator
     const downloadBtn = document.getElementById("download-letter-btn");
     const shareBtn = document.getElementById("share-letter-btn");
     const originalDownloadHTML = downloadBtn.innerHTML;
@@ -1456,22 +1344,25 @@ document.addEventListener("DOMContentLoaded", function () {
     shareBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Đang xử lý...';
 
     try {
-      // Capture với scale cao để đảm bảo chất lượng
+      // FIXED: Khung cố định - không theo màn hình
       const canvas = await html2canvas(letterElement, {
-        scale: 3, // Tăng độ phân giải lên 3 lần
-        backgroundColor: "#f8f4e8", // Màu nền giấy
+        scale: 3,
+        backgroundColor: "#f8f4e8",
         useCORS: true,
         logging: false,
-        windowWidth: letterElement.scrollWidth,
-        windowHeight: letterElement.scrollHeight,
-        scrollY: -window.scrollY,
-        scrollX: -window.scrollX,
-        // Đảm bảo fonts được load
+        width: 800,  // FIXED WIDTH
+        height: 1000, // FIXED HEIGHT
+        windowWidth: 800,
+        windowHeight: 1000,
+        scrollY: 0,
+        scrollX: 0,
         onclone: (clonedDoc) => {
           const clonedElement = clonedDoc.getElementById("letter-to-share");
           if (clonedElement) {
             clonedElement.style.maxHeight = "none";
             clonedElement.style.overflow = "visible";
+            clonedElement.style.width = "800px";
+            clonedElement.style.minHeight = "1000px";
           }
         },
       });
@@ -1482,7 +1373,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Không thể tạo ảnh. Vui lòng thử lại!");
       return null;
     } finally {
-      // Restore buttons
       downloadBtn.disabled = false;
       shareBtn.disabled = false;
       downloadBtn.innerHTML = originalDownloadHTML;
@@ -1490,12 +1380,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Hàm download ảnh
   async function downloadLetterImage() {
     const canvas = await convertLetterToImage();
     if (!canvas) return;
 
-    // Chuyển canvas thành blob
     canvas.toBlob(
       (blob) => {
         const url = URL.createObjectURL(blob);
@@ -1511,7 +1399,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  // Hàm share (Web Share API)
   async function shareLetterImage() {
     const canvas = await convertLetterToImage();
     if (!canvas) return;
@@ -1522,7 +1409,6 @@ document.addEventListener("DOMContentLoaded", function () {
           type: "image/png",
         });
 
-        // Kiểm tra nếu trình duyệt hỗ trợ Web Share API
         if (
           navigator.share &&
           navigator.canShare &&
@@ -1537,12 +1423,10 @@ document.addEventListener("DOMContentLoaded", function () {
           } catch (error) {
             if (error.name !== "AbortError") {
               console.error("Lỗi khi share:", error);
-              // Fallback: download nếu share thất bại
               downloadLetterImage();
             }
           }
         } else {
-          // Fallback cho trình duyệt không hỗ trợ
           alert(
             "Trình duyệt không hỗ trợ chia sẻ trực tiếp. Ảnh sẽ được tải xuống!",
           );
@@ -1554,7 +1438,6 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  // Event listeners
   document
     .getElementById("download-letter-btn")
     .addEventListener("click", downloadLetterImage);
