@@ -58,6 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentAmount = 0;
   let selectedRelationshipId = "";
   let scratchPoints = [];
+  let scratchedPercentage = 0;
+  let hasLaunchedFireworks = false;
 
   // Relationships
   const relationships = [
@@ -994,6 +996,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ========== SCRATCH CARD ==========
   function initScratchCard() {
+    hasLaunchedFireworks = false;
+    scratchedPercentage = 0;
     const container = document.querySelector(".scratch-card-container");
     if (!container) return;
 
@@ -1149,6 +1153,40 @@ document.addEventListener("DOMContentLoaded", function () {
       scratch(x, y, true);
     }
   }
+  function getFilledInPixels(stride) {
+    if (!ctx || !scratchCanvas) return 0;
+    const pixels = ctx.getImageData(0, 0, scratchCanvas.width, scratchCanvas.height);
+    const data = pixels.data;
+    const total = data.length / stride;
+    let count = 0;
+
+    for (let i = 0; i < data.length; i += stride) {
+      if (parseInt(data[i], 10) === 0) {
+        count++;
+      }
+    }
+
+    return Math.round((count / total) * 100);
+  }
+
+  function checkScratchProgress() {
+    if (hasLaunchedFireworks) return;
+
+    scratchedPercentage = getFilledInPixels(32);
+
+    // Khi cào đạt 50% thì bắn 3 quả pháo hoa
+    if (scratchedPercentage >= 50) {
+      hasLaunchedFireworks = true;
+      setTimeout(() => launchFirework(), 0);
+      setTimeout(() => launchFirework(), 200);
+      setTimeout(() => launchFirework(), 400);
+      setTimeout(() => {
+        launchFirework();
+        setTimeout(() => launchFirework(), 200);
+        setTimeout(() => launchFirework(), 400);
+      }, 800);
+    }
+  }
 
   function scratch(clientX, clientY, skipCheck = false) {
     if (!ctx || !scratchCanvas) return;
@@ -1177,6 +1215,11 @@ document.addEventListener("DOMContentLoaded", function () {
     ctx.arc(clampedX, clampedY, radius, 0, Math.PI * 2);
     ctx.fillStyle = gradient;
     ctx.fill();
+
+    // THÊM DÒNG NÀY: Kiểm tra tiến độ cào
+    if (!skipCheck) {
+      checkScratchProgress();
+    }
   }
 
   // ========== CLOSE MODAL ==========
