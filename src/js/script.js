@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const settingsModal = document.getElementById("settings-modal");
   const closeSettings = document.getElementById("close-settings");
   const saveSettingsBtn = document.getElementById("save-settings");
-  
+
   const scrollToTopBtn = document.getElementById("scroll-to-top");
 
   // Variables
@@ -416,9 +416,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // FIX: Click vào document để đóng name modal khi expanded
   document.addEventListener("click", (e) => {
     // Chỉ đóng khi name expanded đang hiện và click không phải vào name modal
-    if (!nameExpanded.classList.contains("hidden") && 
-        !nameExpanded.contains(e.target) && 
-        !nameMinimized.contains(e.target)) {
+    if (!nameExpanded.classList.contains("hidden") &&
+      !nameExpanded.contains(e.target) &&
+      !nameMinimized.contains(e.target)) {
       minimizeNameBtn.click();
     }
   });
@@ -519,14 +519,14 @@ document.addEventListener("DOMContentLoaded", function () {
         setTimeout(() => {
           createHongbaos();
           if (hongbaoSelection) hongbaoSelection.classList.remove("hidden");
-          
+
           // Scroll đến giữa phần hongbao selection
           setTimeout(() => {
             if (hongbaoSelection) {
               const headerHeight = 100; // Chiều cao header + padding
               const elementPosition = hongbaoSelection.getBoundingClientRect().top;
               const offsetPosition = elementPosition + window.pageYOffset - headerHeight;
-              
+
               window.scrollTo({
                 top: offsetPosition,
                 behavior: "smooth"
@@ -658,7 +658,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (diceLoadingModal) diceLoadingModal.classList.remove("hidden");
     if (modalOverlay) modalOverlay.classList.remove("hidden");
     document.body.style.overflow = "hidden";
-    
+
     // FIX: Ẩn name modal và scroll-to-top button khi modal mở
     if (nameModal) {
       nameModal.style.visibility = "hidden";
@@ -947,7 +947,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (diceLoadingModal) diceLoadingModal.classList.add("hidden");
     if (modalOverlay) modalOverlay.classList.add("hidden");
     document.body.style.overflow = "auto";
-    
+
     // FIX: Hiện lại name modal và scroll-to-top button khi đóng modal
     if (nameModal) {
       nameModal.style.visibility = "";
@@ -982,7 +982,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
-  
+
   // FIX: Click vào vùng padding của result modal (không phải nội dung bên trong) sẽ đóng
   if (resultModal) {
     resultModal.addEventListener("click", function (e) {
@@ -993,7 +993,7 @@ document.addEventListener("DOMContentLoaded", function () {
         e.stopPropagation();
       }
     });
-    
+
     // Ngăn click vào nội dung modal không đóng modal
     const modalContent = resultModal.querySelector('.bg-gradient-to-br');
     if (modalContent) {
@@ -1002,7 +1002,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     }
   }
-  
+
   if (diceLoadingModal) {
     diceLoadingModal.addEventListener("click", function (e) {
       if (e.target === diceLoadingModal) {
@@ -1394,7 +1394,7 @@ document.addEventListener("DOMContentLoaded", function () {
     for (let i = 0; i < 3; i++) {
       setTimeout(() => spawnPetal(), i * 200);
     }
-    
+
     // Rồi mới bắt đầu loop bình thường
     setTimeout(loop, 800);
   })();
@@ -1431,7 +1431,7 @@ document.addEventListener("DOMContentLoaded", function () {
             clonedElement.style.overflow = "visible";
             clonedElement.style.width = "700px";
             clonedElement.style.padding = "2rem";
-            
+
             const signatureBox = clonedElement.querySelector(".signature-box");
             if (signatureBox) {
               signatureBox.style.marginBottom = "0";
@@ -1522,7 +1522,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // ========== SCROLL TO TOP BUTTON ==========
   const scrollBtn = document.createElement("button");
   scrollBtn.id = "scroll-to-top";
-  scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+  scrollBtn.innerHTML = '<i class="fa-solid fa-angles-up"></i>';
   scrollBtn.className = "scroll-to-top-btn hidden";
   scrollBtn.title = "Về đầu trang";
   document.body.appendChild(scrollBtn);
